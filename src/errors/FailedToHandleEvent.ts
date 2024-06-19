@@ -1,7 +1,7 @@
-import { Events } from "discord.js";
+import { Event } from "../classes/event";
 
 export class FailedToHandleEvent extends Error {
-  constructor(name: Events) {
-    super(`Failed to handle event: ${name}`);
+  constructor(event: Event) {
+    super(`Failed to handle event: ${event.constructor.name} (${event.event})`);
   }
 }

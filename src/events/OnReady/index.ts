@@ -1,3 +1,3 @@
-import LogReadyEvent from "./log";
+import Handlers from "./handlers";
 
-export default [LogReadyEvent];
+export default Handlers;

@@ -1,5 +1,5 @@
 import { Events } from "discord.js";
-import { Event } from "../../classes/event";
+import { Event } from "../../../classes/event";
 
 class LogReadyEvent implements Event {
   event: Events = Events.ClientReady;

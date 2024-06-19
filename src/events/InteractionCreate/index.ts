@@ -1,5 +1,3 @@
-import HandleAutoComplete from "./HandleAutoComplete";
-import HandleButton from "./HandleButton";
-import HandleCommand from "./HandleCommand";
+import Handlers from "./handlers";
 
-export default [HandleAutoComplete, HandleButton, HandleCommand];
+export default Handlers;

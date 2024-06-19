@@ -10,8 +10,7 @@ export class EventManager {
     try {
       await event.execute(...args);
     } catch (error) {
-      // console.error(error);
-      throw new FailedToHandleEvent(event.event);
+      throw new FailedToHandleEvent(event);
     }
   }
 

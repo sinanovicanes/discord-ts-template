@@ -3,13 +3,10 @@ import {
   AutocompleteInteraction,
   Events
 } from "discord.js";
-import { Event } from "../../classes/event";
-import { CommandManager } from "../../managers/CommandManager";
+import { CommandManager } from "../../../managers/CommandManager";
+import { InteractionCreateEvent } from "../InteractionCreateEvent";
 
-class HandleAutoComplete implements Event {
-  event: Events = Events.InteractionCreate;
-  once = false;
-
+class HandleAutoComplete extends InteractionCreateEvent {
   filterOptions(
     input: string,
     options: ApplicationCommandOptionChoiceData<string | number>[]

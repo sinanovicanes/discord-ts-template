@@ -1,9 +1,9 @@
 import { Events } from "discord.js";
 
-export class Event {
-  constructor(
-    public event: Events,
-    public execute: (...args: any[]) => void,
-    public once = false
-  ) {}
+export abstract class Event {
+  once: boolean = false;
+
+  constructor(public event: Events) {}
+
+  abstract execute(...args: any[]): void;
 }
