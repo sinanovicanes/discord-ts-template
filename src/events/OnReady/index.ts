@@ -1,3 +1,3 @@
-import Handlers from "./handlers";
+import LogEvent from "./log";
 
-export default Handlers;
+export default [LogEvent];

@@ -1,10 +1,6 @@
-import {
-  ApplicationCommandOptionChoiceData,
-  AutocompleteInteraction,
-  Events
-} from "discord.js";
-import { CommandManager } from "../../../managers/CommandManager";
-import { InteractionCreateEvent } from "../InteractionCreateEvent";
+import { ApplicationCommandOptionChoiceData, AutocompleteInteraction } from "discord.js";
+import { InteractionCreateEvent } from "../../classes/event";
+import { CommandManager } from "../../managers/CommandManager";
 
 class HandleAutoComplete extends InteractionCreateEvent {
   filterOptions(
@@ -25,15 +21,12 @@ class HandleAutoComplete extends InteractionCreateEvent {
 
     const focusedValue = interaction.options.getFocused(true);
 
-    console.log(JSON.stringify(focusedValue));
-
     switch (typeof command.autoComplete) {
       case "function": {
         const options = await command.autoComplete(focusedValue);
         const filteredOptions = this.filterOptions(focusedValue.value, options);
 
-        interaction.respond(filteredOptions);
-        break;
+        return interaction.respond(filteredOptions);
       }
       case "object": {
         const isArray = Array.isArray(command.autoComplete);
@@ -58,13 +51,10 @@ class HandleAutoComplete extends InteractionCreateEvent {
 
         const filteredChoices = this.filterOptions(focusedValue.value, choices);
 
-        interaction.respond(filteredChoices);
-
-        break;
+        return interaction.respond(filteredChoices);
       }
       default: {
-        interaction.respond([]);
-        break;
+        return interaction.respond([]);
       }
     }
   }
