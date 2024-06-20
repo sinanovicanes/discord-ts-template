@@ -20,5 +20,5 @@ const execute = async (interaction: CommandInteraction) => {
 export default new Command({
   name: COMMAND_NAME,
   builder,
-  execute
+  handler: execute
 });

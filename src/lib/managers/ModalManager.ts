@@ -12,10 +12,6 @@ export class ModalManager {
     return this.modals.get(name);
   }
 
-  static getModalBuilder(name: Modal["id"]) {
-    return this.modals.get(name)?.builder;
-  }
-
   static hasModal(name: Modal["id"]) {
     return this.modals.has(name);
   }

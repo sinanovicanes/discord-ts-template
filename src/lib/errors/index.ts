@@ -1,5 +1,5 @@
 export * from "./CommandNotFound";
-export * from "./FailedToExecuteCommand";
+export * from "./FailedToHandleCommand";
 export * from "./FailedToHandleEvent";
 export * from "./ButtonNotFound";
 export * from "./FailedToHandleButton";

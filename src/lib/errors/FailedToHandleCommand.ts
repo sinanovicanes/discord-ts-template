@@ -1,6 +1,6 @@
 import { CommandInteraction } from "discord.js";
 
-export class FailedToExecuteCommand extends Error {
+export class FailedToHandleCommand extends Error {
   constructor(interaction: CommandInteraction) {
     interaction.reply({
       content: `Failed to execute command: ${interaction.commandName}`,

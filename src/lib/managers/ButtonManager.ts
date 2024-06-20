@@ -12,16 +12,6 @@ export class ButtonManager {
     return this.buttons.get(name);
   }
 
-  static getButtonBuilder(name: Button["id"]) {
-    return this.buttons.get(name)?.builder;
-  }
-
-  static getButtonBuilders(buttons: Button["id"][]): ButtonBuilder[] {
-    return buttons
-      .map(buttonId => this.getButtonBuilder(buttonId))
-      .filter(builder => !!builder) as ButtonBuilder[];
-  }
-
   static hasButton(name: Button["id"]) {
     return this.buttons.has(name);
   }

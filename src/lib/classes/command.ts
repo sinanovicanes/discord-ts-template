@@ -1,17 +1,36 @@
-import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import { Button } from "./button";
+import {
+  ApplicationCommandType,
+  CommandInteraction,
+  ContextMenuCommandBuilder,
+  ContextMenuCommandInteraction,
+  SlashCommandBuilder
+} from "discord.js";
 import { CommandAutoComplete } from "../types/CommandAutoComplete";
 
 export class Command {
   name: string;
   builder: SlashCommandBuilder;
-  execute: (interaction: CommandInteraction) => void;
+  handler: (interaction: CommandInteraction) => void;
   autoComplete?: CommandAutoComplete;
 
-  constructor({ name, builder, execute, autoComplete }: Command) {
+  constructor({ name, builder, handler, autoComplete }: Command) {
     this.name = name;
     this.builder = builder;
-    this.execute = execute;
+    this.handler = handler;
     this.autoComplete = autoComplete;
+  }
+}
+
+export class ContextMenuCommand {
+  name: string;
+  builder: ContextMenuCommandBuilder;
+  handler: (interaction: ContextMenuCommandInteraction) => void;
+  type: ApplicationCommandType;
+
+  constructor({ name, builder, handler, type }: ContextMenuCommand) {
+    this.name = name;
+    this.builder = builder;
+    this.handler = handler;
+    this.type = type;
   }
 }

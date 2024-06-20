@@ -28,5 +28,5 @@ export default new Command({
     { name: "Goodbye", value: "Bye" },
     { name: "Goodbye 2", value: "Bye 2" }
   ],
-  execute
+  handler: execute
 });
