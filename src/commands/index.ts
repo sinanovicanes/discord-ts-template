@@ -1,6 +1,6 @@
-import StartBossTimer from "./StartBossTimer";
+import Button from "./Button";
 import Ping from "./Ping";
 import Modal from "./Ping";
 
-export { StartBossTimer, Ping, Modal };
-export default [StartBossTimer, Ping, Modal];
+export { Button, Ping, Modal };
+export default [Button, Ping, Modal];
