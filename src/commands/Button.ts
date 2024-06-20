@@ -1,6 +1,6 @@
 import { CancelButton, ConfirmationButton } from "@/components";
 import { ButtonActionRowBuilder } from "@/lib/builders";
-import { Command } from "@lib/classes";
+import { Command } from "@/lib/classes";
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 
 const COMMAND_NAME = "button";

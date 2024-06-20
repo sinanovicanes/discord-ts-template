@@ -1,6 +1,6 @@
 import { ModalSubmitInteraction } from "discord.js";
-import { InteractionCreateEvent } from "@lib/classes";
-import { ModalManager } from "@lib/managers";
+import { InteractionCreateEvent } from "@/lib/classes";
+import { ModalManager } from "@/lib/managers";
 
 class HandleModal extends InteractionCreateEvent {
   async handler(interaction: ModalSubmitInteraction) {
@@ -10,4 +10,4 @@ class HandleModal extends InteractionCreateEvent {
   }
 }
 
-export default new HandleModal();
+export default HandleModal;

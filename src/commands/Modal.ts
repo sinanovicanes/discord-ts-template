@@ -1,5 +1,5 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import { Command } from "@lib/classes";
+import { Command } from "@/lib/classes";
 import { ExampleModal } from "@/components";
 
 const COMMAND_NAME = "modal";

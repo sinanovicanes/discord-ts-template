@@ -1,4 +1,4 @@
-import { ContextMenuCommand } from "@lib/classes";
+import { ContextMenuCommand } from "@/lib/classes";
 import {
   ApplicationCommandType,
   ContextMenuCommandBuilder,

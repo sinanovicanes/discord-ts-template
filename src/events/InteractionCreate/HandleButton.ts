@@ -1,6 +1,6 @@
 import { ButtonInteraction } from "discord.js";
-import { InteractionCreateEvent } from "@lib/classes";
-import { ButtonManager } from "@lib/managers";
+import { InteractionCreateEvent } from "@/lib/classes";
+import { ButtonManager } from "@/lib/managers";
 
 class HandleButton extends InteractionCreateEvent {
   async handler(interaction: ButtonInteraction) {
@@ -10,4 +10,4 @@ class HandleButton extends InteractionCreateEvent {
   }
 }
 
-export default new HandleButton();
+export default HandleButton;

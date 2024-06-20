@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionChoiceData, AutocompleteInteraction } from "discord.js";
-import { Command, InteractionCreateEvent } from "@lib/classes";
-import { CommandManager } from "@lib/managers";
+import { Command, InteractionCreateEvent } from "@/lib/classes";
+import { CommandManager } from "@/lib/managers";
 
 class HandleAutoComplete extends InteractionCreateEvent {
   filterOptions(
@@ -60,4 +60,4 @@ class HandleAutoComplete extends InteractionCreateEvent {
   }
 }
 
-export default new HandleAutoComplete();
+export default HandleAutoComplete;

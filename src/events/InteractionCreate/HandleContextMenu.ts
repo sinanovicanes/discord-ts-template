@@ -10,4 +10,4 @@ class HandleContextMenu extends InteractionCreateEvent {
   }
 }
 
-export default new HandleContextMenu();
+export default HandleContextMenu;

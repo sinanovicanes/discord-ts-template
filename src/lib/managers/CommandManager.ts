@@ -5,19 +5,19 @@ import {
   REST,
   Routes
 } from "discord.js";
-import { Command, ContextMenuCommand } from "@lib/classes";
-import Commands from "@/commands";
-import { CommandNotFound, FailedToHandleCommand } from "@lib/errors";
-import env from "@lib/utils/env";
+import { Command, ContextMenuCommand } from "@/lib/classes";
+import { CommandNotFound, FailedToHandleCommand } from "@/lib/errors";
+import env from "@/lib/utils/env";
 import { FailedToHandleContextMenuCommand } from "../errors/FailedToHandleContextMenuCommand";
 import { ContextMenuCommandNotFound } from "../errors/ContextMenuCommandNotFound";
+import { loadCommands } from "../utils/loaders";
 
 type TCommands = Command | ContextMenuCommand;
 
 export class CommandManager {
   constructor(private readonly client: Client) {}
   private static commands = new Map<TCommands["name"], TCommands>(
-    Commands.map(command => [command.name, command])
+    loadCommands().map(command => [command.name, command])
   );
 
   static getCommand<T extends TCommands = TCommands>(name: string) {
@@ -55,10 +55,10 @@ export class CommandManager {
   }
 
   async initiliaze() {
-    const rest = new REST().setToken(env.BOT_TOKEN!);
+    const rest = new REST().setToken(env.BOT_TOKEN);
 
     try {
-      await rest.put(Routes.applicationCommands(env.BOT_CLIENT_ID!), {
+      await rest.put(Routes.applicationCommands(env.BOT_CLIENT_ID), {
         body: Array.from(CommandManager.commands.values()).map(command =>
           command.builder.toJSON()
         )
@@ -69,10 +69,10 @@ export class CommandManager {
   }
 
   async clearCommands() {
-    const rest = new REST().setToken(env.BOT_TOKEN!);
+    const rest = new REST().setToken(env.BOT_TOKEN);
 
     try {
-      await rest.put(Routes.applicationCommands(env.BOT_CLIENT_ID!), {
+      await rest.put(Routes.applicationCommands(env.BOT_CLIENT_ID), {
         body: []
       });
     } catch (error) {

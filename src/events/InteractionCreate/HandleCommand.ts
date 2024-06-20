@@ -1,6 +1,6 @@
 import { CommandInteraction, Interaction } from "discord.js";
-import { InteractionCreateEvent } from "@lib/classes";
-import { CommandManager } from "@lib/managers";
+import { InteractionCreateEvent } from "@/lib/classes";
+import { CommandManager } from "@/lib/managers";
 
 class HandleCommand extends InteractionCreateEvent {
   async handler(interaction: Interaction) {
@@ -10,4 +10,4 @@ class HandleCommand extends InteractionCreateEvent {
   }
 }
 
-export default new HandleCommand();
+export default HandleCommand;
