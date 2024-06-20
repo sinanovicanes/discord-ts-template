@@ -1,11 +1,7 @@
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  CommandInteraction,
-  SlashCommandBuilder
-} from "discord.js";
+import { CancelButton, ConfirmationButton } from "@/components";
+import { ButtonActionRowBuilder } from "@/lib/builders";
 import { Command } from "@lib/classes";
-import { ButtonManager } from "@lib/managers/ButtonManager";
+import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 
 const COMMAND_NAME = "button";
 const builder = new SlashCommandBuilder()
@@ -13,9 +9,7 @@ const builder = new SlashCommandBuilder()
   .setDescription("Shows example button");
 
 const execute = async (interaction: CommandInteraction) => {
-  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    ButtonManager.getButtonBuilders(["confirmation"])
-  );
+  const row = new ButtonActionRowBuilder(ConfirmationButton, CancelButton);
 
   await interaction.reply({
     content: `Example buttons:`,
