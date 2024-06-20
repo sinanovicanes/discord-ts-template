@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionChoiceData, AutocompleteInteraction } from "discord.js";
-import { InteractionCreateEvent } from "../../classes/event";
-import { CommandManager } from "../../managers/CommandManager";
+import { InteractionCreateEvent } from "@lib/classes";
+import { CommandManager } from "@lib/managers";
 
 class HandleAutoComplete extends InteractionCreateEvent {
   filterOptions(

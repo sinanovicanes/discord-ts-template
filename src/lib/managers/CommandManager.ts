@@ -1,8 +1,8 @@
 import { Client, CommandInteraction, REST, Routes } from "discord.js";
-import { Command } from "../classes";
-import Commands from "../commands";
-import { CommandNotFound, FailedToExecuteCommand } from "../errors";
-import env from "../utils/env";
+import { Command } from "@lib/classes";
+import Commands from "@/commands";
+import { CommandNotFound, FailedToExecuteCommand } from "@lib/errors";
+import env from "@lib/utils/env";
 
 export class CommandManager {
   constructor(private readonly client: Client) {}

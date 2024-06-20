@@ -4,8 +4,8 @@ import {
   CommandInteraction,
   SlashCommandBuilder
 } from "discord.js";
-import { Command } from "../classes";
-import { ButtonManager } from "../managers/ButtonManager";
+import { Command } from "@lib/classes";
+import { ButtonManager } from "@lib/managers/ButtonManager";
 
 const COMMAND_NAME = "button";
 const builder = new SlashCommandBuilder()

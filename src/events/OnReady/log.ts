@@ -1,4 +1,4 @@
-import { ClientReadyEvent } from "../../classes/event";
+import { ClientReadyEvent } from "@lib/classes/event";
 
 class LogReadyEvent extends ClientReadyEvent {
   once = true;

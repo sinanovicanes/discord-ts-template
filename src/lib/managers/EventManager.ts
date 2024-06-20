@@ -1,7 +1,7 @@
 import { Client, ClientEvents } from "discord.js";
 import { Event } from "../classes";
 import { FailedToHandleEvent } from "../errors";
-import Events from "../events";
+import Events from "@/events";
 
 export class EventManager {
   constructor(private readonly client: Client) {}

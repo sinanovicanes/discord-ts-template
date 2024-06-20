@@ -1,6 +1,6 @@
-import { ModalBuilder, ModalSubmitInteraction } from "discord.js";
+import Modals from "@/components/modals";
+import { ModalSubmitInteraction } from "discord.js";
 import { Modal } from "../classes";
-import Modals from "../components/modals";
 import { FailedToHandleModal, ModalNotFound } from "../errors";
 
 export class ModalManager {

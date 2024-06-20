@@ -1,5 +1,5 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import { Command } from "../classes";
+import { Command } from "@/lib/classes";
 
 const COMMAND_NAME = "ping";
 const builder = new SlashCommandBuilder()

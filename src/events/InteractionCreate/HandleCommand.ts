@@ -1,6 +1,6 @@
 import { CommandInteraction, Interaction } from "discord.js";
-import { InteractionCreateEvent } from "../../classes/event";
-import { CommandManager } from "../../managers/CommandManager";
+import { InteractionCreateEvent } from "@lib/classes";
+import { CommandManager } from "@lib/managers";
 
 class HandleCommand extends InteractionCreateEvent {
   async handler(interaction: Interaction) {
