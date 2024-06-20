@@ -7,6 +7,7 @@ import {
 } from "discord.js";
 import { CommandAutoComplete } from "../types/CommandAutoComplete";
 
+// TODO: CREATE BASE CLASS FOR COMMANDS & EXTEND IT FOR BUILDERS
 export class Command {
   name: string;
   builder: SlashCommandBuilder;

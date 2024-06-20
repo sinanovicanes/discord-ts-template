@@ -1,4 +1,4 @@
-import { Button } from "@lib/classes";
+import { Button } from "@/lib/classes";
 import { ActionRowBuilder, ButtonBuilder } from "discord.js";
 
 export class ButtonActionRowBuilder extends ActionRowBuilder<ButtonBuilder> {

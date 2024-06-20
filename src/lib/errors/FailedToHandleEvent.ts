@@ -1,4 +1,4 @@
-import { Event } from "../classes/event";
+import { Event } from "../classes/events";
 
 export class FailedToHandleEvent extends Error {
   constructor(event: Event) {

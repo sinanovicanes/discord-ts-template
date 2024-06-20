@@ -5,7 +5,7 @@ import {
   TextInputBuilder,
   TextInputStyle
 } from "discord.js";
-import { Modal } from "@lib/classes/modal";
+import { Modal } from "@/lib/classes/modal";
 
 const MODAL_ID = "example";
 const MODAL_TITLE = "Example Modal";

@@ -1,35 +1,4 @@
-import {
-  ApplicationCommandPermissionsUpdateData,
-  BaseInteraction,
-  Client,
-  ClientEvents,
-  CloseEvent,
-  Collection,
-  DMChannel,
-  Events,
-  Guild,
-  GuildBan,
-  GuildChannel,
-  GuildEmoji,
-  GuildMember,
-  GuildMembersChunk,
-  GuildScheduledEvent,
-  Invite,
-  Message,
-  MessageReaction,
-  NewsChannel,
-  Presence,
-  Role,
-  Snowflake,
-  StageInstance,
-  Sticker,
-  TextChannel,
-  ThreadChannel,
-  ThreadMember,
-  Typing,
-  User,
-  VoiceState
-} from "discord.js";
+import { ClientEvents, Events } from "discord.js";
 
 export abstract class Event<T extends keyof ClientEvents = keyof ClientEvents> {
   once: boolean = false;
