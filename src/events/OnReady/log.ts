@@ -1,11 +1,8 @@
-import { Events } from "discord.js";
 import { ClientReadyEvent } from "../../classes/event";
 
-class LogReadyEvent implements ClientReadyEvent {
-  event: Events = Events.ClientReady;
+class LogReadyEvent extends ClientReadyEvent {
   once = true;
-
-  async execute() {
+  async handler() {
     console.log("Bot is ready");
   }
 }

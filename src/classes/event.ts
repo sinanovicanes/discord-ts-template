@@ -2,6 +2,7 @@ import {
   ApplicationCommandPermissionsUpdateData,
   BaseInteraction,
   Client,
+  ClientEvents,
   CloseEvent,
   Collection,
   DMChannel,
@@ -30,571 +31,489 @@ import {
   VoiceState
 } from "discord.js";
 
-export abstract class Event {
+export abstract class Event<T extends keyof ClientEvents = keyof ClientEvents> {
   once: boolean = false;
 
-  constructor(public event: Events) {}
-  abstract execute(...args: any[]): void;
+  constructor(public event: T) {}
+  abstract handler(...args: ClientEvents[T]): void;
 }
 
-export abstract class ApplicationCommandPermissionsUpdateEvent extends Event {
+export abstract class ApplicationCommandPermissionsUpdateEvent extends Event<Events.ApplicationCommandPermissionsUpdate> {
   constructor() {
     super(Events.ApplicationCommandPermissionsUpdate);
   }
-  abstract execute(data: ApplicationCommandPermissionsUpdateData): void;
 }
 
-export abstract class AutoModerationActionExecutionEvent extends Event {
+export abstract class AutoModerationActionExecutionEvent extends Event<Events.AutoModerationActionExecution> {
   constructor() {
     super(Events.AutoModerationActionExecution);
   }
 }
 
-export abstract class AutoModerationRuleCreateEvent extends Event {
+export abstract class AutoModerationRuleCreateEvent extends Event<Events.AutoModerationRuleCreate> {
   constructor() {
     super(Events.AutoModerationRuleCreate);
   }
 }
 
-export abstract class AutoModerationRuleDeleteEvent extends Event {
+export abstract class AutoModerationRuleDeleteEvent extends Event<Events.AutoModerationRuleDelete> {
   constructor() {
     super(Events.AutoModerationRuleDelete);
   }
 }
 
-export abstract class AutoModerationRuleUpdateEvent extends Event {
+export abstract class AutoModerationRuleUpdateEvent extends Event<Events.AutoModerationRuleUpdate> {
   constructor() {
     super(Events.AutoModerationRuleUpdate);
   }
 }
 
-export abstract class ClientReadyEvent extends Event {
+export abstract class ClientReadyEvent extends Event<Events.ClientReady> {
   constructor() {
     super(Events.ClientReady);
   }
-  abstract execute(client: Client): void;
 }
 
-export abstract class EntitlementCreateEvent extends Event {
+export abstract class EntitlementCreateEvent extends Event<Events.EntitlementCreate> {
   constructor() {
     super(Events.EntitlementCreate);
   }
 }
 
-export abstract class EntitlementDeleteEvent extends Event {
+export abstract class EntitlementDeleteEvent extends Event<Events.EntitlementDelete> {
   constructor() {
     super(Events.EntitlementDelete);
   }
 }
 
-export abstract class EntitlementUpdateEvent extends Event {
+export abstract class EntitlementUpdateEvent extends Event<Events.EntitlementUpdate> {
   constructor() {
     super(Events.EntitlementUpdate);
   }
 }
 
-export abstract class GuildAuditLogEntryCreateEvent extends Event {
+export abstract class GuildAuditLogEntryCreateEvent extends Event<Events.GuildAuditLogEntryCreate> {
   constructor() {
     super(Events.GuildAuditLogEntryCreate);
   }
 }
 
-export abstract class GuildAvailableEvent extends Event {
+export abstract class GuildAvailableEvent extends Event<Events.GuildAvailable> {
   constructor() {
     super(Events.GuildAvailable);
   }
-  abstract execute(guild: Guild): void;
 }
 
-export abstract class GuildCreateEvent extends Event {
+export abstract class GuildCreateEvent extends Event<Events.GuildCreate> {
   constructor() {
     super(Events.GuildCreate);
   }
-  abstract execute(guild: Guild): void;
 }
 
-export abstract class GuildDeleteEvent extends Event {
+export abstract class GuildDeleteEvent extends Event<Events.GuildDelete> {
   constructor() {
     super(Events.GuildDelete);
   }
-  abstract execute(guild: Guild): void;
 }
 
-export abstract class GuildUpdateEvent extends Event {
+export abstract class GuildUpdateEvent extends Event<Events.GuildUpdate> {
   constructor() {
     super(Events.GuildUpdate);
   }
-  abstract execute(oldGuild: Guild, newGuild: Guild): void;
 }
 
-export abstract class GuildUnavailableEvent extends Event {
+export abstract class GuildUnavailableEvent extends Event<Events.GuildUnavailable> {
   constructor() {
     super(Events.GuildUnavailable);
   }
-  abstract execute(guild: Guild): void;
 }
 
-export abstract class GuildMemberAddEvent extends Event {
+export abstract class GuildMemberAddEvent extends Event<Events.GuildMemberAdd> {
   constructor() {
     super(Events.GuildMemberAdd);
   }
-  abstract execute(member: GuildMember): void;
 }
 
-export abstract class GuildMemberRemoveEvent extends Event {
+export abstract class GuildMemberRemoveEvent extends Event<Events.GuildMemberRemove> {
   constructor() {
     super(Events.GuildMemberRemove);
   }
-  abstract execute(member: GuildMember): void;
 }
 
-export abstract class GuildMemberUpdateEvent extends Event {
+export abstract class GuildMemberUpdateEvent extends Event<Events.GuildMemberUpdate> {
   constructor() {
     super(Events.GuildMemberUpdate);
   }
-  abstract execute(oldMember: GuildMember, newMember: GuildMember): void;
 }
 
-export abstract class GuildMemberAvailableEvent extends Event {
+export abstract class GuildMemberAvailableEvent extends Event<Events.GuildMemberAvailable> {
   constructor() {
     super(Events.GuildMemberAvailable);
   }
-  abstract execute(member: GuildMember): void;
 }
 
-export abstract class GuildMembersChunkEvent extends Event {
+export abstract class GuildMembersChunkEvent extends Event<Events.GuildMembersChunk> {
   constructor() {
     super(Events.GuildMembersChunk);
   }
-  abstract execute(
-    members: Collection<Snowflake, GuildMember>,
-    guild: Guild,
-    chunk: GuildMembersChunk
-  ): void;
 }
 
-export abstract class GuildIntegrationsUpdateEvent extends Event {
+export abstract class GuildIntegrationsUpdateEvent extends Event<Events.GuildIntegrationsUpdate> {
   constructor() {
     super(Events.GuildIntegrationsUpdate);
   }
-  abstract execute(guild: Guild): void;
 }
 
-export abstract class GuildRoleCreateEvent extends Event {
+export abstract class GuildRoleCreateEvent extends Event<Events.GuildRoleCreate> {
   constructor() {
     super(Events.GuildRoleCreate);
   }
-  abstract execute(role: Role): void;
 }
 
-export abstract class GuildRoleDeleteEvent extends Event {
+export abstract class GuildRoleDeleteEvent extends Event<Events.GuildRoleDelete> {
   constructor() {
     super(Events.GuildRoleDelete);
   }
-  abstract execute(role: Role): void;
 }
 
-export abstract class InviteCreateEvent extends Event {
+export abstract class InviteCreateEvent extends Event<Events.InviteCreate> {
   constructor() {
     super(Events.InviteCreate);
   }
-  abstract execute(invite: Invite): void;
 }
 
-export abstract class InviteDeleteEvent extends Event {
+export abstract class InviteDeleteEvent extends Event<Events.InviteDelete> {
   constructor() {
     super(Events.InviteDelete);
   }
-  abstract execute(invite: Invite): void;
 }
 
-export abstract class GuildRoleUpdateEvent extends Event {
+export abstract class GuildRoleUpdateEvent extends Event<Events.GuildRoleUpdate> {
   constructor() {
     super(Events.GuildRoleUpdate);
   }
-  abstract execute(oldRole: Role, newRole: Role): void;
 }
 
-export abstract class GuildEmojiCreateEvent extends Event {
+export abstract class GuildEmojiCreateEvent extends Event<Events.GuildEmojiCreate> {
   constructor() {
     super(Events.GuildEmojiCreate);
   }
-  abstract execute(emoji: GuildEmoji): void;
 }
 
-export abstract class GuildEmojiDeleteEvent extends Event {
+export abstract class GuildEmojiDeleteEvent extends Event<Events.GuildEmojiDelete> {
   constructor() {
     super(Events.GuildEmojiDelete);
   }
-  abstract execute(emoji: GuildEmoji): void;
 }
 
-export abstract class GuildEmojiUpdateEvent extends Event {
+export abstract class GuildEmojiUpdateEvent extends Event<Events.GuildEmojiUpdate> {
   constructor() {
     super(Events.GuildEmojiUpdate);
   }
-  abstract execute(oldEmoji: GuildEmoji, newEmoji: GuildEmoji): void;
 }
 
-export abstract class GuildBanAddEvent extends Event {
+export abstract class GuildBanAddEvent extends Event<Events.GuildBanAdd> {
   constructor() {
     super(Events.GuildBanAdd);
   }
-  abstract execute(ban: GuildBan): void;
 }
 
-export abstract class GuildBanRemoveEvent extends Event {
+export abstract class GuildBanRemoveEvent extends Event<Events.GuildBanRemove> {
   constructor() {
     super(Events.GuildBanRemove);
   }
-  abstract execute(ban: GuildBan): void;
 }
 
-export abstract class ChannelCreateEvent extends Event {
+export abstract class ChannelCreateEvent extends Event<Events.ChannelCreate> {
   constructor() {
     super(Events.ChannelCreate);
   }
-  abstract execute(channel: DMChannel | GuildChannel): void;
 }
 
-export abstract class ChannelDeleteEvent extends Event {
+export abstract class ChannelDeleteEvent extends Event<Events.ChannelDelete> {
   constructor() {
     super(Events.ChannelDelete);
   }
-  abstract execute(channel: DMChannel | GuildChannel): void;
 }
 
-export abstract class ChannelUpdateEvent extends Event {
+export abstract class ChannelUpdateEvent extends Event<Events.ChannelUpdate> {
   constructor() {
     super(Events.ChannelUpdate);
   }
-  abstract execute<T = DMChannel | GuildChannel>(oldChannel: T, newChannel: T): void;
 }
 
-export abstract class ChannelPinsUpdateEvent extends Event {
+export abstract class ChannelPinsUpdateEvent extends Event<Events.ChannelPinsUpdate> {
   constructor() {
     super(Events.ChannelPinsUpdate);
   }
-  abstract execute(channel: DMChannel | GuildChannel): void;
 }
 
-export abstract class MessageCreateEvent extends Event {
+export abstract class MessageCreateEvent extends Event<Events.MessageCreate> {
   constructor() {
     super(Events.MessageCreate);
   }
-  abstract execute(message: Message): void;
 }
 
-export abstract class MessageDeleteEvent extends Event {
+export abstract class MessageDeleteEvent extends Event<Events.MessageDelete> {
   constructor() {
     super(Events.MessageDelete);
   }
-  abstract execute(message: Message): void;
 }
 
-export abstract class MessageUpdateEvent extends Event {
+export abstract class MessageUpdateEvent extends Event<Events.MessageUpdate> {
   constructor() {
     super(Events.MessageUpdate);
   }
-  abstract execute(oldMessage: Message, newMessage: Message): void;
 }
 
-export abstract class MessageBulkDeleteEvent extends Event {
+export abstract class MessageBulkDeleteEvent extends Event<Events.MessageBulkDelete> {
   constructor() {
     super(Events.MessageBulkDelete);
   }
-  abstract execute(messages: Collection<Snowflake, Message>): void;
 }
 
-export abstract class MessagePollVoteAddEvent extends Event {
+export abstract class MessagePollVoteAddEvent extends Event<Events.MessagePollVoteAdd> {
   constructor() {
     super(Events.MessagePollVoteAdd);
   }
 }
 
-export abstract class MessagePollVoteRemoveEvent extends Event {
+export abstract class MessagePollVoteRemoveEvent extends Event<Events.MessagePollVoteRemove> {
   constructor() {
     super(Events.MessagePollVoteRemove);
   }
 }
 
-export abstract class MessageReactionAddEvent extends Event {
+export abstract class MessageReactionAddEvent extends Event<Events.MessageReactionAdd> {
   constructor() {
     super(Events.MessageReactionAdd);
   }
-  abstract execute(reaction: MessageReaction, user: User): void;
 }
 
-export abstract class MessageReactionRemoveEvent extends Event {
+export abstract class MessageReactionRemoveEvent extends Event<Events.MessageReactionRemove> {
   constructor() {
     super(Events.MessageReactionRemove);
   }
-  abstract execute(reaction: MessageReaction, user: User): void;
 }
 
-export abstract class MessageReactionRemoveAllEvent extends Event {
+export abstract class MessageReactionRemoveAllEvent extends Event<Events.MessageReactionRemoveAll> {
   constructor() {
     super(Events.MessageReactionRemoveAll);
   }
-  abstract execute(
-    message: Message,
-    reactions: Collection<string | Snowflake, MessageReaction>
-  ): void;
 }
 
-export abstract class MessageReactionRemoveEmojiEvent extends Event {
+export abstract class MessageReactionRemoveEmojiEvent extends Event<Events.MessageReactionRemoveEmoji> {
   constructor() {
     super(Events.MessageReactionRemoveEmoji);
   }
-  abstract execute(reaction: MessageReaction): void;
 }
 
-export abstract class ThreadCreateEvent extends Event {
+export abstract class ThreadCreateEvent extends Event<Events.ThreadCreate> {
   constructor() {
     super(Events.ThreadCreate);
   }
-  abstract execute(thread: ThreadChannel): void;
 }
 
-export abstract class ThreadDeleteEvent extends Event {
+export abstract class ThreadDeleteEvent extends Event<Events.ThreadDelete> {
   constructor() {
     super(Events.ThreadDelete);
   }
-  abstract execute(thread: ThreadChannel): void;
 }
 
-export abstract class ThreadUpdateEvent extends Event {
+export abstract class ThreadUpdateEvent extends Event<Events.ThreadUpdate> {
   constructor() {
     super(Events.ThreadUpdate);
   }
-  abstract execute(oldThread: ThreadChannel, newThread: ThreadChannel): void;
 }
 
-export abstract class ThreadListSyncEvent extends Event {
+export abstract class ThreadListSyncEvent extends Event<Events.ThreadListSync> {
   constructor() {
     super(Events.ThreadListSync);
   }
-  abstract execute(threads: Collection<Snowflake, ThreadChannel>): void;
 }
 
-export abstract class ThreadMemberUpdateEvent extends Event {
+export abstract class ThreadMemberUpdateEvent extends Event<Events.ThreadMemberUpdate> {
   constructor() {
     super(Events.ThreadMemberUpdate);
   }
-  abstract execute(oldMember: ThreadMember, newMember: ThreadMember): void;
 }
 
-export abstract class ThreadMembersUpdateEvent extends Event {
+export abstract class ThreadMembersUpdateEvent extends Event<Events.ThreadMembersUpdate> {
   constructor() {
     super(Events.ThreadMembersUpdate);
   }
-  abstract execute(
-    addedMembers: Collection<Snowflake, ThreadMember>,
-    removedMembers: Collection<Snowflake, ThreadMember>
-  ): void;
 }
 
-export abstract class UserUpdateEvent extends Event {
+export abstract class UserUpdateEvent extends Event<Events.UserUpdate> {
   constructor() {
     super(Events.UserUpdate);
   }
-  abstract execute(oldUser: User, newUser: User): void;
 }
 
-export abstract class PresenceUpdateEvent extends Event {
+export abstract class PresenceUpdateEvent extends Event<Events.PresenceUpdate> {
   constructor() {
     super(Events.PresenceUpdate);
   }
-  abstract execute(oldPresence: Presence, newPresence: Presence): void;
 }
 
-export abstract class VoiceServerUpdateEvent extends Event {
-  constructor() {
-    super(Events.VoiceServerUpdate);
-  }
-}
+// export abstract class VoiceServerUpdateEvent extends Event<Events.VoiceServerUpdate> {
+//   constructor() {
+//     super(Events.VoiceServerUpdate);
+//   }
+// }
 
-export abstract class VoiceStateUpdateEvent extends Event {
+export abstract class VoiceStateUpdateEvent extends Event<Events.VoiceStateUpdate> {
   constructor() {
     super(Events.VoiceStateUpdate);
   }
-  abstract execute(oldState: VoiceState, newState: VoiceState): void;
 }
 
-export abstract class TypingStartEvent extends Event {
+export abstract class TypingStartEvent extends Event<Events.TypingStart> {
   constructor() {
     super(Events.TypingStart);
   }
-  abstract execute(typing: Typing): void;
 }
 
-export abstract class WebhooksUpdateEvent extends Event {
+export abstract class WebhooksUpdateEvent extends Event<Events.WebhooksUpdate> {
   constructor() {
     super(Events.WebhooksUpdate);
   }
-  abstract execute(channel: TextChannel | NewsChannel): void;
 }
 
-export abstract class InteractionCreateEvent extends Event {
+export abstract class InteractionCreateEvent extends Event<Events.InteractionCreate> {
   constructor() {
     super(Events.InteractionCreate);
   }
-  abstract execute(interaction: BaseInteraction): void;
 }
 
-export abstract class ErrorEvent extends Event {
+export abstract class ErrorEvent extends Event<Events.Error> {
   constructor() {
     super(Events.Error);
   }
-  abstract execute(error: Error): void;
 }
 
-export abstract class WarnEvent extends Event {
+export abstract class WarnEvent extends Event<Events.Warn> {
   constructor() {
     super(Events.Warn);
   }
-  abstract execute(info: string): void;
 }
 
-export abstract class DebugEvent extends Event {
+export abstract class DebugEvent extends Event<Events.Debug> {
   constructor() {
     super(Events.Debug);
   }
-  abstract execute(info: string): void;
 }
 
-export abstract class CacheSweepEvent extends Event {
+export abstract class CacheSweepEvent extends Event<Events.CacheSweep> {
   constructor() {
     super(Events.CacheSweep);
   }
 }
 
-export abstract class ShardDisconnectEvent extends Event {
+export abstract class ShardDisconnectEvent extends Event<Events.ShardDisconnect> {
   constructor() {
     super(Events.ShardDisconnect);
   }
-  abstract execute(event: CloseEvent, shardId: number): void;
 }
 
-export abstract class ShardErrorEvent extends Event {
+export abstract class ShardErrorEvent extends Event<Events.ShardError> {
   constructor() {
     super(Events.ShardError);
   }
-  abstract execute(error: Error, shardId: number): void;
 }
 
-export abstract class ShardReconnectingEvent extends Event {
+export abstract class ShardReconnectingEvent extends Event<Events.ShardReconnecting> {
   constructor() {
     super(Events.ShardReconnecting);
   }
-  abstract execute(shardId: number): void;
 }
 
-export abstract class ShardReadyEvent extends Event {
+export abstract class ShardReadyEvent extends Event<Events.ShardReady> {
   constructor() {
     super(Events.ShardReady);
   }
-  abstract execute(shardId: number, unavailableGuilds?: Set<Snowflake>): void;
 }
 
-export abstract class ShardResumeEvent extends Event {
+export abstract class ShardResumeEvent extends Event<Events.ShardResume> {
   constructor() {
     super(Events.ShardResume);
   }
-  abstract execute(shardId: number, replayedEvents: number): void;
 }
 
-export abstract class InvalidatedEvent extends Event {
+export abstract class InvalidatedEvent extends Event<Events.Invalidated> {
   constructor() {
     super(Events.Invalidated);
   }
 }
 
-export abstract class RawEvent extends Event {
-  constructor() {
-    super(Events.Raw);
-  }
-}
+// export abstract class RawEvent extends Event<Events.Raw> {
+//   constructor() {
+//     super(Events.Raw);
+//   }
+// }
 
-export abstract class StageInstanceCreateEvent extends Event {
+export abstract class StageInstanceCreateEvent extends Event<Events.StageInstanceCreate> {
   constructor() {
     super(Events.StageInstanceCreate);
   }
-  abstract execute(stageInstance: StageInstance): void;
 }
 
-export abstract class StageInstanceUpdateEvent extends Event {
+export abstract class StageInstanceUpdateEvent extends Event<Events.StageInstanceUpdate> {
   constructor() {
     super(Events.StageInstanceUpdate);
   }
-  abstract execute(
-    oldStageInstance: StageInstance | undefined,
-    newStageInstance: StageInstance
-  ): void;
 }
 
-export abstract class StageInstanceDeleteEvent extends Event {
+export abstract class StageInstanceDeleteEvent extends Event<Events.StageInstanceDelete> {
   constructor() {
     super(Events.StageInstanceDelete);
   }
-  abstract execute(stageInstance: StageInstance): void;
 }
 
-export abstract class GuildStickerCreateEvent extends Event {
+export abstract class GuildStickerCreateEvent extends Event<Events.GuildStickerCreate> {
   constructor() {
     super(Events.GuildStickerCreate);
   }
-  abstract execute(sticker: Sticker): void;
 }
 
-export abstract class GuildStickerDeleteEvent extends Event {
+export abstract class GuildStickerDeleteEvent extends Event<Events.GuildStickerDelete> {
   constructor() {
     super(Events.GuildStickerDelete);
   }
-  abstract execute(sticker: Sticker): void;
 }
 
-export abstract class GuildStickerUpdateEvent extends Event {
+export abstract class GuildStickerUpdateEvent extends Event<Events.GuildStickerUpdate> {
   constructor() {
     super(Events.GuildStickerUpdate);
   }
-  abstract execute(oldSticker: Sticker, newSticker: Sticker): void;
 }
 
-export abstract class GuildScheduledEventCreateEvent extends Event {
+export abstract class GuildScheduledEventCreateEvent extends Event<Events.GuildScheduledEventCreate> {
   constructor() {
     super(Events.GuildScheduledEventCreate);
   }
-  abstract execute(scheduledEvent: GuildScheduledEvent): void;
 }
 
-export abstract class GuildScheduledEventUpdateEvent extends Event {
+export abstract class GuildScheduledEventUpdateEvent extends Event<Events.GuildScheduledEventUpdate> {
   constructor() {
     super(Events.GuildScheduledEventUpdate);
   }
-  abstract execute(
-    oldScheduledEvent: GuildScheduledEvent,
-    newScheduledEvent: GuildScheduledEvent
-  ): void;
 }
 
-export abstract class GuildScheduledEventDeleteEvent extends Event {
+export abstract class GuildScheduledEventDeleteEvent extends Event<Events.GuildScheduledEventDelete> {
   constructor() {
     super(Events.GuildScheduledEventDelete);
   }
-  abstract execute(scheduledEvent: GuildScheduledEvent): void;
 }
 
-export abstract class GuildScheduledEventUserAddEvent extends Event {
+export abstract class GuildScheduledEventUserAddEvent extends Event<Events.GuildScheduledEventUserAdd> {
   constructor() {
     super(Events.GuildScheduledEventUserAdd);
   }
-  abstract execute(scheduledEvent: GuildScheduledEvent, user: User): void;
 }
 
-export abstract class GuildScheduledEventUserRemoveEvent extends Event {
+export abstract class GuildScheduledEventUserRemoveEvent extends Event<Events.GuildScheduledEventUserRemove> {
   constructor() {
     super(Events.GuildScheduledEventUserRemove);
   }
-  abstract execute(scheduledEvent: GuildScheduledEvent, user: User): void;
 }

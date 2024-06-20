@@ -12,7 +12,7 @@ class HandleAutoComplete extends InteractionCreateEvent {
     );
   }
 
-  async execute(interaction: AutocompleteInteraction) {
+  async handler(interaction: AutocompleteInteraction) {
     if (!interaction.isAutocomplete()) return;
 
     const command = CommandManager.getCommand(interaction.commandName);

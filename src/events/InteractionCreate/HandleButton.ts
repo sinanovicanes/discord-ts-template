@@ -1,9 +1,9 @@
 import { ButtonInteraction } from "discord.js";
-import { ButtonManager } from "../../managers/ButtonManager";
 import { InteractionCreateEvent } from "../../classes/event";
+import { ButtonManager } from "../../managers/ButtonManager";
 
 class HandleButton extends InteractionCreateEvent {
-  async execute(interaction: ButtonInteraction) {
+  async handler(interaction: ButtonInteraction) {
     if (!interaction.isButton()) return;
 
     ButtonManager.onButtonInteraction(interaction);

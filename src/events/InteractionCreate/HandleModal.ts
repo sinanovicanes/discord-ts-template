@@ -1,12 +1,12 @@
-import { CommandInteraction } from "discord.js";
+import { ModalSubmitInteraction } from "discord.js";
 import { InteractionCreateEvent } from "../../classes/event";
-import { CommandManager } from "../../managers/CommandManager";
+import { ModalManager } from "../../managers/ModalManager";
 
 class HandleModal extends InteractionCreateEvent {
-  async execute(interaction: CommandInteraction) {
+  async handler(interaction: ModalSubmitInteraction) {
     if (!interaction.isModalSubmit()) return;
 
-    CommandManager.onCommandInteraction(interaction);
+    ModalManager.onModalSubmitInteraction(interaction);
   }
 }
 
