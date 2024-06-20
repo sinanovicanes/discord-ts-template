@@ -3,9 +3,9 @@ import { CommandManager } from "../managers/CommandManager";
 import { EventManager } from "../managers/EventManager";
 
 export class BotClient {
-  client: Client;
-  commandManager: CommandManager;
-  eventManager: EventManager;
+  readonly client: Client;
+  private readonly commandManager: CommandManager;
+  private readonly eventManager: EventManager;
 
   constructor(public clientOptions: ClientOptions) {
     this.client = new Client(clientOptions);
@@ -15,7 +15,7 @@ export class BotClient {
   }
 
   connect(token: string) {
-    this.client.login(token).then(() => this.commandManager.initiliaze());
+    this.client.login(token).then(this.commandManager.initiliaze);
   }
 
   disconnect() {
