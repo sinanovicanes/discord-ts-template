@@ -1,5 +1,5 @@
+import Buttons from "../components/buttons";
 import { ButtonBuilder, ButtonInteraction } from "discord.js";
-import Buttons from "../buttons";
 import { Button } from "../classes";
 import { ButtonNotFound, FailedToHandleButton } from "../errors";
 

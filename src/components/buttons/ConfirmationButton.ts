@@ -1,5 +1,5 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle } from "discord.js";
-import { Button } from "../classes";
+import { Button } from "../../classes";
 
 const BUTTON_ID = "confirmation";
 const BUTTON_LABEL = "Confirm";
