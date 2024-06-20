@@ -277,6 +277,12 @@ export abstract class MessageReactionRemoveEmojiEvent extends Event<Events.Messa
   }
 }
 
+export abstract class MessageDeleteBulkEvent extends Event<Events.MessageBulkDelete> {
+  constructor() {
+    super(Events.MessageBulkDelete);
+  }
+}
+
 export abstract class ThreadCreateEvent extends Event<Events.ThreadCreate> {
   constructor() {
     super(Events.ThreadCreate);
