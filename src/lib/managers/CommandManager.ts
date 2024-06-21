@@ -1,3 +1,6 @@
+import { CommandBase } from "@/lib/classes";
+import { CommandNotFound, FailedToHandleCommand } from "@/lib/errors";
+import env from "@/lib/utils/env";
 import {
   Client,
   CommandInteraction,
@@ -5,23 +8,18 @@ import {
   REST,
   Routes
 } from "discord.js";
-import { Command, ContextMenuCommand } from "@/lib/classes";
-import { CommandNotFound, FailedToHandleCommand } from "@/lib/errors";
-import env from "@/lib/utils/env";
-import { FailedToHandleContextMenuCommand } from "../errors/FailedToHandleContextMenuCommand";
 import { ContextMenuCommandNotFound } from "../errors/ContextMenuCommandNotFound";
+import { FailedToHandleContextMenuCommand } from "../errors/FailedToHandleContextMenuCommand";
 import { loadCommands } from "../utils/loaders";
-
-type TCommands = Command | ContextMenuCommand;
 
 export class CommandManager {
   constructor(private readonly client: Client) {}
-  private static commands = new Map<TCommands["name"], TCommands>(
-    loadCommands().map(command => [command.name, command])
+  private static commands = new Map<CommandBase["name"], CommandBase>(
+    loadCommands().map((command: CommandBase) => [command.name, command])
   );
 
-  static getCommand<T extends TCommands = TCommands>(name: string) {
-    return this.commands.get(name) as T;
+  static getCommand(name: string) {
+    return this.commands.get(name);
   }
 
   static hasCommand(name: string) {
@@ -29,7 +27,7 @@ export class CommandManager {
   }
 
   static async onCommandInteraction(interaction: CommandInteraction) {
-    const command = this.getCommand<Command>(interaction.commandName);
+    const command = this.getCommand(interaction.commandName);
 
     if (!command) throw new CommandNotFound(interaction);
 
@@ -43,7 +41,7 @@ export class CommandManager {
   static async onContextMenuCommandInteraction(
     interaction: ContextMenuCommandInteraction
   ) {
-    const command = this.getCommand<ContextMenuCommand>(interaction.commandName);
+    const command = this.getCommand(interaction.commandName);
 
     if (!command) throw new ContextMenuCommandNotFound(interaction);
 
@@ -60,7 +58,8 @@ export class CommandManager {
     try {
       await rest.put(Routes.applicationCommands(env.BOT_CLIENT_ID), {
         body: Array.from(CommandManager.commands.values()).map(command =>
-          command.builder.toJSON()
+          //@ts-ignore
+          command.toJSON()
         )
       });
     } catch (error) {

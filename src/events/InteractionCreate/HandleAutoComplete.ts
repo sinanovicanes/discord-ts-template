@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionChoiceData, AutocompleteInteraction } from "discord.js";
-import { Command, InteractionCreateEvent } from "@/lib/classes";
+import { InteractionCreateEvent, SlashCommand } from "@/lib/classes";
 import { CommandManager } from "@/lib/managers";
 import { Client } from "@/lib/client";
 
@@ -20,7 +20,7 @@ class HandleAutoComplete extends InteractionCreateEvent {
   async handler(interaction: AutocompleteInteraction) {
     if (!interaction.isAutocomplete()) return;
 
-    const command = CommandManager.getCommand<Command>(interaction.commandName);
+    const command = CommandManager.getCommand(interaction.commandName) as SlashCommand;
 
     if (!command) return interaction.respond([]);
 

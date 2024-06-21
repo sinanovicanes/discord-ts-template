@@ -10,7 +10,7 @@ const readEventDirectory = (_path: string, client: Client): Event[] => {
   const eventFiles = fs.readdirSync(_path);
 
   for (const file of eventFiles) {
-    if (file.endsWith(".ts")) {
+    if (file.endsWith(".ts") || file.endsWith(".js")) {
       try {
         const event = require(path.join(_path, file));
 

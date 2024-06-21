@@ -1,23 +1,23 @@
 import * as fs from "fs";
 import path from "path";
-import { Command, ContextMenuCommand } from "../../classes";
+import { CommandBase, ContextMenuCommand, SlashCommand } from "../../classes";
 
 const COMMANDS_PATH = path.join(__dirname, "../../../commands");
 
-const readCommandsDirectory = (_path: string): (Command & ContextMenuCommand)[] => {
-  const commands: (Command & ContextMenuCommand)[] = [];
+const readCommandsDirectory = (_path: string): CommandBase[] => {
+  const commands: CommandBase[] = [];
   const commandFiles = fs.readdirSync(_path);
 
   for (const file of commandFiles) {
-    if (file.endsWith(".ts")) {
+    if (file.endsWith(".ts") || file.endsWith(".js")) {
       try {
         const command = require(path.join(_path, file));
 
         if (
-          command.default instanceof Command ||
-          command.default instanceof ContextMenuCommand
+          command.default.prototype instanceof SlashCommand ||
+          command.default.prototype instanceof ContextMenuCommand
         ) {
-          commands.push(command.default);
+          commands.push(new command.default());
         }
       } catch {
         console.error(`Failed to load command: ${file}`);
@@ -33,8 +33,8 @@ const readCommandsDirectory = (_path: string): (Command & ContextMenuCommand)[] 
   return commands;
 };
 
-export function loadCommands(): (Command & ContextMenuCommand)[] {
-  const commands: (Command & ContextMenuCommand)[] = readCommandsDirectory(COMMANDS_PATH);
+export function loadCommands(): CommandBase[] {
+  const commands: CommandBase[] = readCommandsDirectory(COMMANDS_PATH);
 
   return commands;
 }

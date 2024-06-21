@@ -1,24 +1,25 @@
 import { CancelButton, ConfirmationButton } from "@/components";
 import { ButtonActionRowBuilder } from "@/lib/builders";
-import { Command } from "@/lib/classes";
-import { CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { SlashCommand } from "@/lib/classes";
+import { Client } from "@/lib/client";
+import { CommandInteraction } from "discord.js";
 
-const COMMAND_NAME = "button";
-const builder = new SlashCommandBuilder()
-  .setName(COMMAND_NAME)
-  .setDescription("Shows example button");
+class ButtonCommand extends SlashCommand {
+  name = "button";
+  description = "Shows example button";
 
-const execute = async (interaction: CommandInteraction) => {
-  const row = new ButtonActionRowBuilder(ConfirmationButton, CancelButton);
+  constructor(private readonly client: Client) {
+    super();
+  }
 
-  await interaction.reply({
-    content: `Example buttons:`,
-    components: [row]
-  });
-};
+  async handler(interaction: CommandInteraction) {
+    const row = new ButtonActionRowBuilder(ConfirmationButton, CancelButton);
 
-export default new Command({
-  name: COMMAND_NAME,
-  builder,
-  handler: execute
-});
+    await interaction.reply({
+      content: `Example buttons:`,
+      components: [row]
+    });
+  }
+}
+
+export default ButtonCommand;

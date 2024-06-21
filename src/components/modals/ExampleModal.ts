@@ -33,6 +33,12 @@ export default new Modal({
     .setTitle(MODAL_TITLE)
     .addComponents(rows),
   execute: async (interaction: ModalSubmitInteraction) => {
-    console.log(interaction.fields.getTextInputValue("favorite_color"));
+    const favoriteColor = interaction.fields.getTextInputValue("favorite_color");
+    const hobbies = interaction.fields.getTextInputValue("hobbies");
+
+    interaction.reply({
+      content: "Thanks for submitting!",
+      ephemeral: true
+    });
   }
 });
