@@ -1,20 +1,17 @@
-import { ButtonBuilder, ButtonInteraction, ButtonStyle } from "discord.js";
-import { Button } from "@/lib/classes";
+import { ButtonComponent } from "@/lib/classes/components";
+import { ButtonInteraction, ButtonStyle } from "discord.js";
 
-const BUTTON_ID = "cancel";
-const BUTTON_LABEL = "Cancel";
-const BUTTON_STYLE = ButtonStyle.Danger;
+class CancelButton extends ButtonComponent {
+  customId = "cancel";
+  label = "Cancel";
+  style = ButtonStyle.Danger;
 
-export default new Button({
-  id: BUTTON_ID,
-  builder: new ButtonBuilder()
-    .setCustomId(BUTTON_ID)
-    .setStyle(BUTTON_STYLE)
-    .setLabel(BUTTON_LABEL),
-  handler: async (interaction: ButtonInteraction) => {
+  handler(interaction: ButtonInteraction) {
     interaction.message.edit({
       content: "Canceled!",
       components: []
     });
   }
-});
+}
+
+export default new CancelButton();

@@ -12,9 +12,7 @@ class ModalCommand extends SlashCommand {
   }
 
   async handler(interaction: CommandInteraction) {
-    const modal = ExampleModal.builder;
-
-    await interaction.showModal(modal);
+    await interaction.showModal(ExampleModal);
   }
 }
 

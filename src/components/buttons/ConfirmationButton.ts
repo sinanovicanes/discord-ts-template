@@ -1,20 +1,17 @@
-import { ButtonBuilder, ButtonInteraction, ButtonStyle } from "discord.js";
-import { Button } from "@/lib/classes";
+import { ButtonComponent } from "@/lib/classes/components";
+import { ButtonInteraction, ButtonStyle } from "discord.js";
 
-const BUTTON_ID = "confirmation";
-const BUTTON_LABEL = "Confirm";
-const BUTTON_STYLE = ButtonStyle.Success;
+class ConfirmationButton extends ButtonComponent {
+  customId = "confirmation";
+  label = "Confirm";
+  style = ButtonStyle.Success;
 
-export default new Button({
-  id: BUTTON_ID,
-  builder: new ButtonBuilder()
-    .setCustomId(BUTTON_ID)
-    .setStyle(BUTTON_STYLE)
-    .setLabel(BUTTON_LABEL),
-  handler: async (interaction: ButtonInteraction) => {
+  handler(interaction: ButtonInteraction) {
     interaction.message.edit({
       content: "Confirmed!",
       components: []
     });
   }
-});
+}
+
+export default new ConfirmationButton();
