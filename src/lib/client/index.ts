@@ -3,18 +3,15 @@ import { CommandManager } from "../managers/CommandManager";
 import { EventManager } from "../managers/EventManager";
 
 export class Client extends DiscordClient {
-  private readonly commandManager: CommandManager;
-  private readonly eventManager: EventManager;
+  private readonly commandManager: CommandManager = new CommandManager(this);
+  private readonly eventManager: EventManager = new EventManager(this);
 
   constructor(public clientOptions: ClientOptions) {
     super(clientOptions);
-    this.commandManager = new CommandManager(this);
-    this.eventManager = new EventManager(this);
-    this.eventManager.initiliaze();
   }
 
   connect(token: string) {
-    this.login(token).then(this.commandManager.initiliaze);
+    this.login(token);
   }
 
   disconnect() {

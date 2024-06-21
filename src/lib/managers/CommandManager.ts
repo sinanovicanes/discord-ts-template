@@ -2,7 +2,6 @@ import { CommandBase } from "@/lib/classes";
 import { CommandNotFound, FailedToHandleCommand } from "@/lib/errors";
 import env from "@/lib/utils/env";
 import {
-  Client,
   CommandInteraction,
   ContextMenuCommandInteraction,
   REST,
@@ -11,12 +10,13 @@ import {
 import { ContextMenuCommandNotFound } from "../errors/ContextMenuCommandNotFound";
 import { FailedToHandleContextMenuCommand } from "../errors/FailedToHandleContextMenuCommand";
 import { loadCommands } from "../utils/loaders";
+import { Client } from "../client";
 
 export class CommandManager {
-  constructor(private readonly client: Client) {}
-  private static commands = new Map<CommandBase["name"], CommandBase>(
-    loadCommands().map((command: CommandBase) => [command.name, command])
-  );
+  constructor(private readonly client: Client) {
+    this.initiliaze();
+  }
+  private static commands = new Map<CommandBase["name"], CommandBase>();
 
   static getCommand(name: string) {
     return this.commands.get(name);
@@ -53,14 +53,17 @@ export class CommandManager {
   }
 
   async initiliaze() {
+    const commands = loadCommands(this.client);
+
+    CommandManager.commands = new Map<CommandBase["name"], CommandBase>(
+      commands.map(command => [command.name, command])
+    );
+
     const rest = new REST().setToken(env.BOT_TOKEN);
 
     try {
       await rest.put(Routes.applicationCommands(env.BOT_CLIENT_ID), {
-        body: Array.from(CommandManager.commands.values()).map(command =>
-          //@ts-ignore
-          command.toJSON()
-        )
+        body: commands.map(command => command.toJSON())
       });
     } catch (error) {
       console.error(error);

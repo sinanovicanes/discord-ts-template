@@ -7,25 +7,32 @@ const EVENTS_PATH = path.join(__dirname, "../../../events");
 
 const readEventDirectory = (_path: string, client: Client): Event[] => {
   const events: Event[] = [];
-  const eventFiles = fs.readdirSync(_path);
 
-  for (const file of eventFiles) {
-    if (file.endsWith(".ts") || file.endsWith(".js")) {
-      try {
-        const event = require(path.join(_path, file));
+  try {
+    const eventFiles = fs.readdirSync(_path);
 
-        if (event.default && event.default.prototype instanceof Event) {
-          events.push(new event.default(client));
+    for (const file of eventFiles) {
+      const filePath = path.join(_path, file);
+
+      if (file.endsWith(".ts") || file.endsWith(".js")) {
+        try {
+          const event = require(filePath);
+
+          if (event.default && event.default.prototype instanceof Event) {
+            events.push(new event.default(client));
+          }
+        } catch {
+          console.error(`Failed to load event handler: ${file}`);
         }
-      } catch {
-        console.error(`Failed to load event handler: ${file}`);
+        continue;
       }
-      continue;
-    }
 
-    if (fs.lstatSync(_path).isDirectory()) {
-      events.push(...readEventDirectory(path.join(_path, file), client));
+      if (fs.lstatSync(filePath).isDirectory()) {
+        events.push(...readEventDirectory(filePath, client));
+      }
     }
+  } catch {
+    console.error(`Failed to read events directory: ${_path}`);
   }
 
   return events;

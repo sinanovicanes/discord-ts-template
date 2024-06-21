@@ -5,7 +5,9 @@ import { loadEvents } from "../utils/loaders";
 import { Client } from "../client";
 
 export class EventManager {
-  constructor(private readonly client: Client) {}
+  constructor(private readonly client: Client) {
+    this.initiliaze();
+  }
 
   private async trigger<T extends Event>(event: T, ...args: Parameters<T["handler"]>) {
     try {

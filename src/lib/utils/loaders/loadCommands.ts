@@ -1,40 +1,48 @@
 import * as fs from "fs";
 import path from "path";
 import { CommandBase, ContextMenuCommand, SlashCommand } from "../../classes";
+import { Client } from "@/lib/client";
 
 const COMMANDS_PATH = path.join(__dirname, "../../../commands");
 
-const readCommandsDirectory = (_path: string): CommandBase[] => {
+const readCommandsDirectory = (_path: string, client: Client): CommandBase[] => {
   const commands: CommandBase[] = [];
-  const commandFiles = fs.readdirSync(_path);
 
-  for (const file of commandFiles) {
-    if (file.endsWith(".ts") || file.endsWith(".js")) {
-      try {
-        const command = require(path.join(_path, file));
+  try {
+    const commandFiles = fs.readdirSync(_path);
 
-        if (
-          command.default.prototype instanceof SlashCommand ||
-          command.default.prototype instanceof ContextMenuCommand
-        ) {
-          commands.push(new command.default());
+    for (const file of commandFiles) {
+      const filePath = path.join(_path, file);
+
+      if (file.endsWith(".ts") || file.endsWith(".js")) {
+        try {
+          const command = require(filePath);
+
+          if (
+            command.default.prototype instanceof SlashCommand ||
+            command.default.prototype instanceof ContextMenuCommand
+          ) {
+            commands.push(new command.default(client));
+          }
+        } catch {
+          console.error(`Failed to load command: ${file}`);
         }
-      } catch {
-        console.error(`Failed to load command: ${file}`);
+        continue;
       }
-      continue;
-    }
 
-    if (fs.lstatSync(_path).isDirectory()) {
-      commands.push(...readCommandsDirectory(path.join(_path, file)));
+      if (fs.lstatSync(filePath).isDirectory()) {
+        commands.push(...readCommandsDirectory(filePath, client));
+      }
     }
+  } catch {
+    console.error(`Failed to read commands directory: ${_path}`);
   }
 
   return commands;
 };
 
-export function loadCommands(): CommandBase[] {
-  const commands: CommandBase[] = readCommandsDirectory(COMMANDS_PATH);
+export function loadCommands(client: Client): CommandBase[] {
+  const commands: CommandBase[] = readCommandsDirectory(COMMANDS_PATH, client);
 
   return commands;
 }
