@@ -9,7 +9,10 @@ export class EventManager {
     this.initiliaze();
   }
 
-  private async trigger<T extends Event>(event: T, ...args: Parameters<T["handler"]>) {
+  private async trigger<T extends keyof ClientEvents>(
+    event: Event<T>,
+    ...args: ClientEvents[T]
+  ) {
     try {
       await event.handler(...args);
     } catch (error) {
@@ -17,7 +20,7 @@ export class EventManager {
     }
   }
 
-  addEventHandler<T extends keyof ClientEvents>(event: Event<T>) {
+  private addEventHandler<T extends keyof ClientEvents>(event: Event<T>) {
     if (event.once)
       return this.client.once(event.event as T, async (...args: ClientEvents[T]) => {
         this.trigger(event, ...args);
