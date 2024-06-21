@@ -1,7 +1,8 @@
-import { Client, ClientEvents } from "discord.js";
+import { ClientEvents } from "discord.js";
 import { Event } from "../classes";
 import { FailedToHandleEvent } from "../errors";
 import { loadEvents } from "../utils/loaders";
+import { Client } from "../client";
 
 export class EventManager {
   constructor(private readonly client: Client) {}
@@ -26,7 +27,7 @@ export class EventManager {
   }
 
   initiliaze() {
-    const events = loadEvents();
+    const events = loadEvents(this.client);
     events.forEach(event => this.addEventHandler(event));
   }
 }
