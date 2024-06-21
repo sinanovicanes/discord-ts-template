@@ -14,7 +14,7 @@ import { Client } from "../client";
 
 export class CommandManager {
   constructor(private readonly client: Client) {
-    this.initiliaze();
+    this.initialize();
   }
   private static commands = new Map<CommandBase["name"], CommandBase>();
 
@@ -52,7 +52,7 @@ export class CommandManager {
     }
   }
 
-  async initiliaze() {
+  async initialize() {
     const commands = loadCommands(this.client);
 
     CommandManager.commands = new Map<CommandBase["name"], CommandBase>(

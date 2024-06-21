@@ -6,7 +6,7 @@ import { Client } from "../client";
 
 export class EventManager {
   constructor(private readonly client: Client) {
-    this.initiliaze();
+    this.initialize();
   }
 
   private async trigger<T extends keyof ClientEvents>(
@@ -31,7 +31,7 @@ export class EventManager {
     });
   }
 
-  initiliaze() {
+  initialize() {
     const events = loadEvents(this.client);
     events.forEach(event => this.addEventHandler(event));
   }
