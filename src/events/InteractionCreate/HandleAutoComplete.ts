@@ -1,8 +1,13 @@
 import { ApplicationCommandOptionChoiceData, AutocompleteInteraction } from "discord.js";
 import { Command, InteractionCreateEvent } from "@/lib/classes";
 import { CommandManager } from "@/lib/managers";
+import { Client } from "@/lib/client";
 
 class HandleAutoComplete extends InteractionCreateEvent {
+  constructor(private readonly client: Client) {
+    super();
+  }
+
   filterOptions(
     input: string,
     options: ApplicationCommandOptionChoiceData<string | number>[]
