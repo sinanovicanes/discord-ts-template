@@ -32,7 +32,7 @@ export default new Modal({
     .setCustomId(MODAL_ID)
     .setTitle(MODAL_TITLE)
     .addComponents(rows),
-  execute: async (interaction: ModalSubmitInteraction) => {
+  handler: async (interaction: ModalSubmitInteraction) => {
     const favoriteColor = interaction.fields.getTextInputValue("favorite_color");
     const hobbies = interaction.fields.getTextInputValue("hobbies");
 

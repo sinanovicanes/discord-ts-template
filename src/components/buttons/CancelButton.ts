@@ -11,7 +11,7 @@ export default new Button({
     .setCustomId(BUTTON_ID)
     .setStyle(BUTTON_STYLE)
     .setLabel(BUTTON_LABEL),
-  execute: async (interaction: ButtonInteraction) => {
+  handler: async (interaction: ButtonInteraction) => {
     interaction.message.edit({
       content: "Canceled!",
       components: []

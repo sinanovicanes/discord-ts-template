@@ -21,7 +21,7 @@ export class ButtonManager {
     if (!button) throw new ButtonNotFound(interaction);
 
     try {
-      await button.execute(interaction);
+      await button.handler(interaction);
     } catch (error) {
       throw new FailedToHandleButton(interaction);
     }

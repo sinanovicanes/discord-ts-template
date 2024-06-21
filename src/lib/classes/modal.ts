@@ -1,13 +1,15 @@
 import { ModalBuilder, ModalSubmitInteraction } from "discord.js";
 
+// TODO: CREATE BASE CLASS FOR COMPONENTS
+
 export class Modal {
   id: string;
   builder: ModalBuilder;
-  execute: (interaction: ModalSubmitInteraction) => void;
+  handler: (interaction: ModalSubmitInteraction) => void;
 
-  constructor({ id, builder, execute }: Modal) {
+  constructor({ id, builder, handler }: Modal) {
     this.id = id;
     this.builder = builder;
-    this.execute = execute;
+    this.handler = handler;
   }
 }

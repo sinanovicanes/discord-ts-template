@@ -1,13 +1,15 @@
 import { ButtonInteraction, ButtonBuilder } from "discord.js";
 
+// TODO: CREATE BASE CLASS FOR COMPONENTS
+
 export class Button {
   id: string;
   builder: ButtonBuilder;
-  execute: (interaction: ButtonInteraction) => void;
+  handler: (interaction: ButtonInteraction) => void;
 
-  constructor({ id, builder, execute }: Button) {
+  constructor({ id, builder, handler }: Button) {
     this.id = id;
     this.builder = builder;
-    this.execute = execute;
+    this.handler = handler;
   }
 }

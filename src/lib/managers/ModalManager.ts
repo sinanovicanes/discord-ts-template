@@ -22,7 +22,7 @@ export class ModalManager {
     if (!modal) throw new ModalNotFound(interaction);
 
     try {
-      await modal.execute(interaction);
+      await modal.handler(interaction);
     } catch (error) {
       throw new FailedToHandleModal(interaction);
     }
