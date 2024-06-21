@@ -1,9 +1,9 @@
 import { GatewayIntentBits } from "discord.js";
 import "dotenv/config";
-import { BotClient } from "@/lib/client";
+import { Client } from "@/lib/client";
 import env from "@/lib/utils/env";
 
-const botClient = new BotClient({
+const discordClient = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
@@ -13,12 +13,12 @@ const botClient = new BotClient({
 });
 
 process.on("SIGINT", () => {
-  botClient.disconnect();
+  discordClient.disconnect();
   process.exit();
 });
 
 const start = async () => {
-  botClient.connect(env.BOT_TOKEN);
+  discordClient.connect(env.BOT_TOKEN);
 };
 
 start();
