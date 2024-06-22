@@ -1,6 +1,10 @@
 import { InteractionCreateEvent, SlashCommand } from "@/lib/classes";
 import { CommandManager } from "@/lib/managers";
-import { ApplicationCommandOptionChoiceData, AutocompleteInteraction } from "discord.js";
+import {
+  ApplicationCommandOptionChoiceData,
+  AutocompleteInteraction,
+  ChatInputCommandInteraction
+} from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()
@@ -21,8 +25,9 @@ class HandleAutoComplete extends InteractionCreateEvent {
   async handler(interaction: AutocompleteInteraction) {
     if (!interaction.isAutocomplete()) return;
 
-    const command = this.commandManager.getCommand(
-      interaction.commandName
+    const command = this.commandManager.getCommandByInteraction(
+      //@ts-ignore
+      interaction as ChatInputCommandInteraction
     ) as SlashCommand;
 
     if (!command) return interaction.respond([]);
