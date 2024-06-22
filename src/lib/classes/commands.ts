@@ -1,10 +1,13 @@
+import { CommandAutoComplete } from "@/lib/types/CommandAutoComplete";
 import {
   CommandInteraction,
   ContextMenuCommandBuilder,
   ContextMenuCommandInteraction,
-  SlashCommandBuilder
+  SlashCommandBuilder,
+  SlashCommandSubcommandBuilder,
+  SlashCommandSubcommandGroupBuilder
 } from "discord.js";
-import { CommandAutoComplete } from "@/lib/types/CommandAutoComplete";
+import { matchClassProperties } from "../utils";
 
 export interface CommandBase {
   name: string;
@@ -23,16 +26,7 @@ export abstract class SlashCommand extends SlashCommandBuilder implements Comman
   }
 
   getData() {
-    const data: Record<string, any> = {};
-    const rawCommand = new SlashCommandBuilder();
-
-    for (const key in rawCommand) {
-      if (typeof rawCommand[key as keyof SlashCommandBuilder] === "function") continue;
-
-      data[key] = this[key as keyof SlashCommandBuilder];
-    }
-
-    return data;
+    return matchClassProperties(SlashCommandBuilder, this);
   }
 }
 
@@ -44,16 +38,32 @@ export abstract class ContextMenuCommand
   abstract handler(interaction: ContextMenuCommandInteraction): void;
 
   getData() {
-    const data: Record<string, any> = {};
-    const rawCommand = new ContextMenuCommandBuilder();
+    return matchClassProperties(ContextMenuCommandBuilder, this);
+  }
+}
 
-    for (const key in rawCommand) {
-      if (typeof rawCommand[key as keyof ContextMenuCommandBuilder] === "function")
-        continue;
+export abstract class SubCommand extends SlashCommandSubcommandBuilder {
+  abstract name: string;
+  abstract handler(interaction: CommandInteraction): void;
 
-      data[key] = this[key as keyof ContextMenuCommandBuilder];
-    }
+  constructor() {
+    super();
+  }
 
-    return data;
+  getData() {
+    return matchClassProperties(SlashCommandSubcommandBuilder, this);
+  }
+}
+
+export abstract class SubCommandGroup extends SlashCommandSubcommandGroupBuilder {
+  abstract name: string;
+  abstract handler(interaction: CommandInteraction): void;
+
+  constructor() {
+    super();
+  }
+
+  getData() {
+    return matchClassProperties(SlashCommandSubcommandGroupBuilder, this);
   }
 }

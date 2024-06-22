@@ -1,7 +1,13 @@
 import * as fs from "fs";
 import path from "path";
 import { container } from "tsyringe";
-import { CommandBase, ContextMenuCommand, SlashCommand } from "@/lib/classes";
+import {
+  CommandBase,
+  ContextMenuCommand,
+  SlashCommand,
+  SubCommand,
+  SubCommandGroup
+} from "@/lib/classes";
 
 const COMMANDS_PATH = path.join(__dirname, "../../../commands");
 
@@ -22,10 +28,13 @@ const readCommandsDirectory = async (_path: string): Promise<CommandBase[]> => {
           try {
             const command = require(filePath);
 
+            if (!command.default) continue;
+
             if (
-              !!command.default &&
-              (command.default.prototype instanceof SlashCommand ||
-                command.default.prototype instanceof ContextMenuCommand)
+              command.default.prototype instanceof SlashCommand ||
+              command.default.prototype instanceof ContextMenuCommand ||
+              command.default.prototype instanceof SubCommand ||
+              command.default.prototype instanceof SubCommandGroup
             ) {
               commands.push(container.resolve(command.default));
             }

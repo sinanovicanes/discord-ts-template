@@ -9,6 +9,7 @@ class HandleCommand extends InteractionCreateEvent {
     super();
   }
 
+  //TODO: HANDLE SUB COMMANDS
   async handler(interaction: Interaction) {
     if (!interaction.isCommand()) return;
 

@@ -1,14 +1,14 @@
 import buttons from "@/components/buttons";
 import modals from "@/components/modals";
 import { ButtonInteraction, ModalSubmitInteraction } from "discord.js";
-import { ComponentBase } from "@/lib/classes/components";
+import { container, singleton } from "tsyringe";
 import {
   ButtonNotFound,
   FailedToHandleButton,
   FailedToHandleModal,
   ModalNotFound
 } from "@/lib/errors";
-import { container, singleton } from "tsyringe";
+import { ComponentBase } from "@/lib/classes/components";
 
 @singleton()
 export class ComponentManager {

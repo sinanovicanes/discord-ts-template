@@ -1,9 +1,9 @@
 import { ClientEvents } from "discord.js";
+import { delay, inject, singleton } from "tsyringe";
 import { Event } from "@/lib/classes";
 import { FailedToHandleEvent } from "@/lib/errors";
 import { loadEvents } from "@/lib/utils/loaders";
 import { Client } from "@/lib/client";
-import { delay, inject, singleton } from "tsyringe";
 
 @singleton()
 export class EventManager {

@@ -1,4 +1,11 @@
-import { CommandBase } from "@/lib/classes";
+import {
+  CommandInteraction,
+  ContextMenuCommandInteraction,
+  REST,
+  Routes
+} from "discord.js";
+import { delay, inject, singleton } from "tsyringe";
+import { CommandBase, SubCommand, SubCommandGroup } from "@/lib/classes";
 import { Client } from "@/lib/client";
 import {
   CommandNotFound,
@@ -8,13 +15,6 @@ import {
 } from "@/lib/errors";
 import env from "@/lib/utils/env";
 import { loadCommands } from "@/lib/utils/loaders";
-import {
-  CommandInteraction,
-  ContextMenuCommandInteraction,
-  REST,
-  Routes
-} from "discord.js";
-import { delay, inject, singleton } from "tsyringe";
 
 @singleton()
 export class CommandManager {
@@ -38,7 +38,6 @@ export class CommandManager {
     try {
       await command.handler(interaction);
     } catch (error) {
-      console.error(error);
       throw new FailedToHandleCommand(interaction);
     }
   }
@@ -58,15 +57,19 @@ export class CommandManager {
   async initialize() {
     const commands = await loadCommands();
 
-    this.commands = new Map<CommandBase["name"], CommandBase>(
-      commands.map(command => [command.name, command])
-    );
+    commands.forEach(command => this.commands.set(command.name, command));
 
     const rest = new REST().setToken(env.BOT_TOKEN);
 
     try {
       await rest.put(Routes.applicationCommands(env.BOT_CLIENT_ID), {
-        body: commands.map(command => command.getData())
+        body: commands
+          .filter(command => {
+            if (command instanceof SubCommand || command instanceof SubCommandGroup)
+              return false;
+            return true;
+          })
+          .map(command => command.getData())
       });
     } catch (error) {
       console.error(error);
