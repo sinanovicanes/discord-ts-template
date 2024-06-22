@@ -1,6 +1,6 @@
 import { CancelButton, ConfirmationButton } from "@/components";
 import { SlashCommand } from "@/lib/classes";
-import { ActionRowBuilder, ButtonBuilder, CommandInteraction } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ChatInputCommandInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()
@@ -15,7 +15,7 @@ class ButtonCommand extends SlashCommand {
     super();
   }
 
-  async handler(interaction: CommandInteraction) {
+  async handler(interaction: ChatInputCommandInteraction) {
     const row = new ActionRowBuilder<ButtonBuilder>({
       components: [this.confirmationButton, this.cancelButton]
     });

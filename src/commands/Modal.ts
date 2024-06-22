@@ -1,6 +1,6 @@
 import { ExampleModal } from "@/components";
 import { SlashCommand } from "@/lib/classes";
-import { CommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()
@@ -12,7 +12,7 @@ class ModalCommand extends SlashCommand {
     super();
   }
 
-  async handler(interaction: CommandInteraction) {
+  async handler(interaction: ChatInputCommandInteraction) {
     await interaction.showModal(this.exampleModal);
   }
 }

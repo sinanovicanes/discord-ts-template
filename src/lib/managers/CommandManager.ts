@@ -1,11 +1,4 @@
-import {
-  CommandInteraction,
-  ContextMenuCommandInteraction,
-  REST,
-  Routes
-} from "discord.js";
-import { delay, inject, singleton } from "tsyringe";
-import { CommandBase, SubCommand, SubCommandGroup } from "@/lib/classes";
+import { CommandBase, SubCommand } from "@/lib/classes";
 import { Client } from "@/lib/client";
 import {
   CommandNotFound,
@@ -15,6 +8,13 @@ import {
 } from "@/lib/errors";
 import env from "@/lib/utils/env";
 import { loadCommands } from "@/lib/utils/loaders";
+import {
+  ChatInputCommandInteraction,
+  ContextMenuCommandInteraction,
+  REST,
+  Routes
+} from "discord.js";
+import { delay, inject, singleton } from "tsyringe";
 
 @singleton()
 export class CommandManager {
@@ -26,12 +26,34 @@ export class CommandManager {
     return this.commands.get(name);
   }
 
+  getCommandByInteraction(interaction: ChatInputCommandInteraction) {
+    let commandKey = interaction.commandName;
+
+    try {
+      const group = interaction.options.getSubcommandGroup();
+
+      if (!!group) {
+        commandKey += `:${group}`;
+      }
+
+      const subCommand = interaction.options.getSubcommand();
+
+      if (!!subCommand) {
+        commandKey += `:${subCommand}`;
+      }
+    } catch {
+      commandKey = interaction.commandName;
+    }
+
+    return this.commands.get(commandKey);
+  }
+
   hasCommand(name: string) {
     return this.commands.has(name);
   }
 
-  async onCommandInteraction(interaction: CommandInteraction) {
-    const command = this.getCommand(interaction.commandName);
+  async onCommandInteraction(interaction: ChatInputCommandInteraction) {
+    const command = this.getCommandByInteraction(interaction);
 
     if (!command) throw new CommandNotFound(interaction);
 
@@ -54,26 +76,44 @@ export class CommandManager {
     }
   }
 
-  async initialize() {
-    const commands = await loadCommands();
+  async setCommands(commands: CommandBase[]) {
+    commands.forEach(command => {
+      this.commands.set(command.name, command);
 
-    commands.forEach(command => this.commands.set(command.name, command));
+      command.options?.forEach(subCommand => {
+        this.commands.set(
+          `${command.name}:${subCommand.toJSON().name}`,
+          subCommand as SubCommand
+        );
+      });
 
+      if (command.userSubGroup) {
+        const commandKey = `${command.name}:${command.userSubGroup.name}`;
+
+        command.userSubGroup.options.forEach(subCommand => {
+          this.commands.set(`${commandKey}:${subCommand.name}`, subCommand as SubCommand);
+        });
+      }
+    });
+  }
+
+  private async deployCommands(commands: CommandBase[]) {
     const rest = new REST().setToken(env.BOT_TOKEN);
 
     try {
       await rest.put(Routes.applicationCommands(env.BOT_CLIENT_ID), {
-        body: commands
-          .filter(command => {
-            if (command instanceof SubCommand || command instanceof SubCommandGroup)
-              return false;
-            return true;
-          })
-          .map(command => command.getData())
+        body: commands.map(command => command.getData())
       });
     } catch (error) {
       console.error(error);
     }
+  }
+
+  async initialize() {
+    const commands = await loadCommands();
+
+    this.setCommands(commands);
+    this.deployCommands(commands);
   }
 
   async clearCommands() {

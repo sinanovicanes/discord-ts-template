@@ -32,9 +32,7 @@ const readCommandsDirectory = async (_path: string): Promise<CommandBase[]> => {
 
             if (
               command.default.prototype instanceof SlashCommand ||
-              command.default.prototype instanceof ContextMenuCommand ||
-              command.default.prototype instanceof SubCommand ||
-              command.default.prototype instanceof SubCommandGroup
+              command.default.prototype instanceof ContextMenuCommand
             ) {
               commands.push(container.resolve(command.default));
             }
