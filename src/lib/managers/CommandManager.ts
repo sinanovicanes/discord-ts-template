@@ -9,12 +9,17 @@ import {
 import env from "@/lib/utils/env";
 import { loadCommands } from "@/lib/utils/loaders";
 import {
+  AutocompleteInteraction,
   ChatInputCommandInteraction,
   ContextMenuCommandInteraction,
   REST,
   Routes
 } from "discord.js";
 import { delay, inject, singleton } from "tsyringe";
+
+type CommandInteractionsWithOptions =
+  | ChatInputCommandInteraction
+  | AutocompleteInteraction;
 
 @singleton()
 export class CommandManager {
@@ -26,7 +31,7 @@ export class CommandManager {
     return this.commands.get(name);
   }
 
-  getCommandByInteraction(interaction: ChatInputCommandInteraction) {
+  getCommandByInteraction<T extends CommandInteractionsWithOptions>(interaction: T) {
     let commandKey = interaction.commandName;
 
     try {

@@ -26,8 +26,7 @@ class HandleAutoComplete extends InteractionCreateEvent {
     if (!interaction.isAutocomplete()) return;
 
     const command = this.commandManager.getCommandByInteraction(
-      //@ts-ignore
-      interaction as ChatInputCommandInteraction
+      interaction
     ) as SlashCommand;
 
     if (!command) return interaction.respond([]);

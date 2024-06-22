@@ -49,6 +49,7 @@ export abstract class ContextMenuCommand
 export abstract class SubCommand extends SlashCommandSubcommandBuilder {
   abstract name: string;
   abstract handler(interaction: ChatInputCommandInteraction): void;
+  autoComplete?: CommandAutoComplete;
 
   getData() {
     return matchClassProperties(SlashCommandSubcommandBuilder, this);

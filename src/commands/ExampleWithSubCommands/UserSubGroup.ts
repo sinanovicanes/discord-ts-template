@@ -1,5 +1,5 @@
 import { SubCommandGroup } from "@/lib/classes";
-import { CommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 import InfoSubCommand from "./InfoSub";
 import RoleSubCommand from "./RoleSub";
@@ -17,7 +17,7 @@ class UserSubGroup extends SubCommandGroup {
     this.addSubcommand(subInfoCommand).addSubcommand(subRoleCommand);
   }
 
-  async handler(interaction: CommandInteraction) {
+  async handler(interaction: ChatInputCommandInteraction) {
     await interaction.reply(interaction.user.toString());
   }
 }
