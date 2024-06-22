@@ -5,7 +5,9 @@ import {
   ContextMenuCommandInteraction,
   ContextMenuCommandType
 } from "discord.js";
+import { singleton } from "tsyringe";
 
+@singleton()
 class UserInfoCommand extends ContextMenuCommand {
   name = "user-info";
   type = ApplicationCommandType.User as ContextMenuCommandType;

@@ -1,10 +1,11 @@
-import { ApplicationCommandOptionChoiceData, AutocompleteInteraction } from "discord.js";
 import { InteractionCreateEvent, SlashCommand } from "@/lib/classes";
 import { CommandManager } from "@/lib/managers";
-import { Client } from "@/lib/client";
+import { ApplicationCommandOptionChoiceData, AutocompleteInteraction } from "discord.js";
+import { singleton } from "tsyringe";
 
+@singleton()
 class HandleAutoComplete extends InteractionCreateEvent {
-  constructor(private readonly client: Client) {
+  constructor(private readonly commandManager: CommandManager) {
     super();
   }
 
@@ -20,7 +21,9 @@ class HandleAutoComplete extends InteractionCreateEvent {
   async handler(interaction: AutocompleteInteraction) {
     if (!interaction.isAutocomplete()) return;
 
-    const command = CommandManager.getCommand(interaction.commandName) as SlashCommand;
+    const command = this.commandManager.getCommand(
+      interaction.commandName
+    ) as SlashCommand;
 
     if (!command) return interaction.respond([]);
 

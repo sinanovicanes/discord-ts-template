@@ -1,48 +1,52 @@
 import * as fs from "fs";
 import path from "path";
-import { CommandBase, ContextMenuCommand, SlashCommand } from "../../classes";
-import { Client } from "@/lib/client";
+import { container } from "tsyringe";
+import { CommandBase, ContextMenuCommand, SlashCommand } from "@/lib/classes";
 
 const COMMANDS_PATH = path.join(__dirname, "../../../commands");
 
-const readCommandsDirectory = (_path: string, client: Client): CommandBase[] => {
-  const commands: CommandBase[] = [];
+const readCommandsDirectory = async (_path: string): Promise<CommandBase[]> => {
+  return new Promise((resolve, reject) => {
+    const commands: CommandBase[] = [];
 
-  try {
-    const commandFiles = fs.readdirSync(_path);
+    fs.readdir(_path, async (err, files) => {
+      if (err) {
+        console.error(`Failed to read command directory: ${_path}`);
+        return reject();
+      }
 
-    for (const file of commandFiles) {
-      const filePath = path.join(_path, file);
+      for (const file of files) {
+        const filePath = path.join(_path, file);
 
-      if (file.endsWith(".ts") || file.endsWith(".js")) {
-        try {
-          const command = require(filePath);
+        if (file.endsWith(".ts") || file.endsWith(".js")) {
+          try {
+            const command = require(filePath);
 
-          if (
-            command.default.prototype instanceof SlashCommand ||
-            command.default.prototype instanceof ContextMenuCommand
-          ) {
-            commands.push(new command.default(client));
+            if (
+              !!command.default &&
+              (command.default.prototype instanceof SlashCommand ||
+                command.default.prototype instanceof ContextMenuCommand)
+            ) {
+              commands.push(container.resolve(command.default));
+            }
+          } catch {
+            console.error(`Failed to load command: ${file}`);
           }
-        } catch {
-          console.error(`Failed to load command: ${file}`);
+          continue;
         }
-        continue;
+
+        if (fs.lstatSync(filePath).isDirectory()) {
+          commands.push(...(await readCommandsDirectory(filePath)));
+        }
       }
 
-      if (fs.lstatSync(filePath).isDirectory()) {
-        commands.push(...readCommandsDirectory(filePath, client));
-      }
-    }
-  } catch {
-    console.error(`Failed to read commands directory: ${_path}`);
-  }
-
-  return commands;
+      resolve(commands);
+    });
+  });
 };
 
-export function loadCommands(client: Client): CommandBase[] {
-  const commands: CommandBase[] = readCommandsDirectory(COMMANDS_PATH, client);
+export async function loadCommands(): Promise<CommandBase[]> {
+  const commands: CommandBase[] = await readCommandsDirectory(COMMANDS_PATH);
 
   return commands;
 }

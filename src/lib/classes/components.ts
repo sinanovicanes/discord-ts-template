@@ -3,7 +3,7 @@ import {
   ButtonInteraction,
   ButtonStyle,
   CommandInteraction,
-  Emoji,
+  ComponentEmojiResolvable,
   MessageComponentInteraction,
   ModalBuilder,
   ModalSubmitInteraction
@@ -16,7 +16,8 @@ export interface ComponentBase {
 
 export abstract class ButtonComponent extends ButtonBuilder implements ComponentBase {
   abstract customId: string;
-  abstract label: string | Emoji;
+  label?: string;
+  emoji?: ComponentEmojiResolvable;
   style: ButtonStyle = ButtonStyle.Primary;
   abstract handler(interaction: ButtonInteraction): void;
 }

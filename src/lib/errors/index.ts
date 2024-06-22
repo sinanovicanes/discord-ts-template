@@ -5,3 +5,5 @@ export * from "./ButtonNotFound";
 export * from "./FailedToHandleButton";
 export * from "./ModalNotFound";
 export * from "./FailedToHandleModal";
+export * from "./ContextMenuCommandNotFound";
+export * from "./FailedToHandleContextMenuCommand";

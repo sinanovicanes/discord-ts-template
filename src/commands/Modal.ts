@@ -1,18 +1,19 @@
 import { ExampleModal } from "@/components";
 import { SlashCommand } from "@/lib/classes";
-import { Client } from "@/lib/client";
 import { CommandInteraction } from "discord.js";
+import { singleton } from "tsyringe";
 
+@singleton()
 class ModalCommand extends SlashCommand {
   name = "modal";
   description = "Shows example modal";
 
-  constructor(private readonly client: Client) {
+  constructor(private readonly exampleModal: ExampleModal) {
     super();
   }
 
   async handler(interaction: CommandInteraction) {
-    await interaction.showModal(ExampleModal);
+    await interaction.showModal(this.exampleModal);
   }
 }
 

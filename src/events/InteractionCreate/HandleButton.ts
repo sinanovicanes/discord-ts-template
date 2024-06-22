@@ -1,17 +1,18 @@
-import { ButtonInteraction } from "discord.js";
 import { InteractionCreateEvent } from "@/lib/classes";
 import { ComponentManager } from "@/lib/managers";
-import { Client } from "@/lib/client";
+import { ButtonInteraction } from "discord.js";
+import { singleton } from "tsyringe";
 
+@singleton()
 class HandleButton extends InteractionCreateEvent {
-  constructor(private readonly client: Client) {
+  constructor(private readonly componentManager: ComponentManager) {
     super();
   }
 
   async handler(interaction: ButtonInteraction) {
     if (!interaction.isButton()) return;
 
-    ComponentManager.onButtonInteraction(interaction);
+    this.componentManager.onButtonInteraction(interaction);
   }
 }
 

@@ -5,6 +5,7 @@ import {
   TextInputBuilder,
   TextInputStyle
 } from "discord.js";
+import { singleton } from "tsyringe";
 
 const favoriteColorInput = new TextInputBuilder()
   .setCustomId("favorite_color")
@@ -22,8 +23,9 @@ const rows = [
   new ActionRowBuilder<TextInputBuilder>({ components: [hobbiesInput] })
 ];
 
+@singleton()
 class ExampleModal extends ModalComponent {
-  customId = "ExampleModal";
+  customId = "modal";
   title = "Example Modal";
   components = rows;
 
@@ -38,4 +40,4 @@ class ExampleModal extends ModalComponent {
   }
 }
 
-export default new ExampleModal();
+export default ExampleModal;

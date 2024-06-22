@@ -1,17 +1,18 @@
 import { InteractionCreateEvent } from "@/lib/classes";
-import { Client } from "@/lib/client";
 import { CommandManager } from "@/lib/managers";
 import { Interaction } from "discord.js";
+import { singleton } from "tsyringe";
 
+@singleton()
 class HandleContextMenu extends InteractionCreateEvent {
-  constructor(private readonly client: Client) {
+  constructor(private readonly commandManager: CommandManager) {
     super();
   }
 
   async handler(interaction: Interaction) {
     if (!interaction.isContextMenuCommand()) return;
 
-    CommandManager.onContextMenuCommandInteraction(interaction);
+    this.commandManager.onContextMenuCommandInteraction(interaction);
   }
 }
 

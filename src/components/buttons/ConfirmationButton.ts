@@ -1,6 +1,8 @@
 import { ButtonComponent } from "@/lib/classes/components";
 import { ButtonInteraction, ButtonStyle } from "discord.js";
+import { singleton } from "tsyringe";
 
+@singleton()
 class ConfirmationButton extends ButtonComponent {
   customId = "confirmation";
   label = "Confirm";
@@ -14,4 +16,4 @@ class ConfirmationButton extends ButtonComponent {
   }
 }
 
-export default new ConfirmationButton();
+export default ConfirmationButton;

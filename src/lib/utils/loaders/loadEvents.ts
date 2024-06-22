@@ -1,45 +1,48 @@
 import * as fs from "fs";
 import path from "path";
-import { Event } from "../../classes";
-import { Client } from "@/lib/client";
+import { container } from "tsyringe";
+import { Event } from "@/lib/classes";
 
 const EVENTS_PATH = path.join(__dirname, "../../../events");
 
-const readEventDirectory = (_path: string, client: Client): Event[] => {
-  const events: Event[] = [];
+const readEventDirectory = async (_path: string): Promise<Event[]> => {
+  return new Promise((resolve, reject) => {
+    const events: Event[] = [];
 
-  try {
-    const eventFiles = fs.readdirSync(_path);
+    fs.readdir(_path, async (err, files) => {
+      if (err) {
+        console.error(`Failed to read event directory: ${_path}`);
+        return reject();
+      }
 
-    for (const file of eventFiles) {
-      const filePath = path.join(_path, file);
+      for (const file of files) {
+        const filePath = path.join(_path, file);
 
-      if (file.endsWith(".ts") || file.endsWith(".js")) {
-        try {
-          const event = require(filePath);
+        if (file.endsWith(".ts") || file.endsWith(".js")) {
+          try {
+            const event = require(filePath);
 
-          if (event.default && event.default.prototype instanceof Event) {
-            events.push(new event.default(client));
+            if (!!event.default && event.default.prototype instanceof Event) {
+              events.push(container.resolve(event.default));
+            }
+          } catch (e) {
+            console.error(`Failed to load event handler: ${file}`);
           }
-        } catch {
-          console.error(`Failed to load event handler: ${file}`);
+          continue;
         }
-        continue;
+
+        if (fs.statSync(filePath).isDirectory()) {
+          events.push(...(await readEventDirectory(filePath)));
+        }
       }
 
-      if (fs.lstatSync(filePath).isDirectory()) {
-        events.push(...readEventDirectory(filePath, client));
-      }
-    }
-  } catch {
-    console.error(`Failed to read events directory: ${_path}`);
-  }
-
-  return events;
+      resolve(events);
+    });
+  });
 };
 
-export function loadEvents(client: Client) {
-  const events = readEventDirectory(EVENTS_PATH, client);
+export async function loadEvents(): Promise<Event[]> {
+  const events: Event[] = await readEventDirectory(EVENTS_PATH);
 
   return events;
 }

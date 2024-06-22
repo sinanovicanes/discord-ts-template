@@ -1,8 +1,9 @@
 import { ClientReadyEvent } from "@/lib/classes/events";
-import { Client } from "@/lib/client";
+import { singleton } from "tsyringe";
 
+@singleton()
 class LogReady extends ClientReadyEvent {
-  constructor(private readonly client: Client) {
+  constructor() {
     super();
   }
 

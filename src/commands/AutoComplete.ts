@@ -1,7 +1,8 @@
 import { SlashCommand } from "@/lib/classes";
-import { Client } from "@/lib/client";
 import { CommandInteraction } from "discord.js";
+import { singleton } from "tsyringe";
 
+@singleton()
 class AutoCompeleteCommand extends SlashCommand {
   name = "autocompelete";
   description = "Shows example auto complete";
@@ -11,7 +12,7 @@ class AutoCompeleteCommand extends SlashCommand {
     { name: "Goodbye 2", value: "Bye 2" }
   ];
 
-  constructor(private readonly client: Client) {
+  constructor() {
     super();
   }
 

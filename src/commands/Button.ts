@@ -1,19 +1,23 @@
 import { CancelButton, ConfirmationButton } from "@/components";
 import { SlashCommand } from "@/lib/classes";
-import { Client } from "@/lib/client";
 import { ActionRowBuilder, ButtonBuilder, CommandInteraction } from "discord.js";
+import { singleton } from "tsyringe";
 
+@singleton()
 class ButtonCommand extends SlashCommand {
   name = "button";
   description = "Shows example button";
 
-  constructor(private readonly client: Client) {
+  constructor(
+    private readonly cancelButton: CancelButton,
+    private readonly confirmationButton: ConfirmationButton
+  ) {
     super();
   }
 
   async handler(interaction: CommandInteraction) {
     const row = new ActionRowBuilder<ButtonBuilder>({
-      components: [ConfirmationButton, CancelButton]
+      components: [this.confirmationButton, this.cancelButton]
     });
 
     await interaction.reply({

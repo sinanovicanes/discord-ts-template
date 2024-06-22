@@ -1,13 +1,13 @@
 import { ClientEvents } from "discord.js";
-import { Event } from "../classes";
-import { FailedToHandleEvent } from "../errors";
-import { loadEvents } from "../utils/loaders";
-import { Client } from "../client";
+import { Event } from "@/lib/classes";
+import { FailedToHandleEvent } from "@/lib/errors";
+import { loadEvents } from "@/lib/utils/loaders";
+import { Client } from "@/lib/client";
+import { delay, inject, singleton } from "tsyringe";
 
+@singleton()
 export class EventManager {
-  constructor(private readonly client: Client) {
-    this.initialize();
-  }
+  constructor(@inject(delay(() => Client)) private readonly client: Client) {}
 
   private async trigger<T extends keyof ClientEvents>(
     event: Event<T>,
@@ -31,8 +31,8 @@ export class EventManager {
     });
   }
 
-  initialize() {
-    const events = loadEvents(this.client);
+  async initialize() {
+    const events = await loadEvents();
     events.forEach(event => this.addEventHandler(event));
   }
 }

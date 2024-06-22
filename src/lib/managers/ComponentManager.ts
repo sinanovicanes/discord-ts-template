@@ -1,37 +1,55 @@
 import buttons from "@/components/buttons";
 import modals from "@/components/modals";
 import { ButtonInteraction, ModalSubmitInteraction } from "discord.js";
-import { ComponentBase } from "../classes/components";
+import { ComponentBase } from "@/lib/classes/components";
 import {
   ButtonNotFound,
   FailedToHandleButton,
   FailedToHandleModal,
   ModalNotFound
-} from "../errors";
+} from "@/lib/errors";
+import { container, singleton } from "tsyringe";
 
+@singleton()
 export class ComponentManager {
-  static components: Record<string, Map<ComponentBase["customId"], ComponentBase>> = {
-    buttons: new Map(buttons.map(button => [button.customId, button])),
-    modals: new Map(modals.map(modal => [modal.customId, modal]))
+  components: Record<string, Map<ComponentBase["customId"], ComponentBase>> = {
+    buttons: new Map(
+      buttons.map(button => {
+        const instance = container.resolve(button);
+        instance.setStyle(instance.style);
+        instance.setCustomId(instance.customId);
+        if (instance.label) instance.setLabel(instance.label);
+        if (instance.emoji) instance.setEmoji(instance.emoji);
+        return [instance.customId, instance];
+      })
+    ),
+    modals: new Map(
+      modals.map(modal => {
+        const instance = container.resolve(modal);
+        instance.setTitle(instance.title);
+        instance.setCustomId(instance.customId);
+        return [instance.customId, instance];
+      })
+    )
   };
 
-  static getButton(customId: ComponentBase["customId"]) {
+  getButton(customId: ComponentBase["customId"]) {
     return this.components.buttons.get(customId);
   }
 
-  static getModal(customId: ComponentBase["customId"]) {
+  getModal(customId: ComponentBase["customId"]) {
     return this.components.modals.get(customId);
   }
 
-  static hasButton(customId: ComponentBase["customId"]) {
+  hasButton(customId: ComponentBase["customId"]) {
     return this.components.buttons.has(customId);
   }
 
-  static hasModal(customId: ComponentBase["customId"]) {
+  hasModal(customId: ComponentBase["customId"]) {
     return this.components.modals.has(customId);
   }
 
-  static async onButtonInteraction(interaction: ButtonInteraction) {
+  async onButtonInteraction(interaction: ButtonInteraction) {
     const button = this.getButton(interaction.customId);
 
     if (!button) throw new ButtonNotFound(interaction);
@@ -43,7 +61,7 @@ export class ComponentManager {
     }
   }
 
-  static async onModalSubmitInteraction(interaction: ModalSubmitInteraction) {
+  async onModalSubmitInteraction(interaction: ModalSubmitInteraction) {
     const modal = this.getModal(interaction.customId);
 
     if (!modal) throw new ModalNotFound(interaction);

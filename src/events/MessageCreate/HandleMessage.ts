@@ -1,9 +1,10 @@
 import { MessageCreateEvent } from "@/lib/classes";
-import { Client } from "@/lib/client";
 import { Message } from "discord.js";
+import { singleton } from "tsyringe";
 
+@singleton()
 export default class HandleMessage extends MessageCreateEvent {
-  constructor(private readonly client: Client) {
+  constructor() {
     super();
   }
 

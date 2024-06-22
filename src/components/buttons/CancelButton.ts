@@ -1,6 +1,8 @@
 import { ButtonComponent } from "@/lib/classes/components";
 import { ButtonInteraction, ButtonStyle } from "discord.js";
+import { singleton } from "tsyringe";
 
+@singleton()
 class CancelButton extends ButtonComponent {
   customId = "cancel";
   label = "Cancel";
@@ -14,4 +16,4 @@ class CancelButton extends ButtonComponent {
   }
 }
 
-export default new CancelButton();
+export default CancelButton;

@@ -1,7 +1,9 @@
 import { SlashCommand } from "@/lib/classes";
 import { Client } from "@/lib/client";
 import { CommandInteraction } from "discord.js";
+import { singleton } from "tsyringe";
 
+@singleton()
 class TestCommand extends SlashCommand {
   name = "test";
   description = "Test";
