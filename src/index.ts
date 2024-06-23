@@ -1,8 +1,9 @@
+import { Client } from "@/lib/client";
+import { CLIENT_OPTIONS_KEY } from "@/lib/constants";
+import env from "@/lib/utils/env";
+import { ClientOptions, GatewayIntentBits } from "discord.js";
 import "dotenv/config";
 import "reflect-metadata";
-import { ClientOptions, GatewayIntentBits } from "discord.js";
-import { Client } from "@/lib/client";
-import env from "@/lib/utils/env";
 import { container } from "tsyringe";
 
 const clientOptions: ClientOptions = {
@@ -14,7 +15,7 @@ const clientOptions: ClientOptions = {
   ]
 };
 
-container.register("ClientOptions", { useValue: clientOptions });
+container.register(CLIENT_OPTIONS_KEY, { useValue: clientOptions });
 
 const discordClient = container.resolve(Client);
 

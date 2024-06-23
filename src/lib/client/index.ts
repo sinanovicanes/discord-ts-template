@@ -1,14 +1,15 @@
+import { CLIENT_OPTIONS_KEY } from "@/lib/constants";
+import { CommandManager } from "@/lib/managers/CommandManager";
+import { EventManager } from "@/lib/managers/EventManager";
 import { ClientOptions, Client as DiscordClient } from "discord.js";
 import { inject, singleton } from "tsyringe";
-import { CommandManager } from "../managers/CommandManager";
-import { EventManager } from "../managers/EventManager";
 
 @singleton()
 export class Client extends DiscordClient {
   constructor(
     private readonly commandManager: CommandManager,
     private readonly eventManager: EventManager,
-    @inject("ClientOptions") public clientOptions: ClientOptions
+    @inject(CLIENT_OPTIONS_KEY) public clientOptions: ClientOptions
   ) {
     super(clientOptions);
   }
