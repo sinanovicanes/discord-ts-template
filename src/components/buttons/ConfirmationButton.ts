@@ -4,9 +4,13 @@ import { singleton } from "tsyringe";
 
 @singleton()
 class ConfirmationButton extends ButtonComponent {
-  customId = "confirmation";
-  label = "Confirm";
-  style = ButtonStyle.Success;
+  constructor() {
+    super({
+      customId: "confirm_button",
+      label: "Confirm",
+      style: ButtonStyle.Success
+    });
+  }
 
   handler(interaction: ButtonInteraction) {
     interaction.message.edit({

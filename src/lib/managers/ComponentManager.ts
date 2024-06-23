@@ -1,36 +1,93 @@
-import buttons from "@/components/buttons";
-import modals from "@/components/modals";
-import { ButtonInteraction, ModalSubmitInteraction } from "discord.js";
-import { container, singleton } from "tsyringe";
+import components from "@/components";
+import {
+  ButtonComponent,
+  ComponentBase,
+  MentionableSelectMenuComponent,
+  ModalComponent,
+  RoleSelectMenuComponent,
+  StringSelectMenuComponent,
+  UserSelectMenuComponent
+} from "@/lib/classes/components";
 import {
   ButtonNotFound,
   FailedToHandleButton,
   FailedToHandleModal,
-  ModalNotFound
+  FailedToHandleSelectMenu,
+  ModalNotFound,
+  SelectMenuNotFound
 } from "@/lib/errors";
-import { ComponentBase } from "@/lib/classes/components";
+import {
+  AnySelectMenuInteraction,
+  ButtonInteraction,
+  ChannelSelectMenuComponent,
+  ModalSubmitInteraction
+} from "discord.js";
+import { container, singleton } from "tsyringe";
+
+function mapComponents(
+  getCtors: () => (new () => ComponentBase)[]
+): Map<ComponentBase["customId"], ComponentBase> {
+  return new Map(
+    getCtors().map(ctor => {
+      const instance = container.resolve(ctor);
+
+      return [instance.customId, instance];
+    })
+  );
+}
+
+function getButtons<T = new () => ButtonComponent>(): T[] {
+  return components.filter(
+    component => component.prototype instanceof ButtonComponent
+  ) as T[];
+}
+
+function getModals<T = new () => ModalComponent>(): T[] {
+  return components.filter(
+    component => component.prototype instanceof ModalComponent
+  ) as T[];
+}
+
+function getStringSelectMenus<T = new () => StringSelectMenuComponent>(): T[] {
+  return components.filter(
+    component => component.prototype instanceof StringSelectMenuComponent
+  ) as T[];
+}
+
+function getUserSelectMenus<T = new () => UserSelectMenuComponent>(): T[] {
+  return components.filter(
+    component => component.prototype instanceof UserSelectMenuComponent
+  ) as T[];
+}
+
+function getRoleSelectMenus<T = new () => RoleSelectMenuComponent>(): T[] {
+  return components.filter(
+    component => component.prototype instanceof RoleSelectMenuComponent
+  ) as T[];
+}
+
+function getChannelSelectMenus<T = new () => ChannelSelectMenuComponent>(): T[] {
+  return components.filter(
+    component => component.prototype instanceof ChannelSelectMenuComponent
+  ) as T[];
+}
+
+function getMentionableSelectMenus<T = new () => MentionableSelectMenuComponent>(): T[] {
+  return components.filter(
+    component => component.prototype instanceof MentionableSelectMenuComponent
+  ) as T[];
+}
 
 @singleton()
 export class ComponentManager {
   components: Record<string, Map<ComponentBase["customId"], ComponentBase>> = {
-    buttons: new Map(
-      buttons.map(button => {
-        const instance = container.resolve(button);
-        instance.setStyle(instance.style);
-        instance.setCustomId(instance.customId);
-        if (instance.label) instance.setLabel(instance.label);
-        if (instance.emoji) instance.setEmoji(instance.emoji);
-        return [instance.customId, instance];
-      })
-    ),
-    modals: new Map(
-      modals.map(modal => {
-        const instance = container.resolve(modal);
-        instance.setTitle(instance.title);
-        instance.setCustomId(instance.customId);
-        return [instance.customId, instance];
-      })
-    )
+    buttons: mapComponents(getButtons),
+    modals: mapComponents(getModals),
+    stringSelectMenus: mapComponents(getStringSelectMenus),
+    userSelectMenus: mapComponents(getUserSelectMenus),
+    roleSelectMenus: mapComponents(getRoleSelectMenus),
+    channelSelectMenus: mapComponents(getChannelSelectMenus),
+    mentionableSelectMenus: mapComponents(getMentionableSelectMenus)
   };
 
   getButton(customId: ComponentBase["customId"]) {
@@ -39,6 +96,23 @@ export class ComponentManager {
 
   getModal(customId: ComponentBase["customId"]) {
     return this.components.modals.get(customId);
+  }
+
+  getSelectMenuFromInteraction(interaction: AnySelectMenuInteraction) {
+    switch (true) {
+      case interaction.isStringSelectMenu():
+        return this.components.stringSelectMenus.get(interaction.customId);
+      case interaction.isUserSelectMenu():
+        return this.components.userSelectMenus.get(interaction.customId);
+      case interaction.isRoleSelectMenu():
+        return this.components.roleSelectMenus.get(interaction.customId);
+      case interaction.isChannelSelectMenu():
+        return this.components.channelSelectMenus.get(interaction.customId);
+      case interaction.isMentionableSelectMenu():
+        return this.components.mentionableSelectMenus.get(interaction.customId);
+      default:
+        return null;
+    }
   }
 
   hasButton(customId: ComponentBase["customId"]) {
@@ -70,6 +144,18 @@ export class ComponentManager {
       await modal.handler(interaction);
     } catch (error) {
       throw new FailedToHandleModal(interaction);
+    }
+  }
+
+  async onSelectMenuInteraction(interaction: AnySelectMenuInteraction) {
+    const selectMenu = this.getSelectMenuFromInteraction(interaction);
+
+    if (!selectMenu) throw new SelectMenuNotFound(interaction);
+
+    try {
+      await selectMenu.handler(interaction);
+    } catch (error) {
+      throw new FailedToHandleSelectMenu(interaction);
     }
   }
 }

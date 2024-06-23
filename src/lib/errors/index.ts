@@ -7,3 +7,5 @@ export * from "./ModalNotFound";
 export * from "./FailedToHandleModal";
 export * from "./ContextMenuCommandNotFound";
 export * from "./FailedToHandleContextMenuCommand";
+export * from "./SelectMenuNotFound";
+export * from "./FailedToHandleSelectMenu";

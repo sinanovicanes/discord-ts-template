@@ -4,9 +4,13 @@ import { singleton } from "tsyringe";
 
 @singleton()
 class CancelButton extends ButtonComponent {
-  customId = "cancel";
-  label = "Cancel";
-  style = ButtonStyle.Danger;
+  constructor() {
+    super({
+      customId: "cancel_button",
+      label: "Cancel",
+      style: ButtonStyle.Danger
+    });
+  }
 
   handler(interaction: ButtonInteraction) {
     interaction.message.edit({

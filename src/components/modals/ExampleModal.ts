@@ -25,9 +25,13 @@ const rows = [
 
 @singleton()
 class ExampleModal extends ModalComponent {
-  customId = "modal";
-  title = "Example Modal";
-  components = rows;
+  constructor() {
+    super({
+      customId: "example_modal",
+      title: "Example Modal",
+      components: rows
+    });
+  }
 
   async handler(interaction: ModalSubmitInteraction) {
     const favoriteColor = interaction.fields.getTextInputValue("favorite_color");
