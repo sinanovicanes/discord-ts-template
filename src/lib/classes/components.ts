@@ -5,6 +5,7 @@ import {
   ButtonStyle,
   ChannelSelectMenuBuilder,
   ChannelSelectMenuInteraction,
+  ChannelType,
   CommandInteraction,
   ComponentEmojiResolvable,
   MentionableSelectMenuBuilder,
@@ -212,6 +213,7 @@ export interface ChannelSelectMenuProps extends ComponentPropsBase {
   defaultChannels?: string[];
   maxValues?: number;
   minValues?: number;
+  channelTypes?: ChannelType[];
 }
 
 export abstract class ChannelSelectMenuComponent
@@ -226,14 +228,16 @@ export abstract class ChannelSelectMenuComponent
     defaultChannels,
     maxValues,
     minValues,
-    placeholder
+    placeholder,
+    channelTypes
   }: ChannelSelectMenuProps) {
     //TODO: ADD CHANNEL TYPES
     super({
       custom_id: customId,
       placeholder,
       max_values: maxValues,
-      min_values: minValues
+      min_values: minValues,
+      channel_types: channelTypes
     });
 
     this.customId = customId;
