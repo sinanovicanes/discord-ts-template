@@ -1,9 +1,8 @@
+import env from "@/env";
+import "reflect-metadata";
 import { Client } from "@/lib/client";
 import { CLIENT_OPTIONS_KEY } from "@/lib/constants";
-import env from "@/lib/utils/env";
 import { ClientOptions, GatewayIntentBits } from "discord.js";
-import "dotenv/config";
-import "reflect-metadata";
 import { container } from "tsyringe";
 
 const clientOptions: ClientOptions = {

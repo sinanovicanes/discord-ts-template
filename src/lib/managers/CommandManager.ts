@@ -6,7 +6,7 @@ import {
   FailedToHandleCommand,
   FailedToHandleContextMenuCommand
 } from "@/lib/errors";
-import env from "@/lib/utils/env";
+import env from "@/env";
 import { loadCommands } from "@/lib/utils/loaders";
 import {
   AutocompleteInteraction,
