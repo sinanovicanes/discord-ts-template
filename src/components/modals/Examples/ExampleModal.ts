@@ -38,7 +38,8 @@ class ExampleModal extends ModalComponent {
     const hobbies = interaction.fields.getTextInputValue("hobbies");
 
     interaction.reply({
-      content: "Thanks for submitting!",
+      content:
+        `Your favorite color is ${favoriteColor} and your hobbies are: ${hobbies}`.trim(),
       ephemeral: true
     });
   }

@@ -12,8 +12,8 @@ class ConfirmationButton extends ButtonComponent {
     });
   }
 
-  handler(interaction: ButtonInteraction) {
-    interaction.message.edit({
+  async handler(interaction: ButtonInteraction) {
+    await interaction.message.edit({
       content: "Confirmed!",
       components: []
     });

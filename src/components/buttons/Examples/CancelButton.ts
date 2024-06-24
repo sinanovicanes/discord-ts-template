@@ -12,8 +12,8 @@ class CancelButton extends ButtonComponent {
     });
   }
 
-  handler(interaction: ButtonInteraction) {
-    interaction.message.edit({
+  async handler(interaction: ButtonInteraction) {
+    await interaction.message.edit({
       content: "Canceled!",
       components: []
     });

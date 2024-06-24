@@ -1,13 +1,8 @@
-import * as fs from "fs";
+import { CommandBase, SlashCommand } from "@/lib/classes";
+import { ContextMenuCommandBuilder } from "discord.js";
+import fs from "fs";
 import path from "path";
 import { container } from "tsyringe";
-import {
-  CommandBase,
-  ContextMenuCommand,
-  SlashCommand,
-  SubCommand,
-  SubCommandGroup
-} from "@/lib/classes";
 
 const COMMANDS_PATH = path.join(__dirname, "../../../commands");
 
@@ -32,11 +27,11 @@ const readCommandsDirectory = async (_path: string): Promise<CommandBase[]> => {
 
             if (
               command.default.prototype instanceof SlashCommand ||
-              command.default.prototype instanceof ContextMenuCommand
+              command.default.prototype instanceof ContextMenuCommandBuilder
             ) {
               commands.push(container.resolve(command.default));
             }
-          } catch {
+          } catch (e) {
             console.error(`Failed to load command: ${file}`);
           }
           continue;

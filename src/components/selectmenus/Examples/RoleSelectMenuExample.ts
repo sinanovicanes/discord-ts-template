@@ -6,17 +6,19 @@ import { singleton } from "tsyringe";
 class RoleSelectMenu extends RoleSelectMenuComponent {
   constructor() {
     super({
-      customId: "role_select_menu",
+      customId: "role_select_example_menu",
       placeholder: "Select a role",
-      maxValues: 1
+      maxValues: 3
     });
   }
 
   async handler(interaction: RoleSelectMenuInteraction) {
-    const selectedRole = interaction.values[0];
+    const selectedRoles = interaction.values
+      .map(roleId => interaction.roles.get(roleId)?.name)
+      .filter(role => !!role);
 
-    interaction.reply({
-      content: "Thanks for submitting!",
+    await interaction.reply({
+      content: `Selected roles: ${selectedRoles.join(", ")}`,
       ephemeral: true
     });
   }

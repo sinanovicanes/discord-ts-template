@@ -6,7 +6,7 @@ import { singleton } from "tsyringe";
 class StringSelectMenu extends StringSelectMenuComponent {
   constructor() {
     super({
-      customId: "string_select_menu",
+      customId: "string_select_example_menu",
       placeholder: "Select an option",
       options: [
         { label: "Option 1", value: "option_1" },
@@ -18,10 +18,10 @@ class StringSelectMenu extends StringSelectMenuComponent {
   }
 
   async handler(interaction: StringSelectMenuInteraction) {
-    const selectedUser = interaction.values[0];
+    const selectedOption = interaction.values[0];
 
     interaction.reply({
-      content: "Thanks for submitting!",
+      content: `You have selected: ${selectedOption}`,
       ephemeral: true
     });
   }

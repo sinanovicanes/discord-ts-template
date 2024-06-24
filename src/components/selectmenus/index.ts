@@ -1,21 +1,4 @@
-import StringSelectMenu from "./StringSelectMenuExample";
-import UserSelectMenu from "./UserSelectMenuExample";
-import RoleSelectMenu from "./RoleSelectMenuExample";
-import ChannelSelectMenu from "./ChannelSelectMenuExample";
-import MentionableSelectMenu from "./MentionableSelectMenuExample";
+import ExampleSelectMenus from "./Examples";
 
-export {
-  StringSelectMenu,
-  UserSelectMenu,
-  RoleSelectMenu,
-  ChannelSelectMenu,
-  MentionableSelectMenu
-};
-
-export default [
-  StringSelectMenu,
-  UserSelectMenu,
-  RoleSelectMenu,
-  ChannelSelectMenu,
-  MentionableSelectMenu
-];
+export * from "./Examples";
+export default [...ExampleSelectMenus];

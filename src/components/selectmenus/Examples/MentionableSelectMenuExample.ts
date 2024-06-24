@@ -6,17 +6,22 @@ import { singleton } from "tsyringe";
 class MentionableSelectMenu extends MentionableSelectMenuComponent {
   constructor() {
     super({
-      customId: "mentionable_select_menu",
+      customId: "mentionable_select_example_menu",
       placeholder: "Select a mentionable role or user",
       maxValues: 3
     });
   }
 
   async handler(interaction: MentionableSelectMenuInteraction) {
-    const selectedRole = interaction.values[0];
+    const selectedMentionables = interaction.values
+      .map(
+        mentionableId =>
+          interaction.roles.get(mentionableId) ?? interaction.members.get(mentionableId)
+      )
+      .filter(mentionable => !!mentionable);
 
     interaction.reply({
-      content: "Thanks for submitting!",
+      content: `Selected mentionables: ${selectedMentionables.join(", ")}`,
       ephemeral: true
     });
   }

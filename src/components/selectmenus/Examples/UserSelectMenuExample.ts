@@ -6,17 +6,19 @@ import { singleton } from "tsyringe";
 class UserSelectMenu extends UserSelectMenuComponent {
   constructor() {
     super({
-      customId: "user_select_menu",
+      customId: "user_select_example_menu",
       placeholder: "Select a user",
-      maxValues: 1
+      maxValues: 5
     });
   }
 
   async handler(interaction: UserSelectMenuInteraction) {
-    const selectedUser = interaction.values[0];
+    const selectedUsers = interaction.values
+      .map(userId => interaction.users.get(userId))
+      .filter(user => !!user);
 
-    interaction.reply({
-      content: "Thanks for submitting!",
+    await interaction.reply({
+      content: `Selected users: ${selectedUsers.join(", ")}`,
       ephemeral: true
     });
   }

@@ -1,4 +1,4 @@
-import ExampleModal from "./ExampleModal";
+import ExampleModals from "./Examples";
 
-export { ExampleModal };
-export default [ExampleModal];
+export * from "./Examples";
+export default [...ExampleModals];

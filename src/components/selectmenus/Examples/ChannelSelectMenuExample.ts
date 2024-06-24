@@ -1,22 +1,25 @@
 import { ChannelSelectMenuComponent } from "@/lib/classes/components";
-import { ChannelSelectMenuInteraction } from "discord.js";
+import { ChannelSelectMenuInteraction, ChannelType } from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()
 class ChannelSelectMenu extends ChannelSelectMenuComponent {
   constructor() {
     super({
-      customId: "channel_select_menu",
+      customId: "channel_select_example_menu",
       placeholder: "Select a channel",
-      maxValues: 1
+      maxValues: 5,
+      channelTypes: [ChannelType.GuildText]
     });
   }
 
   async handler(interaction: ChannelSelectMenuInteraction) {
-    const selectedRole = interaction.values[0];
+    const selectedChannels = interaction.values
+      .map(channelId => interaction.channels.get(channelId))
+      .filter(channel => !!channel);
 
     interaction.reply({
-      content: "Thanks for submitting!",
+      content: `Selected channels: ${selectedChannels.join(", ")}`,
       ephemeral: true
     });
   }

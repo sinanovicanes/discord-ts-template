@@ -1,5 +1,4 @@
-import CancelButton from "./CancelButton";
-import ConfirmationButton from "./ConfirmationButton";
+import ExampleButtons from "./Examples";
 
-export { CancelButton, ConfirmationButton };
-export default [CancelButton, ConfirmationButton];
+export * from "./Examples";
+export default [...ExampleButtons];
