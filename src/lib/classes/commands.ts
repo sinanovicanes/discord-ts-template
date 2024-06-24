@@ -1,13 +1,17 @@
 import { CommandAutoComplete } from "@/lib/types/CommandAutoComplete";
 import {
+  ApplicationCommandType,
   ChatInputCommandInteraction,
   CommandInteraction,
   ContextMenuCommandBuilder,
   ContextMenuCommandInteraction,
+  ContextMenuCommandType,
+  MessageContextMenuCommandInteraction,
   SlashCommandBuilder,
   SlashCommandSubcommandBuilder,
   SlashCommandSubcommandGroupBuilder,
-  ToAPIApplicationCommandOptions
+  ToAPIApplicationCommandOptions,
+  UserContextMenuCommandInteraction
 } from "discord.js";
 import { matchClassProperties } from "../utils";
 
@@ -34,12 +38,26 @@ export abstract class SlashCommand extends SlashCommandBuilder implements Comman
   }
 }
 
-export abstract class ContextMenuCommand
+export abstract class UserContextMenuCommand
   extends ContextMenuCommandBuilder
   implements CommandBase
 {
   abstract name: string;
-  abstract handler(interaction: ContextMenuCommandInteraction): void;
+  abstract handler(interaction: UserContextMenuCommandInteraction): void;
+  type = ApplicationCommandType.User as ContextMenuCommandType;
+
+  getData() {
+    return matchClassProperties(ContextMenuCommandBuilder, this);
+  }
+}
+
+export abstract class MessageContextMenuCommand
+  extends ContextMenuCommandBuilder
+  implements CommandBase
+{
+  abstract name: string;
+  abstract handler(interaction: MessageContextMenuCommandInteraction): void;
+  type = ApplicationCommandType.Message as ContextMenuCommandType;
 
   getData() {
     return matchClassProperties(ContextMenuCommandBuilder, this);
