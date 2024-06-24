@@ -1,4 +1,4 @@
-import { CommandBase, SubCommand } from "@/lib/classes";
+import { CommandBase, SubCommand, SubCommandGroup } from "@/lib/classes";
 import { Client } from "@/lib/client";
 import {
   CommandNotFound,
@@ -50,6 +50,7 @@ export class CommandManager {
       commandKey = interaction.commandName;
     }
 
+    console.log(commandKey);
     return this.commands.get(commandKey);
   }
 
@@ -85,20 +86,23 @@ export class CommandManager {
     commands.forEach(command => {
       this.commands.set(command.name, command);
 
-      command.options?.forEach(subCommand => {
-        this.commands.set(
-          `${command.name}:${subCommand.toJSON().name}`,
-          subCommand as SubCommand
-        );
+      command.options?.forEach(sub => {
+        switch (true) {
+          case sub instanceof SubCommand:
+            this.commands.set(`${command.name}:${sub.name}`, sub);
+            return;
+          case sub instanceof SubCommandGroup:
+            const commandKey = `${command.name}:${sub.name}`;
+
+            sub.options.forEach(subCommand => {
+              this.commands.set(
+                `${commandKey}:${subCommand.name}`,
+                subCommand as SubCommand
+              );
+            });
+            break;
+        }
       });
-
-      if (command.userSubGroup) {
-        const commandKey = `${command.name}:${command.userSubGroup.name}`;
-
-        command.userSubGroup.options.forEach(subCommand => {
-          this.commands.set(`${commandKey}:${subCommand.name}`, subCommand as SubCommand);
-        });
-      }
     });
   }
 

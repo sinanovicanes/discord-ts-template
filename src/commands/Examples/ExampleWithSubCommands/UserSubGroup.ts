@@ -1,20 +1,16 @@
 import { SubCommandGroup } from "@/lib/classes";
 import { ChatInputCommandInteraction } from "discord.js";
 import { singleton } from "tsyringe";
-import InfoSubCommand from "./InfoSub";
+import InfoSubCommand from "./GetId";
 import RoleSubCommand from "./RoleSub";
 
 @singleton()
 class UserSubGroup extends SubCommandGroup {
   name = "info";
-  description = "Get user info";
+  description = "User Information Group";
 
-  constructor(
-    private readonly subInfoCommand: InfoSubCommand,
-    private readonly subRoleCommand: RoleSubCommand
-  ) {
-    super();
-    this.addSubcommand(subInfoCommand).addSubcommand(subRoleCommand);
+  constructor(subInfoCommand: InfoSubCommand, subRoleCommand: RoleSubCommand) {
+    super(subInfoCommand, subRoleCommand);
   }
 
   async handler(interaction: ChatInputCommandInteraction) {

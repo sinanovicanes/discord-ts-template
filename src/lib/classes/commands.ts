@@ -1,4 +1,5 @@
 import { CommandAutoComplete } from "@/lib/types/CommandAutoComplete";
+import { matchClassProperties } from "@/lib/utils";
 import {
   ApplicationCommandType,
   ChatInputCommandInteraction,
@@ -13,7 +14,6 @@ import {
   ToAPIApplicationCommandOptions,
   UserContextMenuCommandInteraction
 } from "discord.js";
-import { matchClassProperties } from "../utils";
 
 export interface CommandBase {
   name: string;
@@ -24,13 +24,22 @@ export interface CommandBase {
   getData(): Record<string, any>;
 }
 
+export interface SlashCommandProps {
+  subCommands?: SubCommand[];
+  subCommandGroup?: SubCommandGroup;
+}
+
 export abstract class SlashCommand extends SlashCommandBuilder implements CommandBase {
+  abstract name: string;
   abstract description: string;
   abstract handler(interaction: ChatInputCommandInteraction): void;
   autoComplete?: CommandAutoComplete;
 
-  constructor() {
+  constructor({ subCommands, subCommandGroup }: SlashCommandProps = {}) {
     super();
+
+    if (subCommands) subCommands.forEach(subCommand => this.addSubcommand(subCommand));
+    if (subCommandGroup) this.addSubcommandGroup(subCommandGroup);
   }
 
   getData() {
@@ -66,6 +75,7 @@ export abstract class MessageContextMenuCommand
 
 export abstract class SubCommand extends SlashCommandSubcommandBuilder {
   abstract name: string;
+  abstract description: string;
   abstract handler(interaction: ChatInputCommandInteraction): void;
   autoComplete?: CommandAutoComplete;
 
@@ -76,7 +86,16 @@ export abstract class SubCommand extends SlashCommandSubcommandBuilder {
 
 export abstract class SubCommandGroup extends SlashCommandSubcommandGroupBuilder {
   abstract name: string;
+  abstract description: string;
   abstract handler(interaction: CommandInteraction): void;
+
+  constructor(...subCommands: SubCommand[]) {
+    super();
+
+    if (!subCommands) return;
+
+    subCommands.forEach(subCommand => this.addSubcommand(subCommand));
+  }
 
   getData() {
     return matchClassProperties(SlashCommandSubcommandGroupBuilder, this);
