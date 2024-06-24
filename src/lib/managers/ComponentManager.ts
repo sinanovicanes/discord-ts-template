@@ -1,13 +1,4 @@
-import components from "@/components";
-import {
-  ButtonComponent,
-  ComponentBase,
-  MentionableSelectMenuComponent,
-  ModalComponent,
-  RoleSelectMenuComponent,
-  StringSelectMenuComponent,
-  UserSelectMenuComponent
-} from "@/lib/classes/components";
+import { ComponentBase } from "@/lib/classes/components";
 import {
   ButtonNotFound,
   FailedToHandleButton,
@@ -19,76 +10,15 @@ import {
 import {
   AnySelectMenuInteraction,
   ButtonInteraction,
-  ChannelSelectMenuComponent,
   ModalSubmitInteraction
 } from "discord.js";
-import { container, singleton } from "tsyringe";
-
-function mapComponents(
-  getCtors: () => (new () => ComponentBase)[]
-): Map<ComponentBase["customId"], ComponentBase> {
-  return new Map(
-    getCtors().map(ctor => {
-      const instance = container.resolve(ctor);
-
-      return [instance.customId, instance];
-    })
-  );
-}
-
-function getButtons<T = new () => ButtonComponent>(): T[] {
-  return components.filter(
-    component => component.prototype instanceof ButtonComponent
-  ) as T[];
-}
-
-function getModals<T = new () => ModalComponent>(): T[] {
-  return components.filter(
-    component => component.prototype instanceof ModalComponent
-  ) as T[];
-}
-
-function getStringSelectMenus<T = new () => StringSelectMenuComponent>(): T[] {
-  return components.filter(
-    component => component.prototype instanceof StringSelectMenuComponent
-  ) as T[];
-}
-
-function getUserSelectMenus<T = new () => UserSelectMenuComponent>(): T[] {
-  return components.filter(
-    component => component.prototype instanceof UserSelectMenuComponent
-  ) as T[];
-}
-
-function getRoleSelectMenus<T = new () => RoleSelectMenuComponent>(): T[] {
-  return components.filter(
-    component => component.prototype instanceof RoleSelectMenuComponent
-  ) as T[];
-}
-
-function getChannelSelectMenus<T = new () => ChannelSelectMenuComponent>(): T[] {
-  return components.filter(
-    component => component.prototype instanceof ChannelSelectMenuComponent
-  ) as T[];
-}
-
-function getMentionableSelectMenus<T = new () => MentionableSelectMenuComponent>(): T[] {
-  return components.filter(
-    component => component.prototype instanceof MentionableSelectMenuComponent
-  ) as T[];
-}
+import { singleton } from "tsyringe";
+import { loadComponents } from "../utils/loaders";
 
 @singleton()
 export class ComponentManager {
-  components: Record<string, Map<ComponentBase["customId"], ComponentBase>> = {
-    buttons: mapComponents(getButtons),
-    modals: mapComponents(getModals),
-    stringSelectMenus: mapComponents(getStringSelectMenus),
-    userSelectMenus: mapComponents(getUserSelectMenus),
-    roleSelectMenus: mapComponents(getRoleSelectMenus),
-    channelSelectMenus: mapComponents(getChannelSelectMenus),
-    mentionableSelectMenus: mapComponents(getMentionableSelectMenus)
-  };
+  components: Record<string, Map<ComponentBase["customId"], ComponentBase>> =
+    loadComponents();
 
   getButton(customId: ComponentBase["customId"]) {
     return this.components.buttons.get(customId);
