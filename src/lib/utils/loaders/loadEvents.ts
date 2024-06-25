@@ -11,8 +11,7 @@ const readEventDirectory = async (_path: string): Promise<Event[]> => {
 
     fs.readdir(_path, async (err, files) => {
       if (err) {
-        console.error(`Failed to read event directory: ${_path}`);
-        return reject();
+        return reject(`Failed to read event directory: ${_path}`);
       }
 
       for (const file of files) {

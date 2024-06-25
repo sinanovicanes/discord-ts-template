@@ -53,7 +53,7 @@ export class ComponentManager {
     return this.components.modals.has(customId);
   }
 
-  async onButtonInteraction(interaction: ButtonInteraction) {
+  private async handleButtonInteraction(interaction: ButtonInteraction) {
     const button = this.getButton(interaction.customId);
 
     if (!button) throw new ButtonNotFound(interaction);
@@ -65,7 +65,15 @@ export class ComponentManager {
     }
   }
 
-  async onModalSubmitInteraction(interaction: ModalSubmitInteraction) {
+  async onButtonInteraction(interaction: ButtonInteraction) {
+    try {
+      await this.handleButtonInteraction(interaction);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  private async handleModalSubmitInteraction(interaction: ModalSubmitInteraction) {
     const modal = this.getModal(interaction.customId);
 
     if (!modal) throw new ModalNotFound(interaction);
@@ -77,7 +85,15 @@ export class ComponentManager {
     }
   }
 
-  async onSelectMenuInteraction(interaction: AnySelectMenuInteraction) {
+  async onModalSubmitInteraction(interaction: ModalSubmitInteraction) {
+    try {
+      await this.handleModalSubmitInteraction(interaction);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  private async handleSelectMenuInteraction(interaction: AnySelectMenuInteraction) {
     const selectMenu = this.getSelectMenuFromInteraction(interaction);
 
     if (!selectMenu) throw new SelectMenuNotFound(interaction);
@@ -86,6 +102,14 @@ export class ComponentManager {
       await selectMenu.handler(interaction);
     } catch (error) {
       throw new FailedToHandleSelectMenu(interaction);
+    }
+  }
+
+  async onSelectMenuInteraction(interaction: AnySelectMenuInteraction) {
+    try {
+      await this.handleSelectMenuInteraction(interaction);
+    } catch (error) {
+      console.error(error);
     }
   }
 }

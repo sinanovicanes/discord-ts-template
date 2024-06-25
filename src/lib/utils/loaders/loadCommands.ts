@@ -12,8 +12,7 @@ const readCommandsDirectory = async (_path: string): Promise<CommandBase[]> => {
 
     fs.readdir(_path, async (err, files) => {
       if (err) {
-        console.error(`Failed to read command directory: ${_path}`);
-        return reject();
+        return reject(`Failed to read command directory: ${_path}`);
       }
 
       for (const file of files) {

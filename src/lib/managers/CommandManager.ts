@@ -50,7 +50,6 @@ export class CommandManager {
       commandKey = interaction.commandName;
     }
 
-    console.log(commandKey);
     return this.commands.get(commandKey);
   }
 
@@ -58,7 +57,7 @@ export class CommandManager {
     return this.commands.has(name);
   }
 
-  async onCommandInteraction(interaction: ChatInputCommandInteraction) {
+  async handleCommandInteraction(interaction: ChatInputCommandInteraction) {
     const command = this.getCommandByInteraction(interaction);
 
     if (!command) throw new CommandNotFound(interaction);
@@ -70,7 +69,17 @@ export class CommandManager {
     }
   }
 
-  async onContextMenuCommandInteraction(interaction: ContextMenuCommandInteraction) {
+  async onCommandInteraction(interaction: ChatInputCommandInteraction) {
+    try {
+      await this.handleCommandInteraction(interaction);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  private async handleContextMenuCommandInteraction(
+    interaction: ContextMenuCommandInteraction
+  ) {
     const command = this.getCommand(interaction.commandName);
 
     if (!command) throw new ContextMenuCommandNotFound(interaction);
@@ -79,6 +88,14 @@ export class CommandManager {
       await command.handler(interaction);
     } catch (error) {
       throw new FailedToHandleContextMenuCommand(interaction);
+    }
+  }
+
+  async onContextMenuCommandInteraction(interaction: ContextMenuCommandInteraction) {
+    try {
+      await this.handleContextMenuCommandInteraction(interaction);
+    } catch (error) {
+      console.error(error);
     }
   }
 

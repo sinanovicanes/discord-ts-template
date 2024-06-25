@@ -23,7 +23,7 @@ export function loadComponents() {
   };
 
   components.forEach((component: new () => ComponentBase) => {
-    let componentKey;
+    let componentKey: string | undefined;
 
     switch (true) {
       case component.prototype instanceof ButtonComponent:
