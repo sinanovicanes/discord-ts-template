@@ -3,8 +3,8 @@ import { UserContextMenuCommandInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()
-class UserContextCommand extends UserContextMenuCommand {
-  name = "user-info";
+class SelectUserContextCommand extends UserContextMenuCommand {
+  name = "select-user";
 
   constructor() {
     super();
@@ -22,4 +22,4 @@ class UserContextCommand extends UserContextMenuCommand {
   }
 }
 
-export default UserContextCommand;
+export default SelectUserContextCommand;

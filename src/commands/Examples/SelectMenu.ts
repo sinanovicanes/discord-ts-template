@@ -36,7 +36,8 @@ class SelectMenuCommand extends SlashCommand {
   async handler(interaction: ChatInputCommandInteraction) {
     await interaction.reply({
       content: "Select menu examples:",
-      components: this.rows
+      components: this.rows,
+      ephemeral: true
     });
   }
 }
