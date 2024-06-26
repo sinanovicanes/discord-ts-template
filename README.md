@@ -1,4 +1,4 @@
-# Discord-ts-boilerplate
+# Discord-ts-template
 
 Lower your development time with organized codebase that includes examples and custom features for [discord.js](https://github.com/discordjs/discord.js). Written in TypeScript for type safety.
 
@@ -43,7 +43,7 @@ You can nest directories in commands directory.
 > You can find the example commands in `/src/commands/Examples`.
 
 > [!TIP]
-> You can make commands for specific guilds by passing guilds like ```guilds: ["GUILD_ID_1", "GUILD_ID_2"]``` in command class.
+> You can make commands for specific guilds by passing guilds like `guilds: ["GUILD_ID_1", "GUILD_ID_2"]` in command class.
 
 ```ts
 @singleton()
@@ -155,6 +155,6 @@ export default class SayHiCommand extends SlashCommand {
 }
 ```
 
-## LICENCE
+## LICENSE
 
 [MIT](https://choosealicense.com/licenses/mit/)

@@ -1,8 +1,8 @@
 {
-  "name": "discord-ts-boilerplate",
+  "name": "discord-ts-template",
   "author": "sinanovicanes",
   "license": "MIT",
-  "description": "Lower your development time for discord bots with organized codebase and custom features for discord.js v14",
+  "description": "Lower your development time with organized codebase that includes examples and custom features for discord.js. Written in TypeScript for type safety.",
   "version": "0.0.1",
   "main": "build/index.js",
   "scripts": {
