@@ -26,8 +26,6 @@ type CommandInteractionsWithOptions =
 export class CommandManager {
   private commands = new Map<CommandBase["name"], CommandBase>();
 
-  constructor(@inject(delay(() => Client)) private readonly client: Client) {}
-
   getCommand(name: string) {
     return this.commands.get(name);
   }
@@ -102,7 +100,7 @@ export class CommandManager {
     }
   }
 
-  async setCommands(commands: CommandBase[]) {
+  private async setCommands(commands: CommandBase[]) {
     commands.forEach(command => {
       this.commands.set(command.name, command);
 
@@ -126,12 +124,49 @@ export class CommandManager {
     });
   }
 
+  private getGuildCommands(guildId: string) {
+    return Array.from(this.commands.values()).filter(command =>
+      command.guilds?.includes(guildId)
+    );
+  }
+
   private async deployCommands(commands: CommandBase[]) {
     const rest = new REST().setToken(env.BOT_TOKEN);
+    const body = commands
+      .filter(command => !command.guilds)
+      .map(command => command.getData());
 
     try {
       await rest.put(Routes.applicationCommands(env.BOT_CLIENT_ID), {
-        body: commands.map(command => command.getData())
+        body
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  private async deployGuildCommands(commands: CommandBase[]) {
+    const guildIds = new Set<string>(
+      commands.reduce((acc, command) => {
+        if (!command.guilds) return acc;
+        return acc.concat(command.guilds);
+      }, [] as string[])
+    );
+
+    guildIds.forEach(guildId => this.deployCommandsOnGuild(guildId));
+  }
+
+  async deployCommandsOnGuild(guildId: string) {
+    const commands = this.getGuildCommands(guildId);
+
+    if (!commands.length) return;
+
+    const rest = new REST().setToken(env.BOT_TOKEN);
+    const body = commands.map(command => command.getData());
+
+    try {
+      await rest.put(Routes.applicationGuildCommands(env.BOT_CLIENT_ID, guildId), {
+        body
       });
     } catch (error) {
       console.error(error);
@@ -143,6 +178,7 @@ export class CommandManager {
 
     this.setCommands(commands);
     this.deployCommands(commands);
+    this.deployGuildCommands(commands);
   }
 
   async clearCommands() {

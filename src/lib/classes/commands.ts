@@ -20,6 +20,7 @@ export interface CommandBase {
   handler(interaction: ChatInputCommandInteraction | ContextMenuCommandInteraction): void;
   userSubGroup?: SubCommandGroup;
   options?: ToAPIApplicationCommandOptions[];
+  guilds?: string[];
   toJSON(): Object;
   getData(): Record<string, any>;
 }
@@ -34,6 +35,7 @@ export abstract class SlashCommand extends SlashCommandBuilder implements Comman
   abstract description: string;
   abstract handler(interaction: ChatInputCommandInteraction): void;
   autoComplete?: CommandAutoComplete;
+  guilds?: string[];
 
   constructor({ subCommands, subCommandGroup }: SlashCommandProps = {}) {
     super();
@@ -54,6 +56,7 @@ export abstract class UserContextMenuCommand
   abstract name: string;
   abstract handler(interaction: UserContextMenuCommandInteraction): void;
   type = ApplicationCommandType.User as ContextMenuCommandType;
+  guilds?: string[];
 
   getData() {
     return matchClassProperties(ContextMenuCommandBuilder, this);
@@ -67,6 +70,7 @@ export abstract class MessageContextMenuCommand
   abstract name: string;
   abstract handler(interaction: MessageContextMenuCommandInteraction): void;
   type = ApplicationCommandType.Message as ContextMenuCommandType;
+  guilds?: string[];
 
   getData() {
     return matchClassProperties(ContextMenuCommandBuilder, this);

@@ -5,6 +5,7 @@ import { singleton } from "tsyringe";
 @singleton()
 class MessageContextCommand extends MessageContextMenuCommand {
   name = "message-react";
+  guilds = ["1122510882711285790"];
 
   async handler(interaction: MessageContextMenuCommandInteraction) {
     const targetMessage = interaction.options.getMessage("message");
