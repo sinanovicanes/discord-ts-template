@@ -4,7 +4,7 @@ import { injectable } from "tsyringe";
 
 @injectable()
 export class NotBotGuard extends Guard {
-  async canActivate(message: Message) {
+  canActivate(message: Message) {
     return !message.author.bot;
   }
 }
