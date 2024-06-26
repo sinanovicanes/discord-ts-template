@@ -31,7 +31,7 @@ const readCommandsDirectory = async (_path: string): Promise<CommandBase[]> => {
               commands.push(container.resolve(command.default));
             }
           } catch (e) {
-            console.error(`Failed to load command: ${file}`);
+            console.error(`Failed to load command: ${file}\n${e}`);
           }
           continue;
         }

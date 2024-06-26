@@ -1,7 +1,7 @@
 import { ClientEvents } from "discord.js";
 import { delay, inject, singleton } from "tsyringe";
 import { Event } from "@/lib/classes";
-import { FailedToHandleEvent } from "@/lib/errors";
+import { FailedToHandleEvent, GuardError } from "@/lib/errors";
 import { loadEvents } from "@/lib/utils/loaders";
 import { Client } from "@/lib/client";
 
@@ -16,6 +16,7 @@ export class EventManager {
     try {
       await event.handler(...args);
     } catch (error) {
+      if (error instanceof GuardError) return;
       throw new FailedToHandleEvent(event);
     }
   }

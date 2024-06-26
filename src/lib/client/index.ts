@@ -1,11 +1,13 @@
 import { CLIENT_OPTIONS_KEY } from "@/lib/constants";
 import { CommandManager } from "@/lib/managers/CommandManager";
 import { EventManager } from "@/lib/managers/EventManager";
-import { ClientOptions, Client as DiscordClient } from "discord.js";
+import { ClientOptions, Collection, Client as DiscordClient } from "discord.js";
 import { inject, singleton } from "tsyringe";
 
 @singleton()
 export class Client extends DiscordClient {
+  readonly cooldowns = new Collection<string, number>();
+
   constructor(
     private readonly commandManager: CommandManager,
     private readonly eventManager: EventManager,

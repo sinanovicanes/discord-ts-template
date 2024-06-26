@@ -4,7 +4,8 @@ import {
   CommandNotFound,
   ContextMenuCommandNotFound,
   FailedToHandleCommand,
-  FailedToHandleContextMenuCommand
+  FailedToHandleContextMenuCommand,
+  GuardError
 } from "@/lib/errors";
 import env from "@/env";
 import { loadCommands } from "@/lib/utils/loaders";
@@ -65,6 +66,7 @@ export class CommandManager {
     try {
       await command.handler(interaction);
     } catch (error) {
+      if (error instanceof GuardError) return;
       throw new FailedToHandleCommand(interaction);
     }
   }
@@ -87,6 +89,7 @@ export class CommandManager {
     try {
       await command.handler(interaction);
     } catch (error) {
+      if (error instanceof GuardError) return;
       throw new FailedToHandleContextMenuCommand(interaction);
     }
   }

@@ -25,7 +25,7 @@ const readEventDirectory = async (_path: string): Promise<Event[]> => {
               events.push(container.resolve(event.default));
             }
           } catch (e) {
-            console.error(`Failed to load event handler: ${file}`);
+            console.error(`Failed to load event handler: ${file}\n${e}`);
           }
           continue;
         }

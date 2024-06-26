@@ -9,3 +9,4 @@ export * from "./ContextMenuCommandNotFound";
 export * from "./FailedToHandleContextMenuCommand";
 export * from "./SelectMenuNotFound";
 export * from "./FailedToHandleSelectMenu";
+export * from "./GuardError";
