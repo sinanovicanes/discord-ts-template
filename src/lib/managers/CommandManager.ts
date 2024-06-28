@@ -1,5 +1,5 @@
+import env from "@/env";
 import { CommandBase, SubCommand, SubCommandGroup } from "@/lib/classes";
-import { Client } from "@/lib/client";
 import {
   CommandNotFound,
   ContextMenuCommandNotFound,
@@ -7,16 +7,16 @@ import {
   FailedToHandleContextMenuCommand,
   GuardError
 } from "@/lib/errors";
-import env from "@/env";
 import { loadCommands } from "@/lib/utils/loaders";
 import {
   AutocompleteInteraction,
   ChatInputCommandInteraction,
+  Collection,
   ContextMenuCommandInteraction,
   REST,
   Routes
 } from "discord.js";
-import { delay, inject, singleton } from "tsyringe";
+import { singleton } from "tsyringe";
 
 type CommandInteractionsWithOptions =
   | ChatInputCommandInteraction
@@ -24,7 +24,7 @@ type CommandInteractionsWithOptions =
 
 @singleton()
 export class CommandManager {
-  private commands = new Map<CommandBase["name"], CommandBase>();
+  private commands = new Collection<CommandBase["name"], CommandBase>();
 
   getCommand(name: string) {
     return this.commands.get(name);
@@ -125,9 +125,7 @@ export class CommandManager {
   }
 
   private getGuildCommands(guildId: string) {
-    return Array.from(this.commands.values()).filter(command =>
-      command.guilds?.includes(guildId)
-    );
+    return this.commands.filter(command => command.guilds?.includes(guildId));
   }
 
   private async deployCommands(commands: CommandBase[]) {
@@ -159,7 +157,7 @@ export class CommandManager {
   async deployCommandsOnGuild(guildId: string) {
     const commands = this.getGuildCommands(guildId);
 
-    if (!commands.length) return;
+    if (!commands.size) return;
 
     const rest = new REST().setToken(env.BOT_TOKEN);
     const body = commands.map(command => command.getData());
