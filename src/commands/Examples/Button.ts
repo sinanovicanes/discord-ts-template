@@ -1,11 +1,11 @@
 import { CancelButton, ConfirmationButton } from "@/components";
 import { SlashCommand } from "@/lib/classes";
-import { UseCooldown } from "@/lib/decorators";
+import { Cooldown } from "@/lib/decorators";
 import { ChatInputCommandInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()
-@UseCooldown()
+@Cooldown()
 class ButtonCommand extends SlashCommand {
   name = "button";
   description = "Shows example button";

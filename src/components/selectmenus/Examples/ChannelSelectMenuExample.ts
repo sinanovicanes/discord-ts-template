@@ -1,10 +1,10 @@
 import { ChannelSelectMenuComponent } from "@/lib/classes/components";
-import { UseCooldown } from "@/lib/decorators";
+import { Cooldown } from "@/lib/decorators";
 import { ChannelSelectMenuInteraction, ChannelType } from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()
-@UseCooldown()
+@Cooldown()
 class ChannelSelectMenu extends ChannelSelectMenuComponent {
   constructor() {
     super({

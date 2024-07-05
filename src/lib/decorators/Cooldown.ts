@@ -8,14 +8,12 @@ interface CooldownOptions {
   global?: boolean;
 }
 
-export function UseCooldown(cooldownOptions: CooldownOptions = {}): ClassDecorator {
+export function Cooldown(cooldownOptions: CooldownOptions = {}): ClassDecorator {
   return (target: Function) => {
     const handler = target.prototype.handler;
 
     if (!handler)
-      throw new Error(
-        `Unable to find handler in ${target.name} for UseCooldown decorator`
-      );
+      throw new Error(`Unable to find handler in ${target.name} for Cooldown decorator`);
 
     const isGlobal = cooldownOptions.global ?? false;
     const timeout = cooldownOptions.timeout ?? DEFAULT_COOLDOWN;
@@ -42,7 +40,7 @@ export function UseCooldown(cooldownOptions: CooldownOptions = {}): ClassDecorat
       client.cooldowns.set(commandKey, Date.now());
       setTimeout(() => client.cooldowns.delete(commandKey), timeout);
 
-      return handler.bind(this)(interaction);
+      return handler.apply(this, interaction);
     };
   };
 }

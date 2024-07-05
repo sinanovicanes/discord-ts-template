@@ -1,2 +1,2 @@
 export * from "./UseGuards";
-export * from "./UseCooldown";
+export * from "./Cooldown";
