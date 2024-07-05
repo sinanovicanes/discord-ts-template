@@ -135,13 +135,13 @@ export default class LogMessageEvent extends MessageCreateEvent {
 }
 ```
 
-### UseCooldown
+### Cooldown
 
-You can use `UseCooldown` decorator to add cooldown to command or component handlers for user. You can specify the cooldown time in milliseconds and determine whether the is timeout by globally or only for this guild.
+You can use `Cooldown` decorator to add cooldown to command or component handlers for user. You can specify the cooldown time in milliseconds and determine whether the is timeout by globally or only for this guild.
 
 ```ts
 @singleton()
-@UseCooldown({ global: true, timeout: 30 * 1000 })
+@Cooldown({ global: true, timeout: 30 * 1000 })
 export default class SayHiCommand extends SlashCommand {
   name = "say_hi";
   description = "Says hi";
