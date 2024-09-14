@@ -1,12 +1,14 @@
-import { ClientReadyEvent } from "@app/common";
+import { ClientReadyEvent, Logger } from "@app/common";
 import { singleton } from "tsyringe";
 
 @singleton()
 class LogReady extends ClientReadyEvent {
+  private readonly logger = new Logger(LogReady.name);
+
   once = true;
 
   async handler() {
-    console.log("Bot is ready");
+    this.logger.info("Bot is ready");
   }
 }
 

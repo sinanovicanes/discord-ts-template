@@ -1,6 +1,8 @@
-import { Schedule } from "@app/common";
+import { Logger, Schedule } from "@app/common";
 
 export default class ExampleSchedule extends Schedule {
+  private readonly logger = new Logger(ExampleSchedule.name);
+
   name = "example";
 
   constructor() {
@@ -8,6 +10,6 @@ export default class ExampleSchedule extends Schedule {
   }
 
   onSchedule() {
-    console.log("Example schedule has been executed");
+    this.logger.log("Example schedule has been executed");
   }
 }
