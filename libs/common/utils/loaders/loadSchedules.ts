@@ -1,9 +1,9 @@
-import { Schedule } from "@/lib/classes/schedule";
+import { Schedule } from "../../classes/schedule";
 import fs from "fs";
 import path from "path";
 import { container } from "tsyringe";
 
-const SCHEDULES_PATH = path.join(__dirname, "../../../schedules");
+const SCHEDULES_PATH = path.join(process.cwd(), "src", "schedules");
 
 const readScheduleDirectory = async (_path: string): Promise<Schedule[]> => {
   return new Promise((resolve, reject) => {

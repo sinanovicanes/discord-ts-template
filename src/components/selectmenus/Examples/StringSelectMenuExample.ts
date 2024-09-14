@@ -1,4 +1,4 @@
-import { StringSelectMenuComponent } from "@/lib/classes/components";
+import { StringSelectMenuComponent } from "@app/common";
 import { StringSelectMenuInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 

@@ -1,4 +1,4 @@
-import { UserSelectMenuComponent } from "@/lib/classes/components";
+import { UserSelectMenuComponent } from "@app/common";
 import { UserSelectMenuInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 

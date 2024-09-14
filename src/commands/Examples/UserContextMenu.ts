@@ -1,4 +1,4 @@
-import { UserContextMenuCommand } from "@/lib/classes";
+import { UserContextMenuCommand } from "@app/common";
 import { UserContextMenuCommandInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 

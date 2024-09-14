@@ -1,4 +1,4 @@
-import { MentionableSelectMenuComponent } from "@/lib/classes/components";
+import { MentionableSelectMenuComponent } from "@app/common";
 import { MentionableSelectMenuInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 

@@ -1,4 +1,4 @@
-import { Guard } from "@/lib/classes";
+import { Guard } from "@app/common";
 import { Message } from "discord.js";
 import { injectable } from "tsyringe";
 

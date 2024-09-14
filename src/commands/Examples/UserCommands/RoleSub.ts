@@ -1,4 +1,4 @@
-import { SubCommand } from "@/lib/classes";
+import { SubCommand } from "@app/common";
 import { ChatInputCommandInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 

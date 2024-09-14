@@ -1,5 +1,5 @@
 import { ExampleModal } from "@/components";
-import { SlashCommand } from "@/lib/classes";
+import { SlashCommand } from "@app/common";
 import { ChatInputCommandInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 

@@ -1,7 +1,6 @@
-import env from "@/env";
 import "reflect-metadata";
-import { Client } from "@/lib/client";
-import { CLIENT_OPTIONS_KEY } from "@/lib/constants";
+import env from "@/env";
+import { Client, CLIENT_OPTIONS_KEY } from "@app/common";
 import { ClientOptions, GatewayIntentBits } from "discord.js";
 import { container } from "tsyringe";
 
@@ -24,7 +23,7 @@ process.on("SIGINT", () => {
 });
 
 const start = async () => {
-  discordClient.connect(env.BOT_TOKEN);
+  discordClient.connect(env.BOT_TOKEN).catch(console.error);
 };
 
 start();

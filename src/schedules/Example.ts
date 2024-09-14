@@ -1,4 +1,4 @@
-import { Schedule } from "@/lib/classes";
+import { Schedule } from "@app/common";
 
 export default class ExampleSchedule extends Schedule {
   name = "example";

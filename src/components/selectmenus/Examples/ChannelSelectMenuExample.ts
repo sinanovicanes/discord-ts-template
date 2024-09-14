@@ -1,5 +1,4 @@
-import { ChannelSelectMenuComponent } from "@/lib/classes/components";
-import { Cooldown } from "@/lib/decorators";
+import { ChannelSelectMenuComponent, Cooldown } from "@app/common";
 import { ChannelSelectMenuInteraction, ChannelType } from "discord.js";
 import { singleton } from "tsyringe";
 

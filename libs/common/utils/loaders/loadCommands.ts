@@ -1,10 +1,10 @@
-import { CommandBase, SlashCommand } from "@/lib/classes";
+import { CommandBase, SlashCommand } from "../../classes";
 import { ContextMenuCommandBuilder } from "discord.js";
 import fs from "fs";
 import path from "path";
 import { container } from "tsyringe";
 
-const COMMANDS_PATH = path.join(__dirname, "../../../commands");
+const COMMANDS_PATH = path.join(process.cwd(), "src", "commands");
 
 const readCommandsDirectory = async (_path: string): Promise<CommandBase[]> => {
   return new Promise((resolve, reject) => {

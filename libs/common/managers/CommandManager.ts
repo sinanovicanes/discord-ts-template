@@ -1,13 +1,13 @@
-import env from "@/env";
-import { CommandBase, SubCommand, SubCommandGroup } from "@/lib/classes";
+import env from "../utils/env";
+import { CommandBase, SubCommand, SubCommandGroup } from "../classes";
 import {
   CommandNotFound,
   ContextMenuCommandNotFound,
   FailedToHandleCommand,
   FailedToHandleContextMenuCommand,
   GuardError
-} from "@/lib/errors";
-import { loadCommands } from "@/lib/utils/loaders";
+} from "../errors";
+import { loadCommands } from "../utils/loaders";
 import {
   AutocompleteInteraction,
   ChatInputCommandInteraction,

@@ -1,5 +1,5 @@
-import { SlashCommand } from "@/lib/classes";
 import { ChatInputCommandInteraction, bold } from "discord.js";
+import { SlashCommand } from "@app/common";
 import { singleton } from "tsyringe";
 
 @singleton()

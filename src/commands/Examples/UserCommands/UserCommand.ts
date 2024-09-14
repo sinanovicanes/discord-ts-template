@@ -1,7 +1,7 @@
-import { SlashCommand } from "@/lib/classes";
 import { ChatInputCommandInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 import UserSubGroup from "./UserSubGroup";
+import { SlashCommand } from "@app/common";
 
 @singleton()
 class UserCommand extends SlashCommand {

@@ -1,6 +1,5 @@
 import { NotBotGuard } from "@/guards";
-import { MessageCreateEvent } from "@/lib/classes";
-import { UseGuards } from "@/lib/decorators";
+import { MessageCreateEvent, UseGuards } from "@app/common";
 import { Message } from "discord.js";
 import { singleton } from "tsyringe";
 

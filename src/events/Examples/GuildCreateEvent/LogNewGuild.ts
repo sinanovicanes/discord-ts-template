@@ -1,5 +1,4 @@
-import { GuildCreateEvent } from "@/lib/classes";
-import { Client } from "@/lib/client";
+import { Client, GuildCreateEvent } from "@app/common";
 import { Guild } from "discord.js";
 import { singleton } from "tsyringe";
 

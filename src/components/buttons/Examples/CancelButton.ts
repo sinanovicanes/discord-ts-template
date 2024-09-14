@@ -1,4 +1,4 @@
-import { ButtonComponent } from "@/lib/classes/components";
+import { ButtonComponent } from "@app/common";
 import { ButtonInteraction, ButtonStyle } from "discord.js";
 import { singleton } from "tsyringe";
 

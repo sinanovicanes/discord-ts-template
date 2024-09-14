@@ -1,8 +1,8 @@
-import { SubCommandGroup } from "@/lib/classes";
 import { ChatInputCommandInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 import InfoSubCommand from "./GetId";
 import RoleSubCommand from "./RoleSub";
+import { SubCommandGroup } from "@app/common";
 
 @singleton()
 class UserSubGroup extends SubCommandGroup {

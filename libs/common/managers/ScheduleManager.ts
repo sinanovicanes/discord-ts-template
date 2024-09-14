@@ -1,4 +1,4 @@
-import { loadSchedules } from "@/lib/utils/loaders";
+import { loadSchedules } from "../utils/loaders";
 import { Collection } from "discord.js";
 import { singleton } from "tsyringe";
 import { Schedule } from "../classes/schedule";

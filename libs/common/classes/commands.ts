@@ -1,5 +1,5 @@
-import { CommandAutoComplete } from "@/lib/types/CommandAutoComplete";
-import { matchClassProperties } from "@/lib/utils";
+import { CommandAutoComplete } from "../types/CommandAutoComplete";
+import { matchClassProperties } from "../utils";
 import {
   ApplicationCommandType,
   ChatInputCommandInteraction,

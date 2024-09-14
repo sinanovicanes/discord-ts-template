@@ -1,4 +1,4 @@
-import { ComponentBase } from "@/lib/classes/components";
+import { ComponentBase } from "../classes/components";
 import {
   ButtonNotFound,
   FailedToHandleButton,
@@ -6,7 +6,7 @@ import {
   FailedToHandleSelectMenu,
   ModalNotFound,
   SelectMenuNotFound
-} from "@/lib/errors";
+} from "../errors";
 import {
   AnySelectMenuInteraction,
   ButtonInteraction,

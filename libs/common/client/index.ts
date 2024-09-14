@@ -1,6 +1,6 @@
-import { CLIENT_OPTIONS_KEY } from "@/lib/constants";
-import { CommandManager } from "@/lib/managers/CommandManager";
-import { EventManager } from "@/lib/managers/EventManager";
+import { CLIENT_OPTIONS_KEY } from "../constants";
+import { CommandManager } from "../managers/CommandManager";
+import { EventManager } from "../managers/EventManager";
 import { ClientOptions, Collection, Client as DiscordClient } from "discord.js";
 import { inject, singleton } from "tsyringe";
 import { ScheduleManager } from "../managers";
@@ -22,11 +22,11 @@ export class Client extends DiscordClient {
     await this.eventManager.initialize();
     await this.commandManager.initialize();
     await this.scheduleManager.initialize();
-    this.login(token);
+    await this.login(token);
   }
 
-  disconnect() {
-    this.commandManager.clearCommands();
-    this.destroy();
+  async disconnect() {
+    await this.commandManager.clearCommands();
+    await this.destroy();
   }
 }

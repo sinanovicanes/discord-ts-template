@@ -1,4 +1,3 @@
-import components from "@/components";
 import {
   ButtonComponent,
   ChannelSelectMenuComponent,
@@ -8,7 +7,7 @@ import {
   RoleSelectMenuComponent,
   StringSelectMenuComponent,
   UserSelectMenuComponent
-} from "@/lib/classes";
+} from "../../classes/components";
 import { container } from "tsyringe";
 
 export function loadComponents() {
@@ -22,7 +21,7 @@ export function loadComponents() {
     mentionableSelectMenus: new Map<ComponentBase["customId"], ComponentBase>()
   };
 
-  components.forEach((component: new () => ComponentBase) => {
+  require("@/components").default.forEach((component: new () => ComponentBase) => {
     let componentKey: string | undefined;
 
     switch (true) {

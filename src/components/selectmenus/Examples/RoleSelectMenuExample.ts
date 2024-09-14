@@ -1,4 +1,4 @@
-import { RoleSelectMenuComponent } from "@/lib/classes/components";
+import { RoleSelectMenuComponent } from "@app/common";
 import { RoleSelectMenuInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 

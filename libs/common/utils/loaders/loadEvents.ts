@@ -1,9 +1,9 @@
 import fs from "fs";
 import path from "path";
 import { container } from "tsyringe";
-import { Event } from "@/lib/classes";
+import { Event } from "../../classes";
 
-const EVENTS_PATH = path.join(__dirname, "../../../events");
+const EVENTS_PATH = path.join(process.cwd(), "src", "events");
 
 const readEventDirectory = async (_path: string): Promise<Event[]> => {
   return new Promise((resolve, reject) => {

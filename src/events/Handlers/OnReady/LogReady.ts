@@ -1,4 +1,4 @@
-import { ClientReadyEvent } from "@/lib/classes/events";
+import { ClientReadyEvent } from "@app/common";
 import { singleton } from "tsyringe";
 
 @singleton()

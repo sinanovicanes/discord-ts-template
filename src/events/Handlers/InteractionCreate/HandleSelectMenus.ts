@@ -1,5 +1,4 @@
-import { InteractionCreateEvent } from "@/lib/classes";
-import { ComponentManager } from "@/lib/managers";
+import { ComponentManager, InteractionCreateEvent } from "@app/common";
 import { AnySelectMenuInteraction, Interaction } from "discord.js";
 import { singleton } from "tsyringe";
 

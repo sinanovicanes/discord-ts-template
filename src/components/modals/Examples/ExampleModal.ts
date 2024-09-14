@@ -1,4 +1,4 @@
-import { ModalComponent } from "@/lib/classes/components";
+import { ModalComponent } from "@app/common";
 import {
   ActionRowBuilder,
   ModalSubmitInteraction,

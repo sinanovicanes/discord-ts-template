@@ -1,5 +1,4 @@
-import { InteractionCreateEvent } from "@/lib/classes";
-import { CommandManager } from "@/lib/managers";
+import { CommandManager, InteractionCreateEvent } from "@app/common";
 import { ChatInputCommandInteraction, Interaction } from "discord.js";
 import { singleton } from "tsyringe";
 

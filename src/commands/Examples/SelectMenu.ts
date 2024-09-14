@@ -5,7 +5,7 @@ import {
   StringSelectMenu,
   UserSelectMenu
 } from "@/components";
-import { SelectMenus, SlashCommand } from "@/lib/classes";
+import { SelectMenus, SlashCommand } from "@app/common";
 import { ActionRowBuilder, ChatInputCommandInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 

@@ -1,10 +1,5 @@
-import { InteractionCreateEvent, SlashCommand } from "@/lib/classes";
-import { CommandManager } from "@/lib/managers";
-import {
-  ApplicationCommandOptionChoiceData,
-  AutocompleteInteraction,
-  ChatInputCommandInteraction
-} from "discord.js";
+import { CommandManager, InteractionCreateEvent, SlashCommand } from "@app/common";
+import { ApplicationCommandOptionChoiceData, AutocompleteInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()

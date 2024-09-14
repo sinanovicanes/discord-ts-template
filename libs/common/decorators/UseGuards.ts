@@ -1,4 +1,4 @@
-import { Guard } from "@/lib/classes";
+import { Guard } from "../classes";
 import { container } from "tsyringe";
 import { constructor } from "tsyringe/dist/typings/types";
 import { GuardError } from "../errors";
