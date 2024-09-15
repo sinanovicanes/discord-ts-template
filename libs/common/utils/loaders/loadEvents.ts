@@ -19,7 +19,7 @@ const readEventDirectory = async (_path: string): Promise<Event[]> => {
 
         if (file.endsWith(".ts") || file.endsWith(".js")) {
           try {
-            const event = require(filePath);
+            const event = await import(filePath);
 
             if (!!event.default && event.default.prototype instanceof Event) {
               events.push(container.resolve(event.default));

@@ -19,7 +19,7 @@ const readScheduleDirectory = async (_path: string): Promise<Schedule[]> => {
 
         if (file.endsWith(".ts") || file.endsWith(".js")) {
           try {
-            const schedule = require(filePath);
+            const schedule = await import(filePath);
 
             if (!!schedule.default && schedule.default.prototype instanceof Schedule) {
               schedules.push(container.resolve(schedule.default));

@@ -20,7 +20,7 @@ const readCommandsDirectory = async (_path: string): Promise<CommandBase[]> => {
 
         if (file.endsWith(".ts") || file.endsWith(".js")) {
           try {
-            const command = require(filePath);
+            const command = await import(filePath);
 
             if (!command.default) continue;
 
