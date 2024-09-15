@@ -31,6 +31,7 @@ export class Client extends DiscordClient {
 
   async disconnect() {
     this.logger.info("Disconnecting from Discord...");
+    this.scheduleManager.stop();
     await this.commandManager.clearCommands();
     await this.destroy();
     this.logger.info("Disconnected from Discord!");

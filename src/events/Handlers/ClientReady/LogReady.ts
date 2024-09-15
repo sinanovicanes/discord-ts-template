@@ -7,7 +7,7 @@ class LogReady extends ClientReadyEvent {
 
   once = true;
 
-  async handler() {
+  handler() {
     this.logger.info("Bot is ready");
   }
 }
