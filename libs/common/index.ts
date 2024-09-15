@@ -1,5 +1,6 @@
 export * from "./classes";
 export * from "./client";
+export * from "./factories";
 export * from "./decorators";
 export * from "./errors";
 export * from "./managers";
