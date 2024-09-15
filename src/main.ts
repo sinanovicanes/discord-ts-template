@@ -13,12 +13,7 @@ async function main() {
     ]
   });
 
-  client.connect(env.BOT_TOKEN).catch(console.error);
-
-  process.on("SIGINT", async () => {
-    await client.disconnect();
-    process.exit();
-  });
+  client.connect(env.BOT_TOKEN);
 }
 
 main().catch(e => {
