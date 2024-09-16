@@ -17,7 +17,9 @@ import {
 
 export interface CommandBase {
   name: string;
-  handler(interaction: ChatInputCommandInteraction | ContextMenuCommandInteraction): void;
+  handler(
+    interaction: ChatInputCommandInteraction | ContextMenuCommandInteraction
+  ): void | Promise<void>;
   userSubGroup?: SubCommandGroup;
   options?: ToAPIApplicationCommandOptions[];
   guilds?: string[];

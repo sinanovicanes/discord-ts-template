@@ -4,7 +4,7 @@ export abstract class Event<T extends keyof ClientEvents = keyof ClientEvents> {
   once: boolean = false;
 
   constructor(public event: T) {}
-  abstract handler(...args: ClientEvents[T]): void;
+  abstract handler(...args: ClientEvents[T]): void | Promise<void>;
 }
 
 export abstract class ApplicationCommandPermissionsUpdateEvent extends Event<Events.ApplicationCommandPermissionsUpdate> {

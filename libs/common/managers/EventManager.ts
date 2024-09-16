@@ -1,12 +1,13 @@
 import { ClientEvents } from "discord.js";
 import { delay, inject, singleton } from "tsyringe";
-import { Event } from "../classes";
+import { Event, Logger } from "../classes";
 import { FailedToHandleEvent, GuardError } from "../errors";
 import { loadEvents } from "../utils/loaders";
 import { Client } from "../client";
 
 @singleton()
 export class EventManager {
+  private readonly logger = new Logger(EventManager.name);
   constructor(@inject(delay(() => Client)) private readonly client: Client) {}
 
   private async trigger<T extends keyof ClientEvents>(
@@ -23,20 +24,12 @@ export class EventManager {
 
   private addEventHandler<T extends keyof ClientEvents>(event: Event<T>) {
     if (event.once)
-      return this.client.once(event.event as T, async (...args: ClientEvents[T]) => {
-        try {
-          await this.trigger(event, ...args);
-        } catch (error) {
-          console.error(error);
-        }
+      return this.client.once(event.event as T, (...args: ClientEvents[T]) => {
+        this.trigger(event, ...args).catch(this.logger.error);
       });
 
-    this.client.on(event.event as T, async (...args: ClientEvents[T]) => {
-      try {
-        await this.trigger(event, ...args);
-      } catch (error) {
-        console.error(error);
-      }
+    this.client.on(event.event as T, (...args: ClientEvents[T]) => {
+      this.trigger(event, ...args).catch(this.logger.error);
     });
   }
 

@@ -40,7 +40,7 @@ type ComponentInteractions =
 
 export interface ComponentBase {
   customId: string;
-  handler(interaction: ComponentInteractions): void;
+  handler(interaction: ComponentInteractions): void | Promise<void>;
 }
 
 type ComponentPropsBase = Omit<ComponentBase, "handler">;

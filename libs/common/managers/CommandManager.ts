@@ -1,5 +1,5 @@
 import env from "../utils/env";
-import { CommandBase, SubCommand, SubCommandGroup } from "../classes";
+import { CommandBase, Logger, SubCommand, SubCommandGroup } from "../classes";
 import {
   CommandNotFound,
   ContextMenuCommandNotFound,
@@ -24,7 +24,8 @@ type CommandInteractionsWithOptions =
 
 @singleton()
 export class CommandManager {
-  private commands = new Collection<CommandBase["name"], CommandBase>();
+  private readonly logger = new Logger(CommandManager.name);
+  private readonly commands = new Collection<CommandBase["name"], CommandBase>();
 
   getCommand(name: string) {
     return this.commands.get(name);
@@ -69,12 +70,8 @@ export class CommandManager {
     }
   }
 
-  async onCommandInteraction(interaction: ChatInputCommandInteraction) {
-    try {
-      await this.handleCommandInteraction(interaction);
-    } catch (error) {
-      console.error(error);
-    }
+  onCommandInteraction(interaction: ChatInputCommandInteraction) {
+    this.handleCommandInteraction(interaction).catch(this.logger.error);
   }
 
   private async handleContextMenuCommandInteraction(
@@ -92,12 +89,8 @@ export class CommandManager {
     }
   }
 
-  async onContextMenuCommandInteraction(interaction: ContextMenuCommandInteraction) {
-    try {
-      await this.handleContextMenuCommandInteraction(interaction);
-    } catch (error) {
-      console.error(error);
-    }
+  onContextMenuCommandInteraction(interaction: ContextMenuCommandInteraction) {
+    this.handleContextMenuCommandInteraction(interaction).catch(this.logger.error);
   }
 
   private async setCommands(commands: CommandBase[]) {
@@ -134,13 +127,11 @@ export class CommandManager {
       .filter(command => !command.guilds)
       .map(command => command.getData());
 
-    try {
-      await rest.put(Routes.applicationCommands(env.BOT_CLIENT_ID), {
+    rest
+      .put(Routes.applicationCommands(env.BOT_CLIENT_ID), {
         body
-      });
-    } catch (error) {
-      console.error(error);
-    }
+      })
+      .catch(this.logger.error);
   }
 
   private async deployGuildCommands(commands: CommandBase[]) {
@@ -162,13 +153,11 @@ export class CommandManager {
     const rest = new REST().setToken(env.BOT_TOKEN);
     const body = commands.map(command => command.getData());
 
-    try {
-      await rest.put(Routes.applicationGuildCommands(env.BOT_CLIENT_ID, guildId), {
+    rest
+      .put(Routes.applicationGuildCommands(env.BOT_CLIENT_ID, guildId), {
         body
-      });
-    } catch (error) {
-      console.error(error);
-    }
+      })
+      .catch(this.logger.error);
   }
 
   async initialize() {
@@ -182,12 +171,10 @@ export class CommandManager {
   async clearCommands() {
     const rest = new REST().setToken(env.BOT_TOKEN);
 
-    try {
-      await rest.put(Routes.applicationCommands(env.BOT_CLIENT_ID), {
+    rest
+      .put(Routes.applicationCommands(env.BOT_CLIENT_ID), {
         body: []
-      });
-    } catch (error) {
-      console.error(error);
-    }
+      })
+      .catch(this.logger.error);
   }
 }

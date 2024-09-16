@@ -14,9 +14,11 @@ import {
 } from "discord.js";
 import { singleton } from "tsyringe";
 import { loadComponents } from "../utils/loaders";
+import { Logger } from "../classes";
 
 @singleton()
 export class ComponentManager {
+  private readonly logger = new Logger(ComponentManager.name);
   components: Record<string, Map<ComponentBase["customId"], ComponentBase>> =
     loadComponents();
 
@@ -65,12 +67,8 @@ export class ComponentManager {
     }
   }
 
-  async onButtonInteraction(interaction: ButtonInteraction) {
-    try {
-      await this.handleButtonInteraction(interaction);
-    } catch (error) {
-      console.error(error);
-    }
+  onButtonInteraction(interaction: ButtonInteraction) {
+    this.handleButtonInteraction(interaction).catch(this.logger.error);
   }
 
   private async handleModalSubmitInteraction(interaction: ModalSubmitInteraction) {
@@ -85,12 +83,8 @@ export class ComponentManager {
     }
   }
 
-  async onModalSubmitInteraction(interaction: ModalSubmitInteraction) {
-    try {
-      await this.handleModalSubmitInteraction(interaction);
-    } catch (error) {
-      console.error(error);
-    }
+  onModalSubmitInteraction(interaction: ModalSubmitInteraction) {
+    this.handleModalSubmitInteraction(interaction).catch(this.logger.error);
   }
 
   private async handleSelectMenuInteraction(interaction: AnySelectMenuInteraction) {
@@ -105,11 +99,7 @@ export class ComponentManager {
     }
   }
 
-  async onSelectMenuInteraction(interaction: AnySelectMenuInteraction) {
-    try {
-      await this.handleSelectMenuInteraction(interaction);
-    } catch (error) {
-      console.error(error);
-    }
+  onSelectMenuInteraction(interaction: AnySelectMenuInteraction) {
+    this.handleSelectMenuInteraction(interaction).catch(this.logger.error);
   }
 }
