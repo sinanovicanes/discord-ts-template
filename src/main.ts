@@ -13,7 +13,7 @@ async function main() {
     ]
   });
 
-  client.connect(env.BOT_TOKEN);
+  await client.connect(env.BOT_TOKEN);
 }
 
 main().catch(e => {
