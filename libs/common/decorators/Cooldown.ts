@@ -40,7 +40,7 @@ export function Cooldown(cooldownOptions: CooldownOptions = {}): ClassDecorator 
       client.cooldowns.set(commandKey, Date.now());
       setTimeout(() => client.cooldowns.delete(commandKey), timeout);
 
-      return handler.apply(this, interaction);
+      return handler.apply(this, [interaction]);
     };
   };
 }
