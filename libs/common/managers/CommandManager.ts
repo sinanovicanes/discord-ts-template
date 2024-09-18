@@ -6,15 +6,19 @@ import {
   REST,
   Routes
 } from "discord.js";
-import { CommandBase, Logger, SubCommand, SubCommandGroup } from "../classes";
+import { container } from "tsyringe";
+import { constructor } from "tsyringe/dist/typings/types";
+import { CommandBase, Logger, Middleware, SubCommand, SubCommandGroup } from "../classes";
 import { Injectable } from "../decorators";
 import {
   CommandNotFound,
   ContextMenuCommandNotFound,
   FailedToHandleCommand,
   FailedToHandleContextMenuCommand,
-  GuardError
+  GuardError,
+  MiddlewareError
 } from "../errors";
+import { MiddlewareExecutor } from "../executors/MiddlewareExecutor";
 import { pluralify } from "../utils";
 import env from "../utils/env";
 import { loadCommands } from "../utils/loaders";
@@ -25,8 +29,15 @@ type CommandInteractionsWithOptions =
 
 @Injectable()
 export class CommandManager {
+  private readonly middlewareExecutor = new MiddlewareExecutor();
   private readonly logger = new Logger(CommandManager.name);
   private readonly commands = new Collection<CommandBase["name"], CommandBase>();
+
+  addMiddlewares(...middlewares: constructor<Middleware>[]) {
+    this.middlewareExecutor.add(
+      ...middlewares.map(middleware => container.resolve(middleware))
+    );
+  }
 
   getCommand(name: string) {
     return this.commands.get(name);
@@ -64,9 +75,10 @@ export class CommandManager {
     if (!command) throw new CommandNotFound(interaction);
 
     try {
+      await this.middlewareExecutor.execute(command, interaction);
       await command.handler(interaction);
     } catch (error) {
-      if (error instanceof GuardError) return;
+      if (error instanceof GuardError || error instanceof MiddlewareError) return;
       throw new FailedToHandleCommand(interaction);
     }
   }
@@ -83,9 +95,10 @@ export class CommandManager {
     if (!command) throw new ContextMenuCommandNotFound(interaction);
 
     try {
+      await this.middlewareExecutor.execute(command, interaction);
       await command.handler(interaction);
     } catch (error) {
-      if (error instanceof GuardError) return;
+      if (error instanceof GuardError || error instanceof MiddlewareError) return;
       throw new FailedToHandleContextMenuCommand(interaction);
     }
   }

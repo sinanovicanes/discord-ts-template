@@ -3,8 +3,9 @@ import { CommandManager } from "../managers/CommandManager";
 import { EventManager } from "../managers/EventManager";
 import { ClientOptions, Collection, Client as DiscordClient } from "discord.js";
 import { ComponentManager, ScheduleManager } from "../managers";
-import { Logger } from "../classes";
+import { Logger, Middleware } from "../classes";
 import { Inject, Injectable } from "../decorators";
+import { constructor } from "tsyringe/dist/typings/types";
 
 @Injectable()
 export class Client extends DiscordClient {
@@ -19,6 +20,10 @@ export class Client extends DiscordClient {
     @Inject(CLIENT_OPTIONS_KEY) public clientOptions: ClientOptions
   ) {
     super(clientOptions);
+  }
+
+  addCommandMiddlewares(...middlewares: constructor<Middleware>[]) {
+    this.commandManager.addMiddlewares(...middlewares);
   }
 
   async connect(token: string) {
