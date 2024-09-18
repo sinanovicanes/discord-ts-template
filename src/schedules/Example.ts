@@ -6,10 +6,10 @@ export default class ExampleSchedule extends Schedule {
   name = "example";
 
   constructor() {
-    super("*/5 * * * * *");
+    super("0 * * * * *");
   }
 
   onSchedule() {
-    // this.logger.log("Example schedule has been executed");
+    this.logger.log("Example schedule has been executed");
   }
 }
