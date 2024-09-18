@@ -3,7 +3,7 @@ import { ButtonInteraction, ButtonStyle } from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()
-class CancelButton extends ButtonComponent {
+export class CancelButton extends ButtonComponent {
   constructor() {
     super({
       customId: "cancel_button",
@@ -19,5 +19,3 @@ class CancelButton extends ButtonComponent {
     });
   }
 }
-
-export default CancelButton;

@@ -3,7 +3,7 @@ import { MentionableSelectMenuInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()
-class MentionableSelectMenu extends MentionableSelectMenuComponent {
+export class MentionableSelectMenu extends MentionableSelectMenuComponent {
   constructor() {
     super({
       customId: "mentionable_select_example_menu",
@@ -26,5 +26,3 @@ class MentionableSelectMenu extends MentionableSelectMenuComponent {
     });
   }
 }
-
-export default MentionableSelectMenu;

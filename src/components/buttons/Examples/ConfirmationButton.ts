@@ -3,7 +3,7 @@ import { ButtonInteraction, ButtonStyle } from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()
-class ConfirmationButton extends ButtonComponent {
+export class ConfirmationButton extends ButtonComponent {
   constructor() {
     super({
       customId: "confirm_button",
@@ -19,5 +19,3 @@ class ConfirmationButton extends ButtonComponent {
     });
   }
 }
-
-export default ConfirmationButton;

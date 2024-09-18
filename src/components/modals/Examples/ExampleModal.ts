@@ -24,7 +24,7 @@ const rows = [
 ];
 
 @singleton()
-class ExampleModal extends ModalComponent {
+export class ExampleModal extends ModalComponent {
   constructor() {
     super({
       customId: "example_modal",
@@ -37,12 +37,10 @@ class ExampleModal extends ModalComponent {
     const favoriteColor = interaction.fields.getTextInputValue("favorite_color");
     const hobbies = interaction.fields.getTextInputValue("hobbies");
 
-    interaction.reply({
+    await interaction.reply({
       content:
         `Your favorite color is ${favoriteColor} and your hobbies are: ${hobbies}`.trim(),
       ephemeral: true
     });
   }
 }
-
-export default ExampleModal;

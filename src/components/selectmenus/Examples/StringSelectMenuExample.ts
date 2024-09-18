@@ -3,7 +3,7 @@ import { StringSelectMenuInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()
-class StringSelectMenu extends StringSelectMenuComponent {
+export class StringSelectMenu extends StringSelectMenuComponent {
   constructor() {
     super({
       customId: "string_select_example_menu",
@@ -26,5 +26,3 @@ class StringSelectMenu extends StringSelectMenuComponent {
     });
   }
 }
-
-export default StringSelectMenu;

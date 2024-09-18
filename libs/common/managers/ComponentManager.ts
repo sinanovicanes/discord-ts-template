@@ -15,44 +15,64 @@ import {
 import { singleton } from "tsyringe";
 import { loadComponents } from "../utils/loaders";
 import { Logger } from "../classes";
+import { ComponentKind } from "../enums";
 
 @singleton()
 export class ComponentManager {
   private readonly logger = new Logger(ComponentManager.name);
-  components: Record<string, Map<ComponentBase["customId"], ComponentBase>> =
-    loadComponents();
+  private components: Record<
+    ComponentKind,
+    Map<ComponentBase["customId"], ComponentBase>
+  > = {
+    [ComponentKind.BUTTON]: new Map(),
+    [ComponentKind.MODAL]: new Map(),
+    [ComponentKind.STRING_SELECT_MENU]: new Map(),
+    [ComponentKind.USER_SELECT_MENU]: new Map(),
+    [ComponentKind.ROLE_SELECT_MENU]: new Map(),
+    [ComponentKind.CHANNEL_SELECT_MENU]: new Map(),
+    [ComponentKind.MENTIONABLE_SELECT_MENU]: new Map()
+  };
+
+  constructor() {
+    this.initialize().catch(e => this.logger.error(e));
+  }
+
+  async initialize() {
+    this.components = await loadComponents();
+    this.logger.info(`${Object.keys(this.components).length} components loaded`);
+  }
 
   getButton(customId: ComponentBase["customId"]) {
-    return this.components.buttons.get(customId);
+    return this.components.button.get(customId);
   }
 
   getModal(customId: ComponentBase["customId"]) {
-    return this.components.modals.get(customId);
+    return this.components.modal.get(customId);
   }
 
   getSelectMenuFromInteraction(interaction: AnySelectMenuInteraction) {
     switch (true) {
       case interaction.isStringSelectMenu():
-        return this.components.stringSelectMenus.get(interaction.customId);
+        return this.components.stringSelectMenu.get(interaction.customId);
       case interaction.isUserSelectMenu():
-        return this.components.userSelectMenus.get(interaction.customId);
+        return this.components.userSelectMenu.get(interaction.customId);
       case interaction.isRoleSelectMenu():
-        return this.components.roleSelectMenus.get(interaction.customId);
+        return this.components.roleSelectMenu.get(interaction.customId);
       case interaction.isChannelSelectMenu():
-        return this.components.channelSelectMenus.get(interaction.customId);
+        return this.components.channelSelectMenu.get(interaction.customId);
       case interaction.isMentionableSelectMenu():
-        return this.components.mentionableSelectMenus.get(interaction.customId);
+        return this.components.mentionableSelectMenu.get(interaction.customId);
       default:
         return null;
     }
   }
 
   hasButton(customId: ComponentBase["customId"]) {
-    return this.components.buttons.has(customId);
+    return this.components.button.has(customId);
   }
 
   hasModal(customId: ComponentBase["customId"]) {
-    return this.components.modals.has(customId);
+    return this.components.modal.has(customId);
   }
 
   private async handleButtonInteraction(interaction: ButtonInteraction) {
@@ -68,7 +88,7 @@ export class ComponentManager {
   }
 
   onButtonInteraction(interaction: ButtonInteraction) {
-    this.handleButtonInteraction(interaction).catch(this.logger.error);
+    this.handleButtonInteraction(interaction).catch(e => this.logger.error(e));
   }
 
   private async handleModalSubmitInteraction(interaction: ModalSubmitInteraction) {
@@ -84,7 +104,7 @@ export class ComponentManager {
   }
 
   onModalSubmitInteraction(interaction: ModalSubmitInteraction) {
-    this.handleModalSubmitInteraction(interaction).catch(this.logger.error);
+    this.handleModalSubmitInteraction(interaction).catch(e => this.logger.error(e));
   }
 
   private async handleSelectMenuInteraction(interaction: AnySelectMenuInteraction) {
@@ -100,6 +120,6 @@ export class ComponentManager {
   }
 
   onSelectMenuInteraction(interaction: AnySelectMenuInteraction) {
-    this.handleSelectMenuInteraction(interaction).catch(this.logger.error);
+    this.handleSelectMenuInteraction(interaction).catch(e => this.logger.error(e));
   }
 }

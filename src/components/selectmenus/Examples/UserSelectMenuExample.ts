@@ -3,7 +3,7 @@ import { UserSelectMenuInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()
-class UserSelectMenu extends UserSelectMenuComponent {
+export class UserSelectMenu extends UserSelectMenuComponent {
   constructor() {
     super({
       customId: "user_select_example_menu",
@@ -23,5 +23,3 @@ class UserSelectMenu extends UserSelectMenuComponent {
     });
   }
 }
-
-export default UserSelectMenu;

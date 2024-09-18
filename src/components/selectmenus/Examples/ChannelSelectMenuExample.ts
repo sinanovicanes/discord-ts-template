@@ -4,7 +4,7 @@ import { singleton } from "tsyringe";
 
 @singleton()
 @Cooldown()
-class ChannelSelectMenu extends ChannelSelectMenuComponent {
+export class ChannelSelectMenu extends ChannelSelectMenuComponent {
   constructor() {
     super({
       customId: "channel_select_example_menu",
@@ -25,5 +25,3 @@ class ChannelSelectMenu extends ChannelSelectMenuComponent {
     });
   }
 }
-
-export default ChannelSelectMenu;

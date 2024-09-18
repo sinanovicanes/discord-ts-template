@@ -1,3 +1,6 @@
+import fs from "fs";
+import path from "path";
+import { container } from "tsyringe";
 import {
   ButtonComponent,
   ChannelSelectMenuComponent,
@@ -8,51 +11,84 @@ import {
   StringSelectMenuComponent,
   UserSelectMenuComponent
 } from "../../classes/components";
-import { container } from "tsyringe";
+import { ComponentKind } from "@app/common";
 
-export function loadComponents() {
-  const componentRecord: Record<string, Map<ComponentBase["customId"], ComponentBase>> = {
-    buttons: new Map<ComponentBase["customId"], ComponentBase>(),
-    modals: new Map<ComponentBase["customId"], ComponentBase>(),
-    stringSelectMenus: new Map<ComponentBase["customId"], ComponentBase>(),
-    userSelectMenus: new Map<ComponentBase["customId"], ComponentBase>(),
-    roleSelectMenus: new Map<ComponentBase["customId"], ComponentBase>(),
-    channelSelectMenus: new Map<ComponentBase["customId"], ComponentBase>(),
-    mentionableSelectMenus: new Map<ComponentBase["customId"], ComponentBase>()
-  };
+const COMPONENTS_PATH = path.join(process.cwd(), "src", "components");
 
-  require("@/components").default.forEach((component: new () => ComponentBase) => {
-    let componentKey: string | undefined;
+function getComponentKind(component: ComponentBase): ComponentKind | null {
+  switch (true) {
+    case component instanceof ButtonComponent:
+      return ComponentKind.BUTTON;
+    case component instanceof ModalComponent:
+      return ComponentKind.MODAL;
+    case component instanceof StringSelectMenuComponent:
+      return ComponentKind.STRING_SELECT_MENU;
+    case component instanceof UserSelectMenuComponent:
+      return ComponentKind.USER_SELECT_MENU;
+    case component instanceof RoleSelectMenuComponent:
+      return ComponentKind.ROLE_SELECT_MENU;
+    case component instanceof ChannelSelectMenuComponent:
+      return ComponentKind.CHANNEL_SELECT_MENU;
+    case component instanceof MentionableSelectMenuComponent:
+      return ComponentKind.MENTIONABLE_SELECT_MENU;
+    default:
+      return null;
+  }
+}
 
-    switch (true) {
-      case component.prototype instanceof ButtonComponent:
-        componentKey = "buttons";
-        break;
-      case component.prototype instanceof ModalComponent:
-        componentKey = "modals";
-        break;
-      case component.prototype instanceof StringSelectMenuComponent:
-        componentKey = "stringSelectMenus";
-        break;
-      case component.prototype instanceof UserSelectMenuComponent:
-        componentKey = "userSelectMenus";
-        break;
-      case component.prototype instanceof RoleSelectMenuComponent:
-        componentKey = "roleSelectMenus";
-        break;
-      case component.prototype instanceof ChannelSelectMenuComponent:
-        componentKey = "channelSelectMenus";
-        break;
-      case component.prototype instanceof MentionableSelectMenuComponent:
-        componentKey = "mentionableSelectMenus";
-        break;
-    }
+const readComponentsDirectroy = async (
+  _path: string
+): Promise<Record<ComponentKind, Map<ComponentBase["customId"], ComponentBase>>> => {
+  return new Promise((resolve, reject) => {
+    const components: Record<
+      ComponentKind,
+      Map<ComponentBase["customId"], ComponentBase>
+    > = {
+      [ComponentKind.BUTTON]: new Map(),
+      [ComponentKind.MODAL]: new Map(),
+      [ComponentKind.STRING_SELECT_MENU]: new Map(),
+      [ComponentKind.USER_SELECT_MENU]: new Map(),
+      [ComponentKind.ROLE_SELECT_MENU]: new Map(),
+      [ComponentKind.CHANNEL_SELECT_MENU]: new Map(),
+      [ComponentKind.MENTIONABLE_SELECT_MENU]: new Map()
+    };
 
-    if (!componentKey) return;
+    fs.readdir(_path, async (err, files) => {
+      if (err) {
+        return reject(`Failed to read components directory: ${_path}`);
+      }
 
-    const instance = container.resolve(component);
-    componentRecord[componentKey].set(instance.customId, instance);
+      for (const file of files) {
+        const filePath = path.join(_path, file);
+
+        if (file.endsWith(".ts") || file.endsWith(".js")) {
+          try {
+            const component = await import(filePath);
+
+            for (const key in component) {
+              const componentKind = getComponentKind(component[key].prototype);
+
+              if (!componentKind) continue;
+
+              const instance: ComponentBase = container.resolve(component[key]);
+
+              components[componentKind].set(instance.customId, instance);
+            }
+          } catch (e) {
+            console.error(`Failed to load component: ${file}\n${e}`);
+          }
+        }
+
+        resolve(components);
+      }
+    });
   });
+};
 
-  return componentRecord;
+export async function loadComponents(): Promise<
+  Record<ComponentKind, Map<ComponentBase["customId"], ComponentBase>>
+> {
+  const components = await readComponentsDirectroy(COMPONENTS_PATH);
+
+  return components;
 }

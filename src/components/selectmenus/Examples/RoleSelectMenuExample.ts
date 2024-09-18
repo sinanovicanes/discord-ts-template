@@ -3,7 +3,7 @@ import { RoleSelectMenuInteraction } from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()
-class RoleSelectMenu extends RoleSelectMenuComponent {
+export class RoleSelectMenu extends RoleSelectMenuComponent {
   constructor() {
     super({
       customId: "role_select_example_menu",
@@ -23,5 +23,3 @@ class RoleSelectMenu extends RoleSelectMenuComponent {
     });
   }
 }
-
-export default RoleSelectMenu;
