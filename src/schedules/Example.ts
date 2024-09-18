@@ -1,5 +1,7 @@
 import { Logger, Schedule } from "@app/common";
+import { singleton } from "tsyringe";
 
+@singleton()
 export default class ExampleSchedule extends Schedule {
   private readonly logger = new Logger(ExampleSchedule.name);
 
