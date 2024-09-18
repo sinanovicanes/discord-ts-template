@@ -16,6 +16,7 @@ import { singleton } from "tsyringe";
 import { loadComponents } from "../utils/loaders";
 import { Logger } from "../classes";
 import { ComponentKind } from "../enums";
+import { pluralify } from "../utils";
 
 @singleton()
 export class ComponentManager {
@@ -33,13 +34,11 @@ export class ComponentManager {
     [ComponentKind.MENTIONABLE_SELECT_MENU]: new Map()
   };
 
-  constructor() {
-    this.initialize().catch(e => this.logger.error(e));
-  }
-
   async initialize() {
     this.components = await loadComponents();
-    this.logger.info(`${Object.keys(this.components).length} components loaded`);
+    const length = Object.keys(this.components).length;
+
+    this.logger.info(`${length} ${pluralify("component", "components", length)} loaded`);
   }
 
   getButton(customId: ComponentBase["customId"]) {

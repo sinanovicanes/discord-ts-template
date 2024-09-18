@@ -17,6 +17,7 @@ import {
   Routes
 } from "discord.js";
 import { singleton } from "tsyringe";
+import { pluralify } from "../utils";
 
 type CommandInteractionsWithOptions =
   | ChatInputCommandInteraction
@@ -168,6 +169,10 @@ export class CommandManager {
     this.setCommands(commands);
     this.deployCommands(commands);
     this.deployGuildCommands(commands);
+
+    this.logger.info(
+      `${commands.length} ${pluralify("command", "commands", commands.length)} loaded`
+    );
   }
 
   async clearCommands() {

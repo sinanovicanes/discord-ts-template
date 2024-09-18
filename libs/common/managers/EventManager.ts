@@ -4,6 +4,7 @@ import { Event, Logger } from "../classes";
 import { FailedToHandleEvent, GuardError } from "../errors";
 import { loadEvents } from "../utils/loaders";
 import { Client } from "../client";
+import { pluralify } from "../utils";
 
 @singleton()
 export class EventManager {
@@ -36,5 +37,8 @@ export class EventManager {
   async initialize() {
     const events = await loadEvents();
     events.forEach(event => this.addEventHandler(event));
+    this.logger.info(
+      `${events.length} ${pluralify("event", "events", events.length)} loaded`
+    );
   }
 }

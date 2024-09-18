@@ -3,7 +3,7 @@ import { CommandManager } from "../managers/CommandManager";
 import { EventManager } from "../managers/EventManager";
 import { ClientOptions, Collection, Client as DiscordClient } from "discord.js";
 import { inject, singleton } from "tsyringe";
-import { ScheduleManager } from "../managers";
+import { ComponentManager, ScheduleManager } from "../managers";
 import { Logger } from "../classes";
 
 @singleton()
@@ -15,6 +15,7 @@ export class Client extends DiscordClient {
     private readonly commandManager: CommandManager,
     private readonly eventManager: EventManager,
     private readonly scheduleManager: ScheduleManager,
+    private readonly componentManager: ComponentManager,
     @inject(CLIENT_OPTIONS_KEY) public clientOptions: ClientOptions
   ) {
     super(clientOptions);
@@ -25,6 +26,7 @@ export class Client extends DiscordClient {
     await this.eventManager.initialize();
     await this.commandManager.initialize();
     await this.scheduleManager.initialize();
+    await this.componentManager.initialize();
     await this.login(token);
     this.logger.info("Connected to Discord!");
   }
