@@ -1,8 +1,7 @@
-import { MentionableSelectMenuComponent } from "@app/common";
+import { Injectable, MentionableSelectMenuComponent } from "@app/common";
 import { MentionableSelectMenuInteraction } from "discord.js";
-import { singleton } from "tsyringe";
 
-@singleton()
+@Injectable()
 export class MentionableSelectMenu extends MentionableSelectMenuComponent {
   constructor() {
     super({

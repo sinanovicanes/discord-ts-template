@@ -1,8 +1,7 @@
-import { RoleSelectMenuComponent } from "@app/common";
+import { Injectable, RoleSelectMenuComponent } from "@app/common";
 import { RoleSelectMenuInteraction } from "discord.js";
-import { singleton } from "tsyringe";
 
-@singleton()
+@Injectable()
 export class RoleSelectMenu extends RoleSelectMenuComponent {
   constructor() {
     super({

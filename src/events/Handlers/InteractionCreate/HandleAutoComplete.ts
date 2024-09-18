@@ -1,8 +1,12 @@
-import { CommandManager, InteractionCreateEvent, SlashCommand } from "@app/common";
+import {
+  CommandManager,
+  Injectable,
+  InteractionCreateEvent,
+  SlashCommand
+} from "@app/common";
 import { ApplicationCommandOptionChoiceData, AutocompleteInteraction } from "discord.js";
-import { singleton } from "tsyringe";
 
-@singleton()
+@Injectable()
 export default class HandleAutoComplete extends InteractionCreateEvent {
   constructor(private readonly commandManager: CommandManager) {
     super();

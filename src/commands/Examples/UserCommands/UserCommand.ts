@@ -1,9 +1,8 @@
+import { Injectable, SlashCommand } from "@app/common";
 import { ChatInputCommandInteraction } from "discord.js";
-import { singleton } from "tsyringe";
 import UserSubGroup from "./UserSubGroup";
-import { SlashCommand } from "@app/common";
 
-@singleton()
+@Injectable()
 class UserCommand extends SlashCommand {
   name = "user";
   description = "User related commands";

@@ -1,12 +1,12 @@
+import { Injectable } from "@app/common";
 import pidusage from "pidusage";
-import { singleton } from "tsyringe";
 
 interface UsageMetrics {
   cpu: number;
   memory: number;
 }
 
-@singleton()
+@Injectable()
 export class MetricsService {
   async getUsageMetrics(): Promise<UsageMetrics> {
     const metrics = await pidusage(process.pid);

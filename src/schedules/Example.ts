@@ -1,7 +1,6 @@
-import { Logger, Schedule } from "@app/common";
-import { singleton } from "tsyringe";
+import { Injectable, Logger, Schedule } from "@app/common";
 
-@singleton()
+@Injectable()
 export default class ExampleSchedule extends Schedule {
   private readonly logger = new Logger(ExampleSchedule.name);
 

@@ -1,16 +1,16 @@
-import { loadSchedules } from "../utils/loaders";
 import { Collection } from "discord.js";
-import { singleton } from "tsyringe";
-import { Schedule } from "../classes/schedule";
 import { Logger } from "../classes";
+import { Schedule } from "../classes/schedule";
+import { Injectable } from "../decorators";
 import { pluralify } from "../utils";
+import { loadSchedules } from "../utils/loaders";
 
 enum SchedulesStatus {
   PENDING = "PENDING",
   RUNNING = "RUNNING"
 }
 
-@singleton()
+@Injectable()
 export class ScheduleManager {
   private readonly logger = new Logger(ScheduleManager.name);
   private readonly schedules = new Collection<Schedule["name"], Schedule>([]);

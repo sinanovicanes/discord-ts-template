@@ -1,8 +1,7 @@
-import { SubCommand } from "@app/common";
+import { Injectable, SubCommand } from "@app/common";
 import { ChatInputCommandInteraction } from "discord.js";
-import { singleton } from "tsyringe";
 
-@singleton()
+@Injectable()
 class GetIdSubCommand extends SubCommand {
   name = "id";
   description = "Get user id";

@@ -1,15 +1,16 @@
 import { ClientEvents } from "discord.js";
-import { delay, inject, singleton } from "tsyringe";
 import { Event, Logger } from "../classes";
-import { FailedToHandleEvent, GuardError } from "../errors";
-import { loadEvents } from "../utils/loaders";
 import { Client } from "../client";
+import { Inject, Injectable } from "../decorators";
+import { FailedToHandleEvent, GuardError } from "../errors";
 import { pluralify } from "../utils";
+import { loadEvents } from "../utils/loaders";
 
-@singleton()
+@Injectable()
 export class EventManager {
   private readonly logger = new Logger(EventManager.name);
-  constructor(@inject(delay(() => Client)) private readonly client: Client) {}
+
+  constructor(@Inject(() => Client) private readonly client: Client) {}
 
   private async trigger<T extends keyof ClientEvents>(
     event: Event<T>,

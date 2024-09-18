@@ -1,13 +1,3 @@
-import env from "../utils/env";
-import { CommandBase, Logger, SubCommand, SubCommandGroup } from "../classes";
-import {
-  CommandNotFound,
-  ContextMenuCommandNotFound,
-  FailedToHandleCommand,
-  FailedToHandleContextMenuCommand,
-  GuardError
-} from "../errors";
-import { loadCommands } from "../utils/loaders";
 import {
   AutocompleteInteraction,
   ChatInputCommandInteraction,
@@ -16,14 +6,24 @@ import {
   REST,
   Routes
 } from "discord.js";
-import { singleton } from "tsyringe";
+import { CommandBase, Logger, SubCommand, SubCommandGroup } from "../classes";
+import { Injectable } from "../decorators";
+import {
+  CommandNotFound,
+  ContextMenuCommandNotFound,
+  FailedToHandleCommand,
+  FailedToHandleContextMenuCommand,
+  GuardError
+} from "../errors";
 import { pluralify } from "../utils";
+import env from "../utils/env";
+import { loadCommands } from "../utils/loaders";
 
 type CommandInteractionsWithOptions =
   | ChatInputCommandInteraction
   | AutocompleteInteraction;
 
-@singleton()
+@Injectable()
 export class CommandManager {
   private readonly logger = new Logger(CommandManager.name);
   private readonly commands = new Collection<CommandBase["name"], CommandBase>();

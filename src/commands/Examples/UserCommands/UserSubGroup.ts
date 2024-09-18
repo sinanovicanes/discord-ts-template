@@ -1,10 +1,9 @@
+import { Injectable, SubCommandGroup } from "@app/common";
 import { ChatInputCommandInteraction } from "discord.js";
-import { singleton } from "tsyringe";
 import InfoSubCommand from "./GetId";
 import RoleSubCommand from "./RoleSub";
-import { SubCommandGroup } from "@app/common";
 
-@singleton()
+@Injectable()
 class UserSubGroup extends SubCommandGroup {
   name = "info";
   description = "User Information Group";

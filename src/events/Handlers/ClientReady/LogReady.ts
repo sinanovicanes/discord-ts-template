@@ -1,7 +1,6 @@
-import { ClientReadyEvent, Logger } from "@app/common";
-import { singleton } from "tsyringe";
+import { ClientReadyEvent, Injectable, Logger } from "@app/common";
 
-@singleton()
+@Injectable()
 export default class LogReady extends ClientReadyEvent {
   private readonly logger = new Logger(LogReady.name);
 

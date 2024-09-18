@@ -1,8 +1,7 @@
-import { CommandManager, InteractionCreateEvent } from "@app/common";
+import { CommandManager, Injectable, InteractionCreateEvent } from "@app/common";
 import { Interaction } from "discord.js";
-import { singleton } from "tsyringe";
 
-@singleton()
+@Injectable()
 export default class HandleContextMenu extends InteractionCreateEvent {
   constructor(private readonly commandManager: CommandManager) {
     super();

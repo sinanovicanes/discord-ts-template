@@ -2,11 +2,11 @@ import { CLIENT_OPTIONS_KEY } from "../constants";
 import { CommandManager } from "../managers/CommandManager";
 import { EventManager } from "../managers/EventManager";
 import { ClientOptions, Collection, Client as DiscordClient } from "discord.js";
-import { inject, singleton } from "tsyringe";
 import { ComponentManager, ScheduleManager } from "../managers";
 import { Logger } from "../classes";
+import { Inject, Injectable } from "../decorators";
 
-@singleton()
+@Injectable()
 export class Client extends DiscordClient {
   readonly cooldowns = new Collection<string, number>();
   private readonly logger = new Logger(Client.name);
@@ -16,7 +16,7 @@ export class Client extends DiscordClient {
     private readonly eventManager: EventManager,
     private readonly scheduleManager: ScheduleManager,
     private readonly componentManager: ComponentManager,
-    @inject(CLIENT_OPTIONS_KEY) public clientOptions: ClientOptions
+    @Inject(CLIENT_OPTIONS_KEY) public clientOptions: ClientOptions
   ) {
     super(clientOptions);
   }

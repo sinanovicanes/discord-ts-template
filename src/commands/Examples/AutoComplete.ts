@@ -1,8 +1,7 @@
+import { Injectable, SlashCommand } from "@app/common";
 import { ChatInputCommandInteraction, bold } from "discord.js";
-import { SlashCommand } from "@app/common";
-import { singleton } from "tsyringe";
 
-@singleton()
+@Injectable()
 class AutoCompeleteCommand extends SlashCommand {
   name = "autocompelete";
   description = "Shows example auto complete";

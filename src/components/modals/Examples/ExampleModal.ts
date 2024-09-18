@@ -1,11 +1,10 @@
-import { ModalComponent } from "@app/common";
+import { Injectable, ModalComponent } from "@app/common";
 import {
   ActionRowBuilder,
   ModalSubmitInteraction,
   TextInputBuilder,
   TextInputStyle
 } from "discord.js";
-import { singleton } from "tsyringe";
 
 const favoriteColorInput = new TextInputBuilder()
   .setCustomId("favorite_color")
@@ -23,7 +22,7 @@ const rows = [
   new ActionRowBuilder<TextInputBuilder>({ components: [hobbiesInput] })
 ];
 
-@singleton()
+@Injectable()
 export class ExampleModal extends ModalComponent {
   constructor() {
     super({

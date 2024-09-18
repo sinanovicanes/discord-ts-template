@@ -1,8 +1,7 @@
-import { MessageContextMenuCommand } from "@app/common";
+import { Injectable, MessageContextMenuCommand } from "@app/common";
 import { MessageContextMenuCommandInteraction } from "discord.js";
-import { singleton } from "tsyringe";
 
-@singleton()
+@Injectable()
 class MessageContextCommand extends MessageContextMenuCommand {
   name = "message-react";
 

@@ -1,8 +1,7 @@
-import { UserContextMenuCommand } from "@app/common";
+import { Injectable, UserContextMenuCommand } from "@app/common";
 import { UserContextMenuCommandInteraction } from "discord.js";
-import { singleton } from "tsyringe";
 
-@singleton()
+@Injectable()
 class SelectUserContextCommand extends UserContextMenuCommand {
   name = "select-user";
 

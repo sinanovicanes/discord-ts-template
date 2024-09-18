@@ -1,8 +1,7 @@
-import { UserSelectMenuComponent } from "@app/common";
+import { Injectable, UserSelectMenuComponent } from "@app/common";
 import { UserSelectMenuInteraction } from "discord.js";
-import { singleton } from "tsyringe";
 
-@singleton()
+@Injectable()
 export class UserSelectMenu extends UserSelectMenuComponent {
   constructor() {
     super({

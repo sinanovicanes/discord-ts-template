@@ -1,8 +1,7 @@
-import { ButtonComponent } from "@app/common";
+import { ButtonComponent, Injectable } from "@app/common";
 import { ButtonInteraction, ButtonStyle } from "discord.js";
-import { singleton } from "tsyringe";
 
-@singleton()
+@Injectable()
 export class ConfirmationButton extends ButtonComponent {
   constructor() {
     super({

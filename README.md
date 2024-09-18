@@ -16,11 +16,10 @@ You can nest directories in events directory.
 > Any file in the events directory with the default export will be registered as event if they're extended from one of the event classes.
 > You can find the example event handlers in `/src/events/Examples`.
 
-> [!CAUTION]
-> `/src/events/handlers` is used for handling commands, components etc. If you're going to delete that you need to handle them by yourself.
+> [!CAUTION] > `/src/events/handlers` is used for handling commands, components etc. If you're going to delete that you need to handle them by yourself.
 
 ```ts
-@singleton()
+@Injectable()
 export default class LogNewGuild extends GuildCreateEvent {
   constructor(private readonly client: Client) {
     super();
@@ -46,7 +45,7 @@ You can nest directories in commands directory.
 > You can make commands for specific guilds by passing guilds like `guilds: ["GUILD_ID_1", "GUILD_ID_2"]` in command class.
 
 ```ts
-@singleton()
+@Injectable()
 export default class ModalCommand extends SlashCommand {
   name = "modal";
   description = "Shows example modal";
@@ -77,7 +76,7 @@ You can nest directories in components directory.
 Every component needs to be exported in `/src/components/index.ts` for them to get registered in ComponentManager.
 
 ```ts
-@singleton()
+@Injectable()
 export default class ConfirmationButton extends ButtonComponent {
   constructor() {
     super({
@@ -140,7 +139,7 @@ export default class LogMessageEvent extends MessageCreateEvent {
 You can use `Cooldown` decorator to add cooldown to command or component handlers for user. You can specify the cooldown time in milliseconds and determine whether the is timeout by globally or only for this guild.
 
 ```ts
-@singleton()
+@Injectable()
 @Cooldown({ global: true, timeout: 30 * 1000 })
 export default class SayHiCommand extends SlashCommand {
   name = "say_hi";
@@ -178,4 +177,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-

@@ -1,8 +1,7 @@
 import { MetricsService } from "@/services";
-import { Logger, Schedule } from "@app/common";
-import { singleton } from "tsyringe";
+import { Injectable, Logger, Schedule } from "@app/common";
 
-@singleton()
+@Injectable()
 export default class MetricsSchedule extends Schedule {
   private readonly logger = new Logger(MetricsSchedule.name);
 

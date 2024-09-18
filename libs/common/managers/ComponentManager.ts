@@ -1,4 +1,12 @@
+import {
+  AnySelectMenuInteraction,
+  ButtonInteraction,
+  ModalSubmitInteraction
+} from "discord.js";
+import { Logger } from "../classes";
 import { ComponentBase } from "../classes/components";
+import { Injectable } from "../decorators";
+import { ComponentKind } from "../enums";
 import {
   ButtonNotFound,
   FailedToHandleButton,
@@ -7,18 +15,10 @@ import {
   ModalNotFound,
   SelectMenuNotFound
 } from "../errors";
-import {
-  AnySelectMenuInteraction,
-  ButtonInteraction,
-  ModalSubmitInteraction
-} from "discord.js";
-import { singleton } from "tsyringe";
-import { loadComponents } from "../utils/loaders";
-import { Logger } from "../classes";
-import { ComponentKind } from "../enums";
 import { pluralify } from "../utils";
+import { loadComponents } from "../utils/loaders";
 
-@singleton()
+@Injectable()
 export class ComponentManager {
   private readonly logger = new Logger(ComponentManager.name);
   private components: Record<

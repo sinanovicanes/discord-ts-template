@@ -1,9 +1,8 @@
 import { NotBotGuard } from "@/guards";
-import { Logger, MessageCreateEvent, UseGuards } from "@app/common";
+import { Injectable, Logger, MessageCreateEvent, UseGuards } from "@app/common";
 import { Message } from "discord.js";
-import { singleton } from "tsyringe";
 
-@singleton()
+@Injectable()
 @UseGuards(NotBotGuard)
 export default class LogMessageToConsole extends MessageCreateEvent {
   private readonly logger = new Logger(LogMessageToConsole.name);

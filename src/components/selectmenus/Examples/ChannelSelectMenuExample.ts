@@ -1,8 +1,7 @@
-import { ChannelSelectMenuComponent, Cooldown } from "@app/common";
+import { ChannelSelectMenuComponent, Cooldown, Injectable } from "@app/common";
 import { ChannelSelectMenuInteraction, ChannelType } from "discord.js";
-import { singleton } from "tsyringe";
 
-@singleton()
+@Injectable()
 @Cooldown()
 export class ChannelSelectMenu extends ChannelSelectMenuComponent {
   constructor() {

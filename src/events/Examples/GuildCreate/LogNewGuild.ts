@@ -1,8 +1,7 @@
-import { Client, GuildCreateEvent, Logger } from "@app/common";
+import { Client, GuildCreateEvent, Injectable, Logger } from "@app/common";
 import { Guild } from "discord.js";
-import { singleton } from "tsyringe";
 
-@singleton()
+@Injectable()
 export default class LogNewGuild extends GuildCreateEvent {
   private readonly logger = new Logger(LogNewGuild.name);
 
