@@ -4,7 +4,7 @@ import { ClientFactory } from "@app/common";
 import { GatewayIntentBits } from "discord.js";
 
 async function main() {
-  const client = ClientFactory.createClient({
+  const client = ClientFactory.create({
     intents: [
       GatewayIntentBits.Guilds,
       GatewayIntentBits.GuildMessages,
