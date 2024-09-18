@@ -71,7 +71,7 @@ export class CommandManager {
   }
 
   onCommandInteraction(interaction: ChatInputCommandInteraction) {
-    this.handleCommandInteraction(interaction).catch(this.logger.error);
+    this.handleCommandInteraction(interaction).catch(e => this.logger.error(e));
   }
 
   private async handleContextMenuCommandInteraction(
@@ -90,7 +90,9 @@ export class CommandManager {
   }
 
   onContextMenuCommandInteraction(interaction: ContextMenuCommandInteraction) {
-    this.handleContextMenuCommandInteraction(interaction).catch(this.logger.error);
+    this.handleContextMenuCommandInteraction(interaction).catch(e =>
+      this.logger.error(e)
+    );
   }
 
   private async setCommands(commands: CommandBase[]) {
@@ -131,7 +133,7 @@ export class CommandManager {
       .put(Routes.applicationCommands(env.BOT_CLIENT_ID), {
         body
       })
-      .catch(this.logger.error);
+      .catch(e => this.logger.error(e));
   }
 
   private async deployGuildCommands(commands: CommandBase[]) {
@@ -157,7 +159,7 @@ export class CommandManager {
       .put(Routes.applicationGuildCommands(env.BOT_CLIENT_ID, guildId), {
         body
       })
-      .catch(this.logger.error);
+      .catch(e => this.logger.error(e));
   }
 
   async initialize() {
@@ -175,6 +177,6 @@ export class CommandManager {
       .put(Routes.applicationCommands(env.BOT_CLIENT_ID), {
         body: []
       })
-      .catch(this.logger.error);
+      .catch(e => this.logger.error(e));
   }
 }

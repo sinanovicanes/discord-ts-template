@@ -17,6 +17,7 @@ interface Log {
 
 export class Logger {
   private logs: Log[] = [];
+
   constructor(private readonly name: string) {}
 
   private processLog(kind: LogKind, message: string) {

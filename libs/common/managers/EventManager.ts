@@ -25,11 +25,11 @@ export class EventManager {
   private addEventHandler<T extends keyof ClientEvents>(event: Event<T>) {
     if (event.once)
       return this.client.once(event.event as T, (...args: ClientEvents[T]) => {
-        this.trigger(event, ...args).catch(this.logger.error);
+        this.trigger(event, ...args).catch(e => this.logger.error(e));
       });
 
     this.client.on(event.event as T, (...args: ClientEvents[T]) => {
-      this.trigger(event, ...args).catch(this.logger.error);
+      this.trigger(event, ...args).catch(e => this.logger.error(e));
     });
   }
 
