@@ -1,7 +1,7 @@
 import { singleton } from "tsyringe";
 
 @singleton()
-export class DatabaseService {
+export class ExampleService {
   private records: Record<string, string> = {};
 
   constructor() {}
