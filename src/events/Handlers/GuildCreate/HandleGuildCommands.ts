@@ -8,7 +8,7 @@ export default class HandleGuildCommands extends GuildCreateEvent {
     super();
   }
 
-  async handler(guild: Guild) {
-    await this.commandManager.deployCommandsOnGuild(guild.id);
+  handler(guild: Guild) {
+    this.commandManager.deployCommandsOnGuild(guild.id);
   }
 }

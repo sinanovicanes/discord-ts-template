@@ -2,14 +2,12 @@ import { ClientReadyEvent, Logger } from "@app/common";
 import { singleton } from "tsyringe";
 
 @singleton()
-class LogReady extends ClientReadyEvent {
+export default class LogReady extends ClientReadyEvent {
   private readonly logger = new Logger(LogReady.name);
 
   once = true;
 
   handler() {
-    this.logger.info("Bot is ready");
+    this.logger.log("Bot is ready");
   }
 }
-
-export default LogReady;

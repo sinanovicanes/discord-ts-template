@@ -10,8 +10,8 @@ export default class LogNewGuild extends GuildCreateEvent {
     super();
   }
 
-  async handler(guild: Guild) {
-    this.logger.info(
+  handler(guild: Guild) {
+    this.logger.log(
       `${this.client.user?.username} joined guild: ${guild.name} with ${guild.memberCount} members.`
     );
   }

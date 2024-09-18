@@ -2,7 +2,7 @@ import { ClientReadyEvent, ScheduleManager } from "@app/common";
 import { singleton } from "tsyringe";
 
 @singleton()
-class StartSchedules extends ClientReadyEvent {
+export default class StartSchedules extends ClientReadyEvent {
   constructor(private readonly scheduleManager: ScheduleManager) {
     super();
   }
@@ -11,5 +11,3 @@ class StartSchedules extends ClientReadyEvent {
     this.scheduleManager.start();
   }
 }
-
-export default StartSchedules;

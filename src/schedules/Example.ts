@@ -10,6 +10,6 @@ export default class ExampleSchedule extends Schedule {
   }
 
   onSchedule() {
-    this.logger.log("Example schedule has been executed");
+    // this.logger.log("Example schedule has been executed");
   }
 }

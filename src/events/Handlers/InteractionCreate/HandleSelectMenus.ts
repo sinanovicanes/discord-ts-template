@@ -3,12 +3,12 @@ import { AnySelectMenuInteraction, Interaction } from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()
-class HandleSelectMenus extends InteractionCreateEvent {
+export default class HandleSelectMenus extends InteractionCreateEvent {
   constructor(private readonly componentManager: ComponentManager) {
     super();
   }
 
-  async handler(interaction: Interaction) {
+  handler(interaction: Interaction) {
     if (!interaction.isAnySelectMenu()) return;
 
     this.componentManager.onSelectMenuInteraction(
@@ -16,5 +16,3 @@ class HandleSelectMenus extends InteractionCreateEvent {
     );
   }
 }
-
-export default HandleSelectMenus;

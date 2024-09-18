@@ -3,12 +3,12 @@ import { ApplicationCommandOptionChoiceData, AutocompleteInteraction } from "dis
 import { singleton } from "tsyringe";
 
 @singleton()
-class HandleAutoComplete extends InteractionCreateEvent {
+export default class HandleAutoComplete extends InteractionCreateEvent {
   constructor(private readonly commandManager: CommandManager) {
     super();
   }
 
-  filterOptions(
+  private filterOptions(
     input: string,
     options: ApplicationCommandOptionChoiceData<string | number>[]
   ) {
@@ -24,7 +24,7 @@ class HandleAutoComplete extends InteractionCreateEvent {
       interaction
     ) as SlashCommand;
 
-    if (!command) return interaction.respond([]);
+    if (!command) return await interaction.respond([]);
 
     const focusedValue = interaction.options.getFocused(true);
 
@@ -33,7 +33,7 @@ class HandleAutoComplete extends InteractionCreateEvent {
         const options = await command.autoComplete(focusedValue);
         const filteredOptions = this.filterOptions(focusedValue.value, options);
 
-        return interaction.respond(filteredOptions);
+        return await interaction.respond(filteredOptions);
       }
       case "object": {
         const isArray = Array.isArray(command.autoComplete);
@@ -44,7 +44,7 @@ class HandleAutoComplete extends InteractionCreateEvent {
             command.autoComplete as ApplicationCommandOptionChoiceData<string | number>[]
           );
 
-          return interaction.respond(filteredOptions);
+          return await interaction.respond(filteredOptions);
         }
 
         const choices = (
@@ -58,13 +58,11 @@ class HandleAutoComplete extends InteractionCreateEvent {
 
         const filteredChoices = this.filterOptions(focusedValue.value, choices);
 
-        return interaction.respond(filteredChoices);
+        return await interaction.respond(filteredChoices);
       }
       default: {
-        return interaction.respond([]);
+        return await interaction.respond([]);
       }
     }
   }
 }
-
-export default HandleAutoComplete;

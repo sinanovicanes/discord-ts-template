@@ -3,16 +3,14 @@ import { ChatInputCommandInteraction, Interaction } from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()
-class HandleCommand extends InteractionCreateEvent {
+export default class HandleCommand extends InteractionCreateEvent {
   constructor(private readonly commandManager: CommandManager) {
     super();
   }
 
-  async handler(interaction: Interaction) {
+  handler(interaction: Interaction) {
     if (!interaction.isChatInputCommand()) return;
 
     this.commandManager.onCommandInteraction(interaction as ChatInputCommandInteraction);
   }
 }
-
-export default HandleCommand;

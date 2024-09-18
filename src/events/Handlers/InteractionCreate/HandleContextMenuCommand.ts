@@ -3,16 +3,14 @@ import { Interaction } from "discord.js";
 import { singleton } from "tsyringe";
 
 @singleton()
-class HandleContextMenu extends InteractionCreateEvent {
+export default class HandleContextMenu extends InteractionCreateEvent {
   constructor(private readonly commandManager: CommandManager) {
     super();
   }
 
-  async handler(interaction: Interaction) {
+  handler(interaction: Interaction) {
     if (!interaction.isContextMenuCommand()) return;
 
     this.commandManager.onContextMenuCommandInteraction(interaction);
   }
 }
-
-export default HandleContextMenu;

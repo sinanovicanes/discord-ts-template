@@ -8,7 +8,7 @@ import { singleton } from "tsyringe";
 export default class LogMessageToConsole extends MessageCreateEvent {
   private readonly logger = new Logger(LogMessageToConsole.name);
 
-  async handler(message: Message) {
+  handler(message: Message) {
     const guildName = message.guild?.name ?? "DM";
     const channel = message.guild?.channels.cache.get(message.channel.id);
     const channelName = channel?.name ?? message.channel.id;
