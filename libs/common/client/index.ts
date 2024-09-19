@@ -11,7 +11,6 @@ import {
 
 @Injectable()
 export class Client extends DiscordClient {
-  readonly cooldowns = new Collection<string, number>();
   private readonly logger = new Logger(Client.name);
 
   constructor(

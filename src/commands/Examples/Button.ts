@@ -29,7 +29,7 @@ class ButtonCommand extends SlashCommand {
           components: [row]
         })
         .catch();
-    }, 5000);
+    }, 100);
   }
 }
 
