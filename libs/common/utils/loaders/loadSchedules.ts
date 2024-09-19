@@ -1,7 +1,7 @@
-import { Schedule } from "../../classes/schedule";
 import fs from "fs";
 import path from "path";
 import { container } from "tsyringe";
+import { Schedule } from "../../classes";
 
 const SCHEDULES_PATH = path.join(process.cwd(), "src", "schedules");
 

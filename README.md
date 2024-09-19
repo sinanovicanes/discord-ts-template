@@ -16,7 +16,8 @@ You can nest directories in events directory.
 > Any file in the events directory with the default export will be registered as event if they're extended from one of the event classes.
 > You can find the example event handlers in `/src/events/Examples`.
 
-> [!CAUTION] > `/src/events/handlers` is used for handling commands, components etc. If you're going to delete that you need to handle them by yourself.
+> [!CAUTION]
+> `/src/events/handlers` is used for handling commands, components etc. If you're going to delete that you need to handle them by yourself.
 
 ```ts
 @Injectable()
@@ -25,7 +26,7 @@ export default class LogNewGuild extends GuildCreateEvent {
     super();
   }
 
-  async handler(guild: Guild) {
+  handler(guild: Guild) {
     console.log(
       `${this.client.user?.username} joined guild: ${guild.name} with ${guild.memberCount} members.`
     );
@@ -77,7 +78,7 @@ Every component needs to be exported in `/src/components/index.ts` for them to g
 
 ```ts
 @Injectable()
-export default class ConfirmationButton extends ButtonComponent {
+export class ConfirmationButton extends ButtonComponent {
   constructor() {
     super({
       customId: "confirm_button",
@@ -108,12 +109,64 @@ You can create:
 
 ## Decorators
 
-### UseGuards
+### UseMiddlewares
 
-You can create custom guards in `/src/guards` using `Guard` class. You can apply guards to classes using `UseGuards` decorator in any class with `handler` method in it.
+Custom middlewares can be created in the `/src/middlewares` directory by extending the `Middleware` class. These middlewares can be applied to command, component, and event handler classes using the `UseMiddlewares` decorator, enabling you to implement fine-grained access control for your application.
+
+> [!TIP]
+> Middlewares can be applied globally, or scoped specifically to commands, components, or event handlers using `client.useGlobalMiddlewares(...middlewares)`.
 
 ```ts
-@injectable()
+@Injectable()
+export class DeferReplyMiddleware extends Middleware {
+  private readonly logger = new Logger(DeferReplyMiddleware.name);
+
+  async use(ctx: ExecutionContext) {
+    const [interaction] = ctx.getArgs<[ChatInputCommandInteraction]>();
+
+    if (interaction.deferred)
+      return this.logger.warn(
+        `Interaction is already deferred, Command: ${interaction.commandName}`
+      );
+
+    await interaction.deferReply({ ephemeral: true });
+  }
+}
+
+@Injectable()
+@UseMiddlewares(DeferReplyMiddleware)
+export default class UploadImageCommand extends SlashCommand {
+  name = "upload_image";
+  description = "Uploads image";
+
+  constructor(private readonly imageService: ImageService) {
+    super();
+
+    super.addAttachmentOption(option =>
+      option.setName("image").setDescription("Image to upload").setRequired(true)
+    );
+  }
+
+  async handler(interaction: ChatInputCommandInteraction) {
+    const buffer = interaction.options.getAttachment("image").attachment;
+    const imageURL = await this.imageService.upload(buffer);
+
+    await interaction.editReply({
+      content: imageURL
+    });
+  }
+}
+```
+
+### UseGuards
+
+Custom guards can be created in the `/src/guards` directory by extending the `Guard` class. These guards can be applied to command, component, and event handler classes using the `UseGuards` decorator, enabling you to implement fine-grained access control for your application.
+
+> [!TIP]
+> Guards can be applied globally, or scoped specifically to commands, components, or event handlers using `client.useGlobalGuards(...guards)`.
+
+```ts
+@Injectable()
 export class NotBotGuard extends Guard {
   canActivate(message: Message) {
     return !message.author.bot;
@@ -122,7 +175,7 @@ export class NotBotGuard extends Guard {
 
 @UseGuards(NotBotGuard)
 export default class LogMessageEvent extends MessageCreateEvent {
-  async handler(message: Message) {
+  handler(message: Message) {
     const guildName = message.guild?.name ?? "DM";
     const channel = message.guild?.channels.cache.get(message.channel.id);
     const channelName = channel?.name ?? message.channel.id;
@@ -136,7 +189,10 @@ export default class LogMessageEvent extends MessageCreateEvent {
 
 ### Cooldown
 
-You can use `Cooldown` decorator to add cooldown to command or component handlers for user. You can specify the cooldown time in milliseconds and determine whether the is timeout by globally or only for this guild.
+The Cooldown decorator allows you to enforce cooldown periods for command or component handlers, limiting how frequently a user can execute a specific action. You can customize the cooldown duration in milliseconds and define whether the cooldown applies globally or is restricted to a specific guild.
+
+> [!TIP]
+> You can use CooldownService to set or remove cooldowns as needed.
 
 ```ts
 @Injectable()
