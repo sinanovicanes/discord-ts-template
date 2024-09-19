@@ -12,8 +12,12 @@ import {
   UserSelectMenuComponent
 } from "../../classes/components";
 import { ComponentKind } from "@app/common";
+import env from "../env";
 
-const COMPONENTS_PATH = path.join(process.cwd(), "src", "components");
+const COMPONENTS_PATH =
+  env.NODE_ENV === "production"
+    ? path.join(process.cwd(), "build", "src", "components")
+    : path.join(process.cwd(), "src", "components");
 
 function getComponentKind(component: ComponentBase): ComponentKind | null {
   switch (true) {

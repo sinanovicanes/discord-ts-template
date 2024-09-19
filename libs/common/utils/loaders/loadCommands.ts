@@ -3,8 +3,12 @@ import { ContextMenuCommandBuilder } from "discord.js";
 import fs from "fs";
 import path from "path";
 import { container } from "tsyringe";
+import env from "../env";
 
-const COMMANDS_PATH = path.join(process.cwd(), "src", "commands");
+const COMMANDS_PATH =
+  env.NODE_ENV === "production"
+    ? path.join(process.cwd(), "build", "src", "commands")
+    : path.join(process.cwd(), "src", "commands");
 
 const readCommandsDirectory = async (_path: string): Promise<CommandBase[]> => {
   return new Promise((resolve, reject) => {

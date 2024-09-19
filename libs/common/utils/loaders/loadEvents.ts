@@ -2,8 +2,12 @@ import fs from "fs";
 import path from "path";
 import { container } from "tsyringe";
 import { Event } from "../../classes";
+import env from "../env";
 
-const EVENTS_PATH = path.join(process.cwd(), "src", "events");
+const EVENTS_PATH =
+  env.NODE_ENV === "production"
+    ? path.join(process.cwd(), "build", "src", "events")
+    : path.join(process.cwd(), "src", "events");
 
 const readEventDirectory = async (_path: string): Promise<Event[]> => {
   return new Promise((resolve, reject) => {

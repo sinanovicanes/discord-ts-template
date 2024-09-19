@@ -8,7 +8,7 @@ export default class MetricsSchedule extends Schedule {
   name = "metrics";
 
   constructor(private readonly metricsService: MetricsService) {
-    super("0 */5 * * * *");
+    super("0 * * * * *");
   }
 
   private async logMetrics() {

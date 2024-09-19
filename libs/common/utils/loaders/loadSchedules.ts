@@ -2,8 +2,12 @@ import fs from "fs";
 import path from "path";
 import { container } from "tsyringe";
 import { Schedule } from "../../classes";
+import env from "../env";
 
-const SCHEDULES_PATH = path.join(process.cwd(), "src", "schedules");
+const SCHEDULES_PATH =
+  env.NODE_ENV === "production"
+    ? path.join(process.cwd(), "build", "src", "schedules")
+    : path.join(process.cwd(), "src", "schedules");
 
 const readScheduleDirectory = async (_path: string): Promise<Schedule[]> => {
   return new Promise((resolve, reject) => {
