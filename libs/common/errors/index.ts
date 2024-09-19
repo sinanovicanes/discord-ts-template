@@ -1,3 +1,5 @@
+export * from "./InteractionError";
+export * from "./ExecutionError";
 export * from "./CommandNotFound";
 export * from "./FailedToHandleCommand";
 export * from "./FailedToHandleEvent";

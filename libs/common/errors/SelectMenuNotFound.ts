@@ -1,12 +1,8 @@
 import { AnySelectMenuInteraction } from "discord.js";
+import { InteractionError } from "./InteractionError";
 
-export class SelectMenuNotFound extends Error {
+export class SelectMenuNotFound extends InteractionError {
   constructor(interaction: AnySelectMenuInteraction) {
-    interaction.reply({
-      content: `Failed to find select menu handler`,
-      ephemeral: true
-    });
-
-    super(`Select menu ${interaction.customId} not found`);
+    super(interaction, `Select menu ${interaction.customId} not found`);
   }
 }

@@ -1,12 +1,8 @@
-import { CommandInteraction } from "discord.js";
+import { CommandInteraction, Interaction } from "discord.js";
+import { InteractionError } from "./InteractionError";
 
-export class CommandNotFound extends Error {
+export class CommandNotFound extends InteractionError {
   constructor(interaction: CommandInteraction) {
-    interaction.reply({
-      content: `Failed to execute command: ${interaction.commandName}`,
-      ephemeral: true
-    });
-
-    super(`Command ${interaction.commandName} not found`);
+    super(interaction as Interaction, `Command ${interaction.commandName} not found`);
   }
 }

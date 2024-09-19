@@ -1,12 +1,8 @@
 import { ButtonInteraction } from "discord.js";
+import { InteractionError } from "./InteractionError";
 
-export class ButtonNotFound extends Error {
+export class ButtonNotFound extends InteractionError {
   constructor(interaction: ButtonInteraction) {
-    interaction.reply({
-      content: `Failed to find button handler`,
-      ephemeral: true
-    });
-
-    super(`Button ${interaction.customId} not found`);
+    super(interaction, `Button ${interaction.customId} not found`);
   }
 }

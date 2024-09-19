@@ -1,12 +1,8 @@
 import { ModalSubmitInteraction } from "discord.js";
+import { InteractionError } from "./InteractionError";
 
-export class ModalNotFound extends Error {
+export class ModalNotFound extends InteractionError {
   constructor(interaction: ModalSubmitInteraction) {
-    interaction.reply({
-      content: `Failed to find modal handler`,
-      ephemeral: true
-    });
-
-    super(`Modal ${interaction.customId} not found`);
+    super(interaction, `Modal ${interaction.customId} not found`);
   }
 }

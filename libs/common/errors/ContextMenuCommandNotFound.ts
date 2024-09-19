@@ -1,12 +1,11 @@
-import { ContextMenuCommandInteraction } from "discord.js";
+import { ContextMenuCommandInteraction, Interaction } from "discord.js";
+import { InteractionError } from "./InteractionError";
 
-export class ContextMenuCommandNotFound extends Error {
+export class ContextMenuCommandNotFound extends InteractionError {
   constructor(interaction: ContextMenuCommandInteraction) {
-    interaction.reply({
-      content: `Failed to execute context menu command: ${interaction.commandName}`,
-      ephemeral: true
-    });
-
-    super(`Context menu command ${interaction.commandName} not found`);
+    super(
+      interaction as Interaction,
+      `Context menu command ${interaction.commandName} not found`
+    );
   }
 }

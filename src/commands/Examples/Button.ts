@@ -28,8 +28,8 @@ class ButtonCommand extends SlashCommand {
           content: `Example buttons:`,
           components: [row]
         })
-        .catch();
-    }, 100);
+        .catch(() => {});
+    }, 2000);
   }
 }
 

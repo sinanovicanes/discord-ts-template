@@ -1,15 +1,11 @@
-import { CommandInteraction, ContextMenuCommandInteraction } from "discord.js";
+import { ContextMenuCommandInteraction, Interaction } from "discord.js";
+import { InteractionError } from "./InteractionError";
 
-export class FailedToHandleContextMenuCommand extends Error {
+export class FailedToHandleContextMenuCommand extends InteractionError {
   constructor(interaction: ContextMenuCommandInteraction) {
-    if (interaction.deferred || interaction.replied) return;
-    interaction
-      .reply({
-        content: `Failed to handle context menu command: ${interaction.commandName}`,
-        ephemeral: true
-      })
-      .catch(() => {});
-
-    super(`Failed to handle context menu command: ${interaction.commandName}`);
+    super(
+      interaction as Interaction,
+      `Failed to handle context menu command: ${interaction.commandName}`
+    );
   }
 }

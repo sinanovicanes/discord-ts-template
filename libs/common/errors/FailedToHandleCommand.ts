@@ -1,15 +1,11 @@
-import { CommandInteraction } from "discord.js";
+import { CommandInteraction, Interaction } from "discord.js";
+import { InteractionError } from "./InteractionError";
 
-export class FailedToHandleCommand extends Error {
+export class FailedToHandleCommand extends InteractionError {
   constructor(interaction: CommandInteraction) {
-    if (interaction.deferred || interaction.replied) return;
-    interaction
-      .reply({
-        content: `Failed to handle command: ${interaction.commandName}`,
-        ephemeral: true
-      })
-      .catch(() => {});
-
-    super(`Failed to handle command: ${interaction.commandName}`);
+    super(
+      interaction as Interaction,
+      `Failed to handle command: ${interaction.commandName}`
+    );
   }
 }

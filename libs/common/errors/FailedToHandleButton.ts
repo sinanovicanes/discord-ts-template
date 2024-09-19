@@ -1,15 +1,8 @@
-import { ButtonInteraction } from "discord.js";
+import { ButtonInteraction, Interaction } from "discord.js";
+import { InteractionError } from "./InteractionError";
 
-export class FailedToHandleButton extends Error {
+export class FailedToHandleButton extends InteractionError {
   constructor(interaction: ButtonInteraction) {
-    if (interaction.deferred || interaction.replied) return;
-    interaction
-      .reply({
-        content: `Failed to handle button`,
-        ephemeral: true
-      })
-      .catch(() => {});
-
-    super(`Failed to handle button: ${interaction.customId}`);
+    super(interaction as Interaction, `Failed to handle button: ${interaction.customId}`);
   }
 }

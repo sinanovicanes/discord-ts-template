@@ -1,15 +1,8 @@
 import { AnySelectMenuInteraction } from "discord.js";
+import { InteractionError } from "./InteractionError";
 
-export class FailedToHandleSelectMenu extends Error {
+export class FailedToHandleSelectMenu extends InteractionError {
   constructor(interaction: AnySelectMenuInteraction) {
-    if (interaction.deferred || interaction.replied) return;
-    interaction
-      .reply({
-        content: `Failed to handle select menu`,
-        ephemeral: true
-      })
-      .catch(() => {});
-
-    super(`Failed to handle select menu: ${interaction.customId}`);
+    super(interaction, `Failed to handle select menu: ${interaction.customId}`);
   }
 }

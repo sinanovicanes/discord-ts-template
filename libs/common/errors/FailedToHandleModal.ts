@@ -1,13 +1,8 @@
 import { ModalSubmitInteraction } from "discord.js";
+import { InteractionError } from "./InteractionError";
 
-export class FailedToHandleModal extends Error {
+export class FailedToHandleModal extends InteractionError {
   constructor(interaction: ModalSubmitInteraction) {
-    if (interaction.deferred || interaction.replied) return;
-    interaction.reply({
-      content: `Failed to handle modal`,
-      ephemeral: true
-    });
-
-    super(`Failed to handle modal: ${interaction.customId}`);
+    super(interaction, `Failed to handle modal: ${interaction.customId}`);
   }
 }
