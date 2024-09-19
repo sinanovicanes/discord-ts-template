@@ -12,13 +12,13 @@ export class BaseManager {
     await this.guardExecutor.execute(targetClass, ...args);
   }
 
-  addMiddlewares(...middlewares: Constructor<Middleware>[]) {
+  useMiddlewares(...middlewares: Constructor<Middleware>[]) {
     this.middlewareExecutor.add(
       ...middlewares.map(middleware => container.resolve(middleware))
     );
   }
 
-  addGuards(...guards: Constructor<Guard>[]) {
+  useGuards(...guards: Constructor<Guard>[]) {
     this.guardExecutor.add(...guards.map(guard => container.resolve(guard)));
   }
 }

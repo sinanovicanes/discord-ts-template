@@ -1,5 +1,5 @@
 import { ClientOptions, Collection, Client as DiscordClient } from "discord.js";
-import { Logger, Middleware } from "../classes";
+import { Guard, Logger, Middleware } from "../classes";
 import { CLIENT_OPTIONS_KEY } from "../constants";
 import { Inject, Injectable } from "../decorators";
 import {
@@ -24,18 +24,6 @@ export class Client extends DiscordClient {
     super(clientOptions);
   }
 
-  addCommandMiddlewares(...middlewares: Constructor<Middleware>[]) {
-    this.commandManager.addMiddlewares(...middlewares);
-  }
-
-  addEventMiddlewares(...middlewares: Constructor<Middleware>[]) {
-    this.eventManager.addMiddlewares(...middlewares);
-  }
-
-  addComponentMiddlewares(...middlewares: Constructor<Middleware>[]) {
-    this.componentManager.addMiddlewares(...middlewares);
-  }
-
   async connect(token: string) {
     this.logger.info("Connecting to Discord...");
     await this.eventManager.initialize();
@@ -52,5 +40,41 @@ export class Client extends DiscordClient {
     await this.commandManager.clearCommands();
     await this.destroy();
     this.logger.info("Disconnected from Discord!");
+  }
+
+  useGlobalMiddlewares(...middlewares: Constructor<Middleware>[]) {
+    this.useCommandMiddlewares(...middlewares);
+    this.useEventMiddlewares(...middlewares);
+    this.useComponentMiddlewares(...middlewares);
+  }
+
+  useGlobalGuards(...guards: Constructor<Guard>[]) {
+    this.commandManager.useGuards(...guards);
+    this.eventManager.useGuards(...guards);
+    this.componentManager.useGuards(...guards);
+  }
+
+  useCommandMiddlewares(...middlewares: Constructor<Middleware>[]) {
+    this.commandManager.useMiddlewares(...middlewares);
+  }
+
+  useEventMiddlewares(...middlewares: Constructor<Middleware>[]) {
+    this.eventManager.useMiddlewares(...middlewares);
+  }
+
+  useComponentMiddlewares(...middlewares: Constructor<Middleware>[]) {
+    this.componentManager.useMiddlewares(...middlewares);
+  }
+
+  useCommandGuards(...guards: Constructor<Guard>[]) {
+    this.commandManager.useGuards(...guards);
+  }
+
+  useEventGuards(...guards: Constructor<Guard>[]) {
+    this.eventManager.useGuards(...guards);
+  }
+
+  useComponentGuards(...guards: Constructor<Guard>[]) {
+    this.componentManager.useGuards(...guards);
   }
 }
