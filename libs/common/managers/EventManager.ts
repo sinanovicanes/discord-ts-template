@@ -18,7 +18,7 @@ export class EventManager extends BaseManager {
     ...args: ClientEvents[T]
   ) {
     try {
-      await this.middlewareExecutor.execute(event as Function & Event<T>, ...args);
+      await this.runExecutors(event as Function & Event<T>, ...args);
       await event.handler(...args);
     } catch (error) {
       if (error instanceof GuardError) return;

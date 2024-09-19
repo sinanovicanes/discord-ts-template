@@ -65,7 +65,7 @@ export class CommandManager extends BaseManager {
     if (!command) throw new CommandNotFound(interaction);
 
     try {
-      await this.middlewareExecutor.execute(command, interaction);
+      await this.runExecutors(command, interaction);
       await command.handler(interaction);
     } catch (error) {
       if (error instanceof GuardError || error instanceof MiddlewareError) return;
@@ -85,7 +85,7 @@ export class CommandManager extends BaseManager {
     if (!command) throw new ContextMenuCommandNotFound(interaction);
 
     try {
-      await this.middlewareExecutor.execute(command, interaction);
+      await this.runExecutors(command, interaction);
       await command.handler(interaction);
     } catch (error) {
       if (error instanceof GuardError || error instanceof MiddlewareError) return;

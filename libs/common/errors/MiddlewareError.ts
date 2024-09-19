@@ -5,9 +5,11 @@ export class MiddlewareError extends Error {
   constructor(message: string, ctx: ExecutionContext) {
     super(message);
 
+    // Check if the args has interaction and if it is repliable
     const [interaction] = ctx.getArgs<[Interaction]>();
 
-    if (!("isRepliable" in interaction) || !interaction.isRepliable()) return;
+    if (!interaction || !("isRepliable" in interaction) || !interaction.isRepliable())
+      return;
 
     interaction
       .reply({

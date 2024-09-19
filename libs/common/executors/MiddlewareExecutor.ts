@@ -11,7 +11,7 @@ export class MiddlewareExecutor {
         await middleware.use(ctx);
       } catch (e: any) {
         throw new MiddlewareError(
-          !!middleware.getErrorMessage ? middleware.getErrorMessage() : e,
+          !!middleware.getErrorMessage ? middleware.getErrorMessage(ctx) : e,
           ctx
         );
       }

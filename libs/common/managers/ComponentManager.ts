@@ -81,7 +81,7 @@ export class ComponentManager extends BaseManager {
     if (!button) throw new ButtonNotFound(interaction);
 
     try {
-      await this.middlewareExecutor.execute(button, interaction);
+      await this.runExecutors(button, interaction);
       await button.handler(interaction);
     } catch (error) {
       if (error instanceof GuardError || error instanceof MiddlewareError) return;
@@ -99,7 +99,7 @@ export class ComponentManager extends BaseManager {
     if (!modal) throw new ModalNotFound(interaction);
 
     try {
-      await this.middlewareExecutor.execute(modal, interaction);
+      await this.runExecutors(modal, interaction);
       await modal.handler(interaction);
     } catch (error) {
       if (error instanceof GuardError || error instanceof MiddlewareError) return;
@@ -119,7 +119,7 @@ export class ComponentManager extends BaseManager {
     if (!selectMenu) throw new SelectMenuNotFound(interaction);
 
     try {
-      await this.middlewareExecutor.execute(selectMenu, interaction);
+      await this.runExecutors(selectMenu, interaction);
       await selectMenu.handler(interaction);
     } catch (error) {
       if (error instanceof GuardError || error instanceof MiddlewareError) return;

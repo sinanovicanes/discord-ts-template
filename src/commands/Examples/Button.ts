@@ -1,7 +1,6 @@
 import { CancelButton, ConfirmationButton } from "@/components";
 import { DeferReplyMiddleware } from "@/middlewares";
-import { Cooldown, Injectable, SlashCommand } from "@app/common";
-import { UseMiddlewares } from "@app/common";
+import { Cooldown, Injectable, SlashCommand, UseMiddlewares } from "@app/common";
 import { ChatInputCommandInteraction } from "discord.js";
 
 @Injectable()
@@ -18,16 +17,18 @@ class ButtonCommand extends SlashCommand {
     super();
   }
 
-  async handler(interaction: ChatInputCommandInteraction) {
+  handler(interaction: ChatInputCommandInteraction) {
     const row = this.cancelButton.toRow(this.confirmationButton);
 
     // Simulate a long process
 
     setTimeout(() => {
-      interaction.editReply({
-        content: `Example buttons:`,
-        components: [row]
-      });
+      interaction
+        .editReply({
+          content: `Example buttons:`,
+          components: [row]
+        })
+        .catch();
     }, 5000);
   }
 }
