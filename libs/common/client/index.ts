@@ -1,11 +1,10 @@
+import { ClientOptions, Collection, Client as DiscordClient } from "discord.js";
+import { Logger, Middleware } from "../classes";
 import { CLIENT_OPTIONS_KEY } from "../constants";
+import { Inject, Injectable } from "../decorators";
+import { ComponentManager, ScheduleManager } from "../managers";
 import { CommandManager } from "../managers/CommandManager";
 import { EventManager } from "../managers/EventManager";
-import { ClientOptions, Collection, Client as DiscordClient } from "discord.js";
-import { ComponentManager, ScheduleManager } from "../managers";
-import { Logger, Middleware } from "../classes";
-import { Inject, Injectable } from "../decorators";
-import { constructor } from "tsyringe/dist/typings/types";
 
 @Injectable()
 export class Client extends DiscordClient {
@@ -22,7 +21,7 @@ export class Client extends DiscordClient {
     super(clientOptions);
   }
 
-  addCommandMiddlewares(...middlewares: constructor<Middleware>[]) {
+  addCommandMiddlewares(...middlewares: Constructor<Middleware>[]) {
     this.commandManager.addMiddlewares(...middlewares);
   }
 

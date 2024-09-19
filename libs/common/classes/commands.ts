@@ -27,6 +27,8 @@ export interface CommandBase {
   getData(): Record<string, any>;
 }
 
+export type CommandClass = Function & CommandBase;
+
 export interface SlashCommandProps {
   subCommands?: SubCommand[];
   subCommandGroup?: SubCommandGroup;

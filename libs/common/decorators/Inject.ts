@@ -1,7 +1,6 @@
 import { delay, inject, InjectionToken } from "tsyringe";
-import { constructor } from "tsyringe/dist/typings/types";
 
-type WrappedConstructor<T = any> = () => constructor<T>;
+type WrappedConstructor<T = any> = () => Constructor<T>;
 type TokenOrWrappedConstructor<T = any> = InjectionToken<T> | WrappedConstructor<T>;
 
 export const Inject = <T>(token: TokenOrWrappedConstructor<T>) => {

@@ -1,8 +1,13 @@
+import { Interaction } from "discord.js";
+import { ExecutionContext } from "../classes";
+
 export class MiddlewareError extends Error {
-  constructor(message: string, interaction: MiddlewareInteraction) {
+  constructor(message: string, ctx: ExecutionContext) {
     super(message);
 
-    if (!interaction.isRepliable || !interaction.isRepliable()) return;
+    const [interaction] = ctx.getArgs<[Interaction]>();
+
+    if (!("isRepliable" in interaction) || !interaction.isRepliable()) return;
 
     interaction
       .reply({

@@ -1,30 +1,20 @@
-import { Middleware } from "../classes";
+import { ExecutionContext, Middleware } from "../classes";
 import { MIDDLEWARE_METADATA_KEY } from "../constants";
 import { MiddlewareError } from "../errors";
 
 export class MiddlewareExecutor {
   constructor(private readonly defaultMiddlewares: Middleware[] = []) {}
 
-  private async useMiddleware(
-    middleware: Middleware,
-    interaction: MiddlewareInteraction
-  ) {
-    try {
-      await middleware.use(interaction);
-    } catch (e: any) {
-      throw new MiddlewareError(
-        middleware.getErrorMessage ? middleware.getErrorMessage() : e,
-        interaction
-      );
-    }
-  }
-
-  private async useMiddlewares(
-    middlewares: Middleware[],
-    interaction: MiddlewareInteraction
-  ) {
+  private async useMiddlewares(middlewares: Middleware[], ctx: ExecutionContext) {
     for (const middleware of middlewares) {
-      await this.useMiddleware(middleware, interaction);
+      try {
+        await middleware.use(ctx);
+      } catch (e: any) {
+        throw new MiddlewareError(
+          !!middleware.getErrorMessage ? middleware.getErrorMessage() : e,
+          ctx
+        );
+      }
     }
   }
 
@@ -32,9 +22,11 @@ export class MiddlewareExecutor {
     this.defaultMiddlewares.push(...middlewares);
   }
 
-  async execute(targetClass: Object, interaction: MiddlewareInteraction) {
+  async execute<T extends Function>(targetClass: T, ...args: any[]) {
+    const ctx = new ExecutionContext(args, targetClass.constructor as Constructor<T>);
+
     // Apply default middlewares
-    await this.useMiddlewares(this.defaultMiddlewares, interaction);
+    await this.useMiddlewares(this.defaultMiddlewares, ctx);
 
     const appliedMiddlewares = Reflect.getMetadata(
       MIDDLEWARE_METADATA_KEY,
@@ -44,6 +36,6 @@ export class MiddlewareExecutor {
     if (!appliedMiddlewares) return;
 
     // Apply class middlewares
-    this.useMiddlewares(appliedMiddlewares, interaction);
+    await this.useMiddlewares(appliedMiddlewares, ctx);
   }
 }

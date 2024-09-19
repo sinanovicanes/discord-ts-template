@@ -1,9 +1,8 @@
-import { Guard } from "../classes";
 import { container } from "tsyringe";
-import { constructor } from "tsyringe/dist/typings/types";
+import { Guard } from "../classes";
 import { GuardError } from "../errors";
 
-export function UseGuards(...guards: constructor<Guard>[]): ClassDecorator {
+export function UseGuards(...guards: Constructor<Guard>[]): ClassDecorator {
   return (target: any) => {
     const handler = target.prototype.handler;
 

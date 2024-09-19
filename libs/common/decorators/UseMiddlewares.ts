@@ -1,10 +1,9 @@
-import { constructor } from "tsyringe/dist/typings/types";
-import { Middleware } from "../classes";
 import { container } from "tsyringe";
+import { Middleware } from "../classes";
 import { MIDDLEWARE_METADATA_KEY } from "../constants";
 
 export function UseMiddlewares(
-  ...middlewares: constructor<Middleware>[]
+  ...middlewares: Constructor<Middleware>[]
 ): ClassDecorator {
   return (target: any) => {
     Reflect.defineMetadata(

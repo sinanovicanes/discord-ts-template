@@ -7,8 +7,14 @@ import {
   Routes
 } from "discord.js";
 import { container } from "tsyringe";
-import { constructor } from "tsyringe/dist/typings/types";
-import { CommandBase, Logger, Middleware, SubCommand, SubCommandGroup } from "../classes";
+import {
+  CommandBase,
+  CommandClass,
+  Logger,
+  Middleware,
+  SubCommand,
+  SubCommandGroup
+} from "../classes";
 import { Injectable } from "../decorators";
 import {
   CommandNotFound,
@@ -33,7 +39,7 @@ export class CommandManager {
   private readonly logger = new Logger(CommandManager.name);
   private readonly commands = new Collection<CommandBase["name"], CommandBase>();
 
-  addMiddlewares(...middlewares: constructor<Middleware>[]) {
+  addMiddlewares(...middlewares: Constructor<Middleware>[]) {
     this.middlewareExecutor.add(
       ...middlewares.map(middleware => container.resolve(middleware))
     );
@@ -70,7 +76,7 @@ export class CommandManager {
   }
 
   async handleCommandInteraction(interaction: ChatInputCommandInteraction) {
-    const command = this.getCommandByInteraction(interaction);
+    const command = this.getCommandByInteraction(interaction) as CommandClass | undefined;
 
     if (!command) throw new CommandNotFound(interaction);
 
@@ -90,7 +96,7 @@ export class CommandManager {
   private async handleContextMenuCommandInteraction(
     interaction: ContextMenuCommandInteraction
   ) {
-    const command = this.getCommand(interaction.commandName);
+    const command = this.getCommand(interaction.commandName) as CommandClass | undefined;
 
     if (!command) throw new ContextMenuCommandNotFound(interaction);
 
