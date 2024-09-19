@@ -3,8 +3,7 @@ import {
   ButtonInteraction,
   ModalSubmitInteraction
 } from "discord.js";
-import { Logger } from "../classes";
-import { ComponentBase } from "../classes/components";
+import { ComponentBase, ComponentClass } from "../classes/components";
 import { Injectable } from "../decorators";
 import { ComponentKind } from "../enums";
 import {
@@ -12,15 +11,17 @@ import {
   FailedToHandleButton,
   FailedToHandleModal,
   FailedToHandleSelectMenu,
+  GuardError,
+  MiddlewareError,
   ModalNotFound,
   SelectMenuNotFound
 } from "../errors";
 import { pluralify } from "../utils";
 import { loadComponents } from "../utils/loaders";
+import { BaseManager } from "./BaseManager";
 
 @Injectable()
-export class ComponentManager {
-  private readonly logger = new Logger(ComponentManager.name);
+export class ComponentManager extends BaseManager {
   private components: Record<
     ComponentKind,
     Map<ComponentBase["customId"], ComponentBase>
@@ -75,13 +76,15 @@ export class ComponentManager {
   }
 
   private async handleButtonInteraction(interaction: ButtonInteraction) {
-    const button = this.getButton(interaction.customId);
+    const button = this.getButton(interaction.customId) as ComponentClass | undefined;
 
     if (!button) throw new ButtonNotFound(interaction);
 
     try {
+      await this.middlewareExecutor.execute(button, interaction);
       await button.handler(interaction);
     } catch (error) {
+      if (error instanceof GuardError || error instanceof MiddlewareError) return;
       throw new FailedToHandleButton(interaction);
     }
   }
@@ -91,13 +94,15 @@ export class ComponentManager {
   }
 
   private async handleModalSubmitInteraction(interaction: ModalSubmitInteraction) {
-    const modal = this.getModal(interaction.customId);
+    const modal = this.getModal(interaction.customId) as ComponentClass | undefined;
 
     if (!modal) throw new ModalNotFound(interaction);
 
     try {
+      await this.middlewareExecutor.execute(modal, interaction);
       await modal.handler(interaction);
     } catch (error) {
+      if (error instanceof GuardError || error instanceof MiddlewareError) return;
       throw new FailedToHandleModal(interaction);
     }
   }
@@ -107,13 +112,17 @@ export class ComponentManager {
   }
 
   private async handleSelectMenuInteraction(interaction: AnySelectMenuInteraction) {
-    const selectMenu = this.getSelectMenuFromInteraction(interaction);
+    const selectMenu = this.getSelectMenuFromInteraction(interaction) as
+      | ComponentClass
+      | undefined;
 
     if (!selectMenu) throw new SelectMenuNotFound(interaction);
 
     try {
+      await this.middlewareExecutor.execute(selectMenu, interaction);
       await selectMenu.handler(interaction);
     } catch (error) {
+      if (error instanceof GuardError || error instanceof MiddlewareError) return;
       throw new FailedToHandleSelectMenu(interaction);
     }
   }

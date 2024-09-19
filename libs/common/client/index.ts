@@ -2,9 +2,12 @@ import { ClientOptions, Collection, Client as DiscordClient } from "discord.js";
 import { Logger, Middleware } from "../classes";
 import { CLIENT_OPTIONS_KEY } from "../constants";
 import { Inject, Injectable } from "../decorators";
-import { ComponentManager, ScheduleManager } from "../managers";
-import { CommandManager } from "../managers/CommandManager";
-import { EventManager } from "../managers/EventManager";
+import {
+  CommandManager,
+  ComponentManager,
+  EventManager,
+  ScheduleManager
+} from "../managers";
 
 @Injectable()
 export class Client extends DiscordClient {
@@ -23,6 +26,14 @@ export class Client extends DiscordClient {
 
   addCommandMiddlewares(...middlewares: Constructor<Middleware>[]) {
     this.commandManager.addMiddlewares(...middlewares);
+  }
+
+  addEventMiddlewares(...middlewares: Constructor<Middleware>[]) {
+    this.eventManager.addMiddlewares(...middlewares);
+  }
+
+  addComponentMiddlewares(...middlewares: Constructor<Middleware>[]) {
+    this.componentManager.addMiddlewares(...middlewares);
   }
 
   async connect(token: string) {

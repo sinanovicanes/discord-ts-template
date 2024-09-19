@@ -6,15 +6,7 @@ import {
   REST,
   Routes
 } from "discord.js";
-import { container } from "tsyringe";
-import {
-  CommandBase,
-  CommandClass,
-  Logger,
-  Middleware,
-  SubCommand,
-  SubCommandGroup
-} from "../classes";
+import { CommandBase, CommandClass, SubCommand, SubCommandGroup } from "../classes";
 import { Injectable } from "../decorators";
 import {
   CommandNotFound,
@@ -24,26 +16,18 @@ import {
   GuardError,
   MiddlewareError
 } from "../errors";
-import { MiddlewareExecutor } from "../executors/MiddlewareExecutor";
 import { pluralify } from "../utils";
 import env from "../utils/env";
 import { loadCommands } from "../utils/loaders";
+import { BaseManager } from "./BaseManager";
 
 type CommandInteractionsWithOptions =
   | ChatInputCommandInteraction
   | AutocompleteInteraction;
 
 @Injectable()
-export class CommandManager {
-  private readonly middlewareExecutor = new MiddlewareExecutor();
-  private readonly logger = new Logger(CommandManager.name);
+export class CommandManager extends BaseManager {
   private readonly commands = new Collection<CommandBase["name"], CommandBase>();
-
-  addMiddlewares(...middlewares: Constructor<Middleware>[]) {
-    this.middlewareExecutor.add(
-      ...middlewares.map(middleware => container.resolve(middleware))
-    );
-  }
 
   getCommand(name: string) {
     return this.commands.get(name);

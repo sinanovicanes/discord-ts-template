@@ -43,6 +43,8 @@ export interface ComponentBase {
   handler(interaction: ComponentInteractions): void | Promise<void>;
 }
 
+export type ComponentClass = Function & ComponentBase;
+
 type ComponentPropsBase = Omit<ComponentBase, "handler">;
 
 export interface ButtonProps extends ComponentPropsBase {
